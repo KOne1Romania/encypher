@@ -1,0 +1,25 @@
+{
+  "name": "enchypher",
+  "version": "0.1.0",
+  "description": "Neo4j Cypher queries builder",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --ui tdd test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:kalon/encypher.git"
+  },
+  "keywords": [
+    "neo4j",
+    "cypher",
+    "query",
+    "builder"
+  ],
+  "author": "bogdan.zaharia@kalon.ro",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1"
+  }
+}
