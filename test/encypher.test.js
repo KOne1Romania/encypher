@@ -16,7 +16,7 @@ suite('enchyper', function() {
 //						'name: $self.name,',
 //						'marketIds: collect(distinct id(market)),',
 //						'productIds: collect(distinct id(product)),',
-//					'} as $result'
+//					'} as $self'
 //				].join(' '),
 //				params: {
 //					id: 12

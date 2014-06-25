@@ -55,7 +55,7 @@ suite('Result Parts', function() {
 			$r.id({ self: 'competitor', child: 'market'}).toString()
 				.should.equal('id(competitor_market) as marketId')
 		});
-		test('with default self and child', function() {
+		test('with child', function() {
 			$r.id({ child: 'market' }).toString()
 				.should.equal('id(market) as marketId')
 		});
@@ -93,6 +93,53 @@ suite('Result Parts', function() {
 		test('ids with context child', function() {
 			$r.collect($r.id(), { child: 'competitor' }).toString()
 				.should.eql('collect(distinct id(competitor)) as competitorIds');
+		});
+	});
+
+	suite('map', function() {
+		test('id', function() {
+			$r.map($r.id()).toString().should.eql('{ id: id($self) } as $self');
+		});
+		test('id with self context', function() {
+			$r.map($r.id(), { self: 'competitor' }).toString()
+				.should.eql('{ id: id(competitor) } as competitor');
+		});
+		test('id with child context', function() {
+			$r.map($r.id({ child: 'competitor' })).toString()
+				.should.eql('{ competitorId: id(competitor) } as $self');
+		});
+		test('collect node', function() {
+			$r.map($r.collect($r.node(), { child: 'competitor' })).toString()
+				.should.eql('{ competitors: collect(distinct competitor) } as $self');
+		});
+		test('complex', function() {
+			$r.map([
+				$r.field('name'),
+				$r.collect($r.id(), { child: 'market' })
+			], { self: 'competitor' }).toString()
+				.should.eql('{ name: competitor.name, marketIds: collect(distinct id(competitor_market)) } as competitor');
+		});
+		test('really complex', function() {
+			var expected = [
+				"{",
+					"id: id($self),",
+					"name: $self.name,",
+//					"categoriesCount: count(distinct cc),",
+					"categoryIds: collect(distinct id(category)),",
+					"categories: collect(distinct { name: category.name }),",
+					"competitor: { name: competitor.name, coverage: competitor.coverage }",
+				"} as $self"
+			].join(' ');
+			var actual = $r.map([
+				$r.id(),
+				$r.field('name'),
+				$r.collect($r.id(), { child: 'category' }),
+				$r.collect($r.map([ $r.field('name') ], { self: 'category' }), { child: 'category' }),
+				$r.map([
+					$r.field('name'), $r.field('coverage')
+				], { self: 'competitor' })
+			]).toString();
+			actual.should.eql(expected);
 		});
 	});
 

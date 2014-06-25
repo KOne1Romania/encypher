@@ -13,6 +13,10 @@ Context.prototype.toString = function() {
 	return  value == '' ? '$self' : value;
 };
 
+Context.prototype.alias = function() {
+	return this.self || '$self';
+};
+
 Context.ensureContext = function(context) {
 	return new Context(context);
 };
