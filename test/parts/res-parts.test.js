@@ -6,7 +6,7 @@ var $r = require('../../src/parts/res');
 
 suite('Result Parts', function() {
 
-	suite.only('node', function() {
+	suite('node', function() {
 		test('simple', function() {
 			$r.node({ self: 'competitor' }).toString().should.eql('competitor');
 		});

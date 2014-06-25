@@ -1,16 +1,17 @@
 "use strict";
 
 var inflection = require('inflection');
+var create = require('lodash-node').create;
 var compact = require('lodash-node').compact;
 
-var Context= require('../context');
+var ResPart = require('./res-part');
 
 function FieldResPart(name, context) {
-	this.context = Context.ensureContext(context);
+	ResPart.call(this, context);
 	this.name = name;
 }
 
-FieldResPart.prototype = {
+FieldResPart.prototype = create(ResPart.prototype, {
 	constructor: FieldResPart,
 
 	value: function() {
@@ -20,12 +21,7 @@ FieldResPart.prototype = {
 	alias: function() {
 		var underscoredAlias = compact([this.context.child, this.name]).join('_');
 		return  inflection.camelize(underscoredAlias, true);
-	},
-
-	toString: function() {
-		return [this.value(), 'as', this.alias()].join(' ');
 	}
-
-};
+});
 
 module.exports = FieldResPart;
