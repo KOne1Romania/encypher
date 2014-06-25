@@ -61,29 +61,37 @@ suite('Result Parts', function() {
 		});
 	});
 
-	suite.skip('collect', function() {
-		test('string', function() {
-			$r.collect('competitor').toString()
-				.should.eql('collect(distinct competitor) as competitors');
-		});
-		test.skip('default node', function() {
+	suite('collect', function() {
+		test('node', function() {
 			$r.collect($r.node()).toString()
 				.should.eql('collect(distinct $self) as $selves');
 		});
-		test.skip('fields', function() {
+		test('node with context self', function() {
+			$r.collect($r.node(), { self: 'competitor'}).toString()
+				.should.eql('collect(distinct competitor) as competitors');
+		});
+		test('node with context child', function() {
+			$r.collect($r.node(), { child: 'market'}).toString()
+				.should.eql('collect(distinct market) as markets');
+		});
+		test('node with both context child and self', function() {
+			$r.collect($r.node(), { self: 'competitor', child: 'market'}).toString()
+				.should.eql('collect(distinct competitor_market) as competitorMarkets');
+		});
+		test('fields', function() {
 			$r.collect($r.field('name')).toString()
 				.should.eql('collect(distinct $self.name) as names');
 		});
-		test.skip('fields of child node', function() {
-			$r.collect($r.field('name', $r.node({ child: 'competitor'}))).toString()
+		test('fields with context child', function() {
+			$r.collect($r.field('name'), { child: 'competitor'}).toString()
 				.should.eql('collect(distinct competitor.name) as competitorNames');
 		});
-		test.skip('ids', function() {
+		test('ids', function() {
 			$r.collect($r.id()).toString()
 				.should.eql('collect(distinct id($self)) as ids');
 		});
-		test.skip('ids of child nodes', function() {
-			$r.collect($r.id($r.node({ child: 'competitor' }))).toString()
+		test('ids with context child', function() {
+			$r.collect($r.id(), { child: 'competitor' }).toString()
 				.should.eql('collect(distinct id(competitor)) as competitorIds');
 		});
 	});

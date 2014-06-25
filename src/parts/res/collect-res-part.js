@@ -1,29 +1,24 @@
 "use strict";
 
-var NodeResPart = require('./node-res-part');
-
 var inflection = require('inflection');
+var create = require('lodash-node').create;
 
-function CollectResPart(resultPart, node) {
-	this.node = NodeResPart.ensureNode(node);
-	this.resultPart = resultPart.withNode(node);
+var ResPart = require('./res-part');
+
+function CollectResPart(resPart, context) {
+	this.resPart = resPart.withContext(context);
 }
 
-CollectResPart.prototype = {
+CollectResPart.prototype = create(ResPart.prototype, {
 	constructor: CollectResPart,
 
 	value: function() {
-		return 'collect(distinct ' + this.resultPart.value() + ')';
+		return 'collect(distinct ' + this.resPart.value() + ')';
 	},
 
 	alias: function() {
-		return inflection.pluralize(this.resultPart.alias());
-	},
-
-	toString: function() {
-		return [this.value(), 'as', this.alias()].join(' ');
+		return inflection.pluralize(this.resPart.alias());
 	}
-
-};
+});
 
 module.exports = CollectResPart;

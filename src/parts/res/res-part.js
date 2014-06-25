@@ -1,6 +1,7 @@
 "use strict";
 
 var uniq = require('lodash-node').uniq;
+var create = require('lodash-node').create;
 
 var Context = require('../context');
 
@@ -19,10 +20,13 @@ ResPart.prototype = {
 		throw Error('unimplemented #alias in ' + this.constructor.name);
 	},
 
+	withContext: function(context) {
+		return create(this, { context: Context.ensureContext(context) });
+	},
+
 	toString: function() {
 		return uniq([this.value(), this.alias()]).join(' as ');
 	}
-
 };
 
 module.exports = ResPart;
