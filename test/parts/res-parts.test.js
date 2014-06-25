@@ -42,7 +42,7 @@ suite('Result Parts', function() {
 		});
 	});
 
-	suite.skip('id', function() {
+	suite('id', function() {
 		test('with custom self', function() {
 			$r.id({ self: 'competitor' }).toString()
 				.should.equal('id(competitor) as id')

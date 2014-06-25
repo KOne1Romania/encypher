@@ -4,15 +4,15 @@ var create = require('lodash-node').create;
 
 var FieldResultPart = require('./field-res-part');
 
-function IdResPart(opts) {
-	FieldResultPart.call(this, 'id', opts);
+function IdResPart(context) {
+	FieldResultPart.call(this, 'id', context);
 }
 
 IdResPart.prototype = create(FieldResultPart.prototype, {
 	constructor: IdResPart,
 
 	value: function() {
-		return 'id(' + this.node.value() + ')';
+		return 'id(' + this.context + ')';
 	}
 
 });
