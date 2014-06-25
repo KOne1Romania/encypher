@@ -1,15 +1,15 @@
 "use strict";
 
 var inflection = require('inflection');
-var uniq = require('lodash-node').uniq;
+var create = require('lodash-node').create;
 
-var Context = require('../context');
+var ResPart = require('./res-part');
 
 function NodeResPart(context) {
-	this.context = Context.ensureContext(context);
+	ResPart.call(this, context);
 }
 
-NodeResPart.prototype = {
+NodeResPart.prototype = create(ResPart.prototype, {
 	constructor: NodeResPart,
 
 	value: function() {
@@ -18,16 +18,7 @@ NodeResPart.prototype = {
 
 	alias: function() {
 		return inflection.camelize(this.value(), true);
-	},
-
-	toString: function() {
-		return uniq([this.value(), this.alias()]).join(' as ');
 	}
-
-};
-
-NodeResPart.ensureNode = function(node) {
-	return new NodeResPart(node);
-};
+});
 
 module.exports = NodeResPart;

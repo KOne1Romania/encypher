@@ -12,11 +12,11 @@ ResPart.prototype = {
 	constructor: ResPart,
 
 	value: function() {
-		throw Error('unimplemented method value in ResPart ' + this.constructor.name);
+		throw Error('unimplemented #value in ' + this.constructor.name);
 	},
 
 	alias: function() {
-		throw Error('unimplemented method alias in ResPart ' + this.constructor.name);
+		throw Error('unimplemented #alias in ' + this.constructor.name);
 	},
 
 	toString: function() {
