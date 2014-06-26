@@ -4,7 +4,7 @@
   "description": "Neo4j Cypher queries builder",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --ui tdd --recursive test"
+    "test": "./node_modules/.bin/mocha --ui tdd --recursive src"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "author": "bogdan.zaharia@kalon.ro",
   "license": "ISC",
   "devDependencies": {
+    "LiveScript": "^1.2.0",
     "chai": "^1.9.1",
     "mocha": "^1.20.1"
   },

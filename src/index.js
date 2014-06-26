@@ -9,6 +9,6 @@ exports.exportGenerators = function(exports, dirname, suffix) {
 	});
 
 	forOwn(klasses, function(klass, name) {
-		exports[name] = generator(klass);
+		exports[name.toLowerCase()] = generator(klass);
 	});
 };

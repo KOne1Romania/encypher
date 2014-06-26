@@ -1,24 +1,51 @@
 "use strict";
 
-var compact = require('lodash-node').compact;
-
-function Context(opts) {
-	opts = opts || {};
-	this.self = opts.self;
-	this.child = opts.child;
+function Context() {
 }
 
-Context.prototype.toString = function() {
-	var value = compact([this.self, this.child]).join('_');
-	return  value == '' ? '$self' : value;
+var root = {
+	get name() {
+		return '$self';
+	},
+
+	get path() {
+		return this.name;
+	},
+
+	nest: function(context) {
+		return NestedContext.ensure(context)
+	}
 };
 
-Context.prototype.alias = function() {
-	return this.self || '$self';
+var empty = {
+	get path() {
+		return null;
+	}
 };
 
-Context.ensureContext = function(context) {
-	return new Context(context);
+function NestedContext(name, parent) {
+	this.name = name;
+	this.parent = parent || empty;
+}
+
+NestedContext.prototype = {
+	constructor: NestedContext,
+
+	get path() {
+		return [this.parent.path, this.name].join('_');
+	}
+
 };
+
+Context.ensure = function(nestedContext) {
+	return nestedContext instanceof NestedContext
+		? nestedContext
+		: typeof(nestedContext) === 'string'
+			? new NestedContext(nestedContext)
+			: root;
+};
+
+Context.root = root;
+Context.Nested = NestedContext;
 
 module.exports = Context;

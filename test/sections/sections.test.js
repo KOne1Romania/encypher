@@ -13,13 +13,13 @@ suite('sections', function() {
 		});
 	});
 
-	suite('optionalRels', function() {
+	suite('optionalrels', function() {
 		test('one relation', function() {
-			$s.optionalRels($p.rel('COVERS', $p.node('Market'))).toString()
+			$s.optionalrels($p.rel('COVERS', $p.node('Market'))).toString()
 				.should.eql('OPTIONAL MATCH $self-[:COVERS]->(market:Market)');
 		});
 		test('two relations', function() {
-			$s.optionalRels([
+			$s.optionalrels([
 				$p.rel('COVERS', $p.node('Market')),
 				$p.rel('SOLD_BY', 'product', { dir: 'inbound' })
 			]).toString()
@@ -31,7 +31,7 @@ suite('sections', function() {
 	});
 
 	suite('returnResult', function() {
-		test('string');
+		test('node');
 	});
 
 });

@@ -6,8 +6,6 @@ var $p = require('../../src/parts');
 
 suite('parts', function() {
 
-	suite('results', require('./results.test.part')($p));
-
 	suite('node', function() {
 		test('when name provided', function() {
 			$p.node('CompetitorProduct', 'product').toString().should.eql('(product:CompetitorProduct)');

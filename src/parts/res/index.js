@@ -1,1 +1,1 @@
-require('..').exportGenerators(exports, __dirname, '-res-part');
+require('..').exportGenerators(exports, __dirname, 'Res');
