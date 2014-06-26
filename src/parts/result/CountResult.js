@@ -3,16 +3,15 @@
 var create = require('lodash-node').create;
 var pluralize = require('inflection').pluralize;
 
-var BaseRes = require('./BaseRes');
-var Context = require('../../context');
+var BaseResult = require('./BaseResult');
 var QueryPartError = require('../../errors/QueryPartError');
 
-function CountRes() {
-	BaseRes.call(this);
+function CountResult() {
+	BaseResult.call(this);
 }
 
-CountRes.prototype = create(BaseRes.prototype, {
-	constructor: CountRes,
+CountResult.prototype = create(BaseResult.prototype, {
+	constructor: CountResult,
 
 	value: function() {
 		return ['count(distinct ', this.context.value(), ')'].join('');
@@ -26,4 +25,4 @@ CountRes.prototype = create(BaseRes.prototype, {
 	}
 });
 
-module.exports = CountRes;
+module.exports = CountResult;

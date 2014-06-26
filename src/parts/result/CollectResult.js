@@ -3,15 +3,15 @@
 var create = require('lodash-node').create;
 var pluralize = require('inflection').pluralize;
 
-var BaseRes = require('./BaseRes');
+var BaseResult = require('./BaseResult');
 var Context = require('../../context');
 
-function CollectRes(context) {
+function CollectResult(context) {
 	this.context = context || new Context();
 }
 
-CollectRes.prototype = create(BaseRes.prototype, {
-	constructor: CollectRes,
+CollectResult.prototype = create(BaseResult.prototype, {
+	constructor: CollectResult,
 
 	value: function() {
 		return ['collect(distinct ', this.context.value(), ')'].join('');
@@ -22,4 +22,4 @@ CollectRes.prototype = create(BaseRes.prototype, {
 	}
 });
 
-module.exports = CollectRes;
+module.exports = CollectResult;

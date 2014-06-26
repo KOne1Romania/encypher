@@ -3,12 +3,12 @@
 var uniq = require('lodash-node').uniq;
 var Context = require('../../context');
 
-function BaseRes() {
+function BaseResult() {
 	this.context = new Context();
 }
 
-BaseRes.prototype = {
-	constructor: BaseRes,
+BaseResult.prototype = {
+	constructor: BaseResult,
 
 	of: function(node) {
 		this.context = this.context.of(node);
@@ -29,4 +29,4 @@ BaseRes.prototype = {
 	}
 };
 
-module.exports = BaseRes;
+module.exports = BaseResult;

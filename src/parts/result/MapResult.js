@@ -2,20 +2,20 @@
 
 var create = require('lodash-node').create;
 
-var BaseRes = require('./BaseRes');
+var BaseResult = require('./BaseResult');
 var Context = require('../../context');
 var QueryPartError = require('../../errors/QueryPartError');
 
-function MapRes(parts) {
-	BaseRes.call(this);
+function MapResult(parts) {
+	BaseResult.call(this);
 	if (parts == null || parts.length === 0) {
 		throw new QueryPartError('Map result part requires a list of child parts');
 	}
 	this.parts = Array.isArray(parts) ? parts : [parts];
 }
 
-MapRes.prototype = create(BaseRes.prototype, {
-	constructor: MapRes,
+MapResult.prototype = create(BaseResult.prototype, {
+	constructor: MapResult,
 
 	of: function(node) {
 		this.context = this.context.of(node);
@@ -45,4 +45,4 @@ MapRes.prototype = create(BaseRes.prototype, {
 	}
 });
 
-module.exports = MapRes;
+module.exports = MapResult;

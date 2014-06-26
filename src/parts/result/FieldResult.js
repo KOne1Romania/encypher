@@ -2,15 +2,15 @@
 
 var create = require('lodash-node').create;
 
-var BaseRes = require('./BaseRes');
+var BaseResult = require('./BaseResult');
 
-function FieldRes(name) {
-	BaseRes.call(this);
+function FieldResult(name) {
+	BaseResult.call(this);
 	this.name = name;
 }
 
-FieldRes.prototype = create(BaseRes.prototype, {
-	constructor: FieldRes,
+FieldResult.prototype = create(BaseResult.prototype, {
+	constructor: FieldResult,
 
 	value: function() {
 		return [this.context.value(), this.name].join('.');
@@ -21,4 +21,4 @@ FieldRes.prototype = create(BaseRes.prototype, {
 	}
 });
 
-module.exports = FieldRes;
+module.exports = FieldResult;
