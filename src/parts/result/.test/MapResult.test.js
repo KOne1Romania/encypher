@@ -16,6 +16,10 @@ module.exports = function() {
 		$map($id()).toString()
 			.should.eql('{ id: id($self) } as $self');
 	});
+	test('string', function() {
+		$map('name').toString()
+			.should.eql('{ name: $self.name } as $self');
+	});
 	test('id and field', function() {
 		$map([$id(), $field('name')]).toString()
 			.should.eql('{ id: id($self), name: $self.name } as $self');
