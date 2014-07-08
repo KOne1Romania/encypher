@@ -20,6 +20,8 @@ RelationData.prototype = {
 	},
 
 	resultPart: function() {
-
+		return this.fetchData.resultPart();
 	}
 };
+
+module.exports = RelationData;
