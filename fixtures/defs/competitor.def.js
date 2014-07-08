@@ -3,10 +3,10 @@ module.exports = {
 	fields: ['name', 'coverage'],
 	rels  : [
 		{
-			alias  : 'products',
-			inbound: true,
-			type   : 'SOLD_BY',
-			label  : 'CompetitorProduct'
+			alias: 'products',
+			dir  : 'inbound',
+			type : 'SOLD_BY',
+			label: 'CompetitorProduct'
 		},
 		{
 			type : 'COVERS',

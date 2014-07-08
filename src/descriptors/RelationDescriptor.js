@@ -1,13 +1,26 @@
 "use strict";
 
-var inflection = require('inflection');
+var defaults = require('lodash-node').defaults;
+var merge = require('lodash-node').merge;
+
+var nodeDescriptor = require('./node');
+var $matchRelationPart = require('../parts/match').relation;
 
 function RelationDescriptor(def) {
-	this.type = def.type;
-	this.label = def.label;
-	this.dir = def.dir || 'outbound';
-	this.card = def.card || 'many';
-	this.alias = def.alias || inflection.camelize(this.label, true);
+	defaults(this, def, {
+		self: '$self',
+		direction: 'outbound',
+		cardinality: 'many'
+	});
+	this.self = nodeDescriptor(this.self);
+	this.related = nodeDescriptor(this.related);
 }
+
+RelationDescriptor.prototype.matchPart = function() {
+	return $matchRelationPart(merge(this, {
+		self: this.self.matchPart(),
+		related: this.related.matchPart()
+	}));
+};
 
 module.exports = RelationDescriptor;
