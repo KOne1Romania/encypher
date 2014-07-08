@@ -13,13 +13,13 @@ function FetchData(context, fetchOptions, cardinality) {
 function buildFetchOptions(fetchOptions, cardinality) {
 	return defaults(fetchOptions || {}, {
 		aggregate: cardinality == 'many' ? 'collect' : 'identity',
-		fetched  : 'node'
+		fetch  : 'node'
 	});
 }
 
 var buildBaseResultPart = defn({
-	'String'  : function(fetched) {
-		return $resultParts[fetched]()
+	'String'  : function(fetchedStuff) {
+		return $resultParts[fetchedStuff]()
 	},
 	'[String]': function(fetchedFields) {
 		return $resultParts.map(fetchedFields);
@@ -34,7 +34,7 @@ FetchData.prototype = {
 	},
 
 	resultPart: function() {
-		var baseResultPart = buildBaseResultPart(this.fetchOptions.fetched);
+		var baseResultPart = buildBaseResultPart(this.fetchOptions.fetch);
 		return this.aggregateFn(baseResultPart).of(this.context);
 	}
 };

@@ -18,8 +18,8 @@ suite('FetchData', function() {
 				buildFetchOptions({ aggregate: 'count' }).aggregate.should.eql('count');
 			});
 		});
-		test('.fetched is identity when not provided', function() {
-			buildFetchOptions({}).fetched.should.eql('node');
+		test('.fetch is identity when not provided', function() {
+			buildFetchOptions({}).fetch.should.eql('node');
 		});
 	});
 	suite('#resultPart', function() {
@@ -27,11 +27,11 @@ suite('FetchData', function() {
 			new FetchData('market').resultPart().toString().should.eql('market')
 		});
 		test('with id', function() {
-			new FetchData('market', { fetched: 'id' }).resultPart().toString()
+			new FetchData('market', { fetch: 'id' }).resultPart().toString()
 				.should.eql('id(market) as marketId');
 		});
 		test('with fields', function() {
-			var fetchData = new FetchData('competitor', { fetched: ['name'] });
+			var fetchData = new FetchData('competitor', { fetch: ['name'] });
 			fetchData.resultPart().toString()
 				.should.eql('{ name: competitor.name } as competitor');
 		});
