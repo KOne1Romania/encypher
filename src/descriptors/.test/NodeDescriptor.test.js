@@ -4,7 +4,7 @@ var nodeDescriptor = require('../node');
 
 module.exports = function() {
 	test('with no arg, defaults to $self', function() {
-		nodeDescriptor().matchPart().toString().should.eql('$self');
+		nodeDescriptor().toString().should.eql('$self');
 	});
 	suite('with string parameter', function() {
 		var bareNodeDescriptor;
@@ -15,7 +15,7 @@ module.exports = function() {
 			bareNodeDescriptor.should.be.instanceOf(nodeDescriptor.Bare);
 		});
 		test('matchPart is its alias', function() {
-			bareNodeDescriptor.matchPart().toString().should.eql('market');
+			bareNodeDescriptor.toString().should.eql('market');
 		});
 	});
 	suite('with object parameter', function() {
@@ -26,11 +26,11 @@ module.exports = function() {
 		});
 		test('matchPart is ok', function() {
 			labeledNodeDescriptor = nodeDescriptor({ label: 'CompetitorProduct', alias: 'product' });
-			labeledNodeDescriptor.matchPart().toString().should.eql('(product:CompetitorProduct)');
+			labeledNodeDescriptor.toString().should.eql('(product:CompetitorProduct)');
 		});
 		test('default alias is lower case label', function() {
 			labeledNodeDescriptor = nodeDescriptor({ label: 'Market' });
-			labeledNodeDescriptor.matchPart().toString().should.eql('(market:Market)');
+			labeledNodeDescriptor.toString().should.eql('(market:Market)');
 		});
 	});
 };

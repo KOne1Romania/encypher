@@ -11,7 +11,7 @@ function LabeledNodeDescriptor(def) {
 	defaults(this, def, { alias: camelize(def.label, true) });
 }
 
-LabeledNodeDescriptor.prototype = create(NodeDescriptor, {
+LabeledNodeDescriptor.prototype = create(NodeDescriptor.prototype, {
 	constructor: LabeledNodeDescriptor,
 
 	matchPart: function() {

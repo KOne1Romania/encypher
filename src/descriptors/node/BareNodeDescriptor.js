@@ -8,7 +8,7 @@ function BareNodeDescriptor(alias) {
 	this.alias = alias || '$self';
 }
 
-BareNodeDescriptor.prototype = create(NodeDescriptor, {
+BareNodeDescriptor.prototype = create(NodeDescriptor.prototype, {
 	constructor: BareNodeDescriptor,
 
 	matchPart: function() {
