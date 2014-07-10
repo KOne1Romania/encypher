@@ -3,6 +3,9 @@
 var nodeDescriptor = require('../node');
 
 module.exports = function() {
+	test('with no arg, defaults to $self', function() {
+		nodeDescriptor().matchPart().toString().should.eql('$self');
+	});
 	suite('with string parameter', function() {
 		var bareNodeDescriptor;
 		setup(function() {
