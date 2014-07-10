@@ -1,12 +1,9 @@
 "use strict";
 
-require('chai').should();
-
 var NestedContextChain = require('../NestedContextChain');
 var rootContextChain = require('../rootContextChain');
 
-suite('context/chain', function() {
-
+module.exports = function() {
 	suite('NestedContextChain', function() {
 		suite('one arg', testsForOneContext(new NestedContextChain(['a'])));
 		suite('two args', testsForTwoNestedContexts(new NestedContextChain(['aa', 'bb'])));
@@ -18,7 +15,7 @@ suite('context/chain', function() {
 	suite('rootContextChain & nested in', testsForOneContext(rootContextChain.nestIn('a')));
 	suite('rootContextChain & nested in twice',
 		testsForTwoNestedContexts(rootContextChain.nestIn('bb').nestIn('aa')));
-});
+};
 
 function testsForRootContext(rootContextChain) {
 	return function() {

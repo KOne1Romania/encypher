@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $node = require('..').node;
 
 module.exports = function() {

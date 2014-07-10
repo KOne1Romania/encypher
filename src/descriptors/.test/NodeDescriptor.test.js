@@ -1,11 +1,8 @@
 "use strict";
 
-require('chai').should();
-
 var nodeDescriptor = require('../node');
-var NodeDescriptor = require('../node/LabeledNodeDescriptor');
 
-suite('nodeDescriptor', function() {
+module.exports = function() {
 	suite('with string parameter', function() {
 		var bareNodeDescriptor;
 		setup(function() {
@@ -33,4 +30,4 @@ suite('nodeDescriptor', function() {
 			labeledNodeDescriptor.matchPart().toString().should.eql('(market:Market)');
 		});
 	});
-});
+};

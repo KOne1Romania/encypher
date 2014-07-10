@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $map = require('..').map;
 var $id = require('..').id;
 var $field = require('..').field;

@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $field = require('..').field;
 
 module.exports = function() {

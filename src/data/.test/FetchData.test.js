@@ -1,11 +1,9 @@
 'use strict';
 
-require('chai').should();
-
 var FetchData = require('../FetchData');
 var buildFetchOptions = FetchData.buildFetchOptions;
 
-suite('FetchData', function() {
+module.exports = function() {
 	suite('buildFetchOptions', function() {
 		suite('.aggregate', function() {
 			test('is collect when none provided and many cardinality', function() {
@@ -44,4 +42,4 @@ suite('FetchData', function() {
 				.should.eql('collect(distinct market) as markets');
 		});
 	});
-});
+};

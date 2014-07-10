@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $coll = require('..').collect;
 var $id = require('..').id;
 

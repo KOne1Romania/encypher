@@ -1,10 +1,8 @@
 'use strict';
 
-require('chai').should();
-
 var RelationData = require('../RelationData');
 
-suite('RelationData', function() {
+module.exports = function() {
 	suite('basic', function() {
 		var relationData;
 		setup(function() {
@@ -41,4 +39,4 @@ suite('RelationData', function() {
 			relationData.resultPart().toString().should.eql('count(distinct product) as productsCount');
 		});
 	});
-});
+};

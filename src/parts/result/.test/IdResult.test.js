@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $id = require('..').id;
 
 module.exports = function() {

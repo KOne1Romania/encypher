@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $identity = require('..').identity;
 var $node = require('..').node;
 

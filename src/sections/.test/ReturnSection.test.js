@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var ReturnSection = require('../ReturnSection');
 
 var relToOneDescriptor = {
@@ -11,7 +9,7 @@ var relToManyDescriptor = {
 	type: 'HAS', related: { label: 'Other', alias: 'child' }
 };
 
-suite('ReturnSection', function() {
+module.exports = function() {
 	test('contains only id when nothing provided', function() {
 		new ReturnSection().toString().should.eql([
 			'RETURN {',
@@ -61,4 +59,4 @@ suite('ReturnSection', function() {
 			'} as $self'
 		].join(' '));
 	});
-});
+};

@@ -2,6 +2,8 @@
 
 require('chai').should();
 
+var contextChainSuite = require('../chain/.test');
+
 var $c = require('..');
 
 suite('context', function() {
@@ -23,6 +25,8 @@ suite('context', function() {
 	test('inside context with different reference', function() {
 		assertForContext($c().of('bb').as('aa'), 'aa_bb', 'bbId');
 	});
+
+	suite('context/chain', contextChainSuite);
 });
 
 function assertForContext(context, value, aliasWith, alias) {

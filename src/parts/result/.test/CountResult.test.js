@@ -1,7 +1,5 @@
 "use strict";
 
-require('chai').should();
-
 var $count = require('..').count;
 var QueryPartError = require('../../../errors/QueryPartError');
 

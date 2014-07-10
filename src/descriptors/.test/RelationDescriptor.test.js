@@ -2,7 +2,7 @@
 
 var RelationDescriptor = require('../RelationDescriptor');
 
-suite('RelationDescriptor', function() {
+module.exports = function() {
 	suite('all provided', function() {
 		var fullDescriptor = new RelationDescriptor({
 			type: 'SOLD_BY',
@@ -30,4 +30,4 @@ suite('RelationDescriptor', function() {
 			minimalDescriptor.matchPart().toString().should.eql(minimalMatchClause);
 		});
 	});
-});
+};
