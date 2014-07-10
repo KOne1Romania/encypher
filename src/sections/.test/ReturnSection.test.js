@@ -3,14 +3,13 @@
 require('chai').should();
 
 var ReturnSection = require('../ReturnSection');
-var EntityDescriptor = require('../../descriptors/EntityDescriptor');
 
 var fieldsOnlyDef = {
 	fields: ['name', 'coverage']
 };
-var relToOneDef = {rels: [
-	{ card: 'one', type: 'RELATES_TO', label: 'Other' }
-]};
+var relToOne = {
+	cardinality: 'one', type: 'RELATES_TO', related: { label: 'Other' }
+};
 var relToManyDef = {rels: [
 	{ type: 'HAS', label: 'Other', alias: 'child' }
 ]};
@@ -18,16 +17,14 @@ var relToManyDef = {rels: [
 
 suite('ReturnSection', function() {
 	test('contains only id when nothing provided', function() {
-		var emptyEntityDescriptor = new EntityDescriptor({});
-		new ReturnSection(emptyEntityDescriptor).toString().should.eql([
+		new ReturnSection().toString().should.eql([
 			'RETURN {',
 				'id: id($self)',
 			'} as $self'
 		].join(' '));
 	});
 	test('fields only', function() {
-		var fieldsOnlyEntityDesc = new EntityDescriptor(fieldsOnlyDef);
-		new ReturnSection(fieldsOnlyEntityDesc).toString().should.eql([
+		new ReturnSection(['name', 'coverage']).toString().should.eql([
 			'RETURN {',
 				'id: id($self),',
 				'name: $self.name,',
@@ -35,17 +32,15 @@ suite('ReturnSection', function() {
 			'} as $self'
 		].join(' '));
 	});
-//	test('one relation - fetch id', function() {
-//		var fetchIdDescriptor = { other: { fetch: '$id' } };
-//		var oneRelationEntityDesc = new EntityDescriptor(relToOneDef);
-//		new ReturnSection(oneRelationEntityDesc, fetchIdDescriptor).toString().should.eql([
-//			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
-//			'RETURN {',
-//				'id: id($self),',
-//				'otherId: id(other)',
-//			'} as $self'
-//		].join(' '));
-//	});
+	test('one relation - fetch node', function() {
+		new ReturnSection([], [ relToOne ]).toString().should.eql([
+			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+			'RETURN {',
+				'id: id($self),',
+				'other: other',
+			'} as $self'
+		].join(' '));
+	});
 //	test('to many relation - fetch count', function() {
 //		var fetchCountDescriptor = { child: { fetch: '$count' } };
 //		var oneRelationEntityDesc = new EntityDescriptor(relToManyDef);

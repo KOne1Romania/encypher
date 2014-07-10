@@ -4,9 +4,9 @@ var RelationDescriptor = require('../descriptors/RelationDescriptor');
 var FetchData = require('./FetchData');
 
 function RelationData(relationDescriptor, fetchOptions) {
-	this.descriptor = new RelationDescriptor(relationDescriptor);
+	this.descriptor = RelationDescriptor.ensureInstance(relationDescriptor);
 	this.fetchData = new FetchData(
-		this.descriptor.related.alias,
+		this.descriptor.identifier,
 		fetchOptions,
 		this.descriptor.cardinality
 	);
@@ -22,6 +22,12 @@ RelationData.prototype = {
 	resultPart: function() {
 		return this.fetchData.resultPart();
 	}
+};
+
+RelationData.ensureInstance = function(instance) {
+	return instance instanceof  RelationData
+		? instance
+		: new RelationData(instance);
 };
 
 module.exports = RelationData;

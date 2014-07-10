@@ -1,15 +1,19 @@
 'use strict';
 
-var defn = require('defn');
-var generator = require('obj-generator');
-
+var NodeDescriptor = require('./NodeDescriptor');
 var BareNodeDescriptor = require('./BareNodeDescriptor');
 var LabeledNodeDescriptor = require('./LabeledNodeDescriptor');
 
-var nodeDescriptor = module.exports = defn({
-	String: generator(BareNodeDescriptor),
-	'{label: String, alias: *}': generator(LabeledNodeDescriptor)
-});
+var nodeDescriptor = module.exports = function(def) {
+	switch (true) {
+		case def instanceof NodeDescriptor:
+			return def;
+		case typeof def === 'string':
+			return new BareNodeDescriptor(def);
+		case def.hasOwnProperty('label'):
+			return new LabeledNodeDescriptor(def);
+	}
+};
 
 nodeDescriptor.Bare = BareNodeDescriptor;
 nodeDescriptor.Labeled = LabeledNodeDescriptor;
