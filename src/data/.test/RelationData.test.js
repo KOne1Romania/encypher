@@ -8,10 +8,10 @@ suite('RelationData', function() {
 	suite('basic', function() {
 		var relationData;
 		setup(function() {
-			relationData = new RelationData({
-				type: 'COVERS',
+			relationData = new RelationData({descriptor: {
+				type   : 'COVERS',
 				related: { label: 'Market' }
-			});
+			}});
 		});
 		test('#matchPart', function() {
 			relationData.matchPart().toString().should.eql('$self-[:COVERS]->(market:Market)')
@@ -24,11 +24,14 @@ suite('RelationData', function() {
 		var relationData;
 		setup(function() {
 			relationData = new RelationData({
-				self: { label: 'Competitor' },
-				type: 'SOLD_BY',
-				direction: 'inbound',
-				related: { label: 'CompetitorProduct', alias: 'product' }
-			}, { aggregate: 'count' });
+				descriptor  : {
+					self     : { label: 'Competitor' },
+					type     : 'SOLD_BY',
+					direction: 'inbound',
+					related  : { label: 'CompetitorProduct', alias: 'product' }
+				},
+				fetchOptions: { aggregate: 'count' }
+			});
 		});
 		test('#matchPart', function() {
 			relationData.matchPart().toString()

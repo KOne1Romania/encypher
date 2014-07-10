@@ -3,11 +3,11 @@
 var RelationDescriptor = require('../descriptors/RelationDescriptor');
 var FetchData = require('./FetchData');
 
-function RelationData(relationDescriptor, fetchOptions) {
-	this.descriptor = RelationDescriptor.ensureInstance(relationDescriptor);
+function RelationData(def) {
+	this.descriptor = RelationDescriptor.ensureInstance(def.descriptor);
 	this.fetchData = new FetchData(
 		this.descriptor.identifier,
-		fetchOptions,
+		def.fetchOptions,
 		this.descriptor.cardinality
 	);
 }
