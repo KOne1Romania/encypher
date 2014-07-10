@@ -31,7 +31,7 @@ module.exports = function() {
 		test('with fields', function() {
 			var fetchData = new FetchData('competitor', { fetch: ['name'] });
 			fetchData.resultPart().toString()
-				.should.eql('{ name: competitor.name } as competitor');
+				.should.eql('{ id: id(competitor), name: competitor.name } as competitor');
 		});
 		test('count', function() {
 			new FetchData('market', { aggregate: 'count' }).resultPart().toString()

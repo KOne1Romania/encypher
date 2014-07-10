@@ -35,6 +35,18 @@ module.exports = function() {
 			'} as $self'
 		].join(' '));
 	});
+	test('one relation - fetch embedded', function() {
+		new ReturnSection([], [{
+			descriptor: relToOneDescriptor,
+			fetchOptions: { fetch: ['name'] }
+		}]).toString().should.eql([
+			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+			'RETURN {',
+				'id: id($self),',
+				'other: { id: id(other), name: other.name }',
+			'} as $self'
+		].join(' '));
+	});
 	test('to many relation - fetch count', function() {
 		new ReturnSection([], [{
 			descriptor: relToManyDescriptor,

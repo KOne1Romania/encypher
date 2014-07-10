@@ -22,7 +22,7 @@ var buildBaseResultPart = defn({
 		return $resultParts[fetchedStuff]()
 	},
 	'[String]': function(fetchedFields) {
-		return $resultParts.map(fetchedFields);
+		return $resultParts.map([$resultParts.id()].concat(fetchedFields));
 	}
 });
 
