@@ -1,16 +1,15 @@
 module.exports = {
-	name  : 'Competitor',
+	label : 'Competitor',
 	fields: ['name', 'coverage'],
 	rels  : [
 		{
-			alias: 'products',
-			dir  : 'inbound',
-			type : 'SOLD_BY',
-			label: 'CompetitorProduct'
+			type   : 'SOLD_BY',
+			related: { label: 'CompetitorProduct', alias: 'product' },
+			dir    : 'inbound'
 		},
 		{
-			type : 'COVERS',
-			label: 'Market'
+			type   : 'COVERS',
+			related: { label: 'Market' }
 		}
 	]
 };

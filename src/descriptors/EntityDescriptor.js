@@ -3,11 +3,12 @@
 var RelationDescriptor = require('./RelationDescriptor');
 
 function EntityDescriptor(def) {
-	this.name = def.name;
+	this.label = def.label;
 	this.fields = def.fields || [];
-	this.rels = (def.rels || []).map(function(relDef) {
-		return RelationDescriptor.ensureInstance(relDef);
-	});
+	this.relationDescriptors = (def.rels || [])
+		.map(function(relationDescriptor) {
+			return RelationDescriptor.ensureInstance(relationDescriptor);
+		});
 }
 
 EntityDescriptor.ensureInstance = function(instance) {
