@@ -2,12 +2,12 @@
 
 var defaults = require('lodash-node').defaults;
 
-function NodeMath(def) {
+function NodeMatch(def) {
 	defaults(this, def);
 }
 
-NodeMath.prototype = {
-	constructor: NodeMath,
+NodeMatch.prototype = {
+	constructor: NodeMatch,
 
 	toString: function() {
 		return '(' + [this.alias, this.label].join(':') + ')';
@@ -15,4 +15,4 @@ NodeMath.prototype = {
 
 };
 
-module.exports = NodeMath;
+module.exports = NodeMatch;
