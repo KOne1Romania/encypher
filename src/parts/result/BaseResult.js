@@ -20,6 +20,11 @@ BaseResult.prototype = {
 		return this;
 	},
 
+	withContext: function(context) {
+		this.context = context;
+		return this;
+	},
+
 	toString: function() {
 		return uniq([this.value(), this.alias()]).join(' as ');
 	},
