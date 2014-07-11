@@ -12,6 +12,10 @@ function _encodeArray(array) {
 	return '[' + array.join(', ') + ']';
 }
 
+function encodeRegex(regexString) {
+	return _escapeString('(?i)' + regexString, '"');
+}
+
 function encodeFieldName(fieldName) {
 	return _escapeString(fieldName, '`');
 }
@@ -31,5 +35,6 @@ function encodeValue(value) {
 
 module.exports = {
 	field: encodeFieldName,
-	value: encodeValue
+	value: encodeValue,
+	regex: encodeRegex
 };

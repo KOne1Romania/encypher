@@ -30,6 +30,10 @@ module.exports = function() {
 		test('isnt', function() {
 			$binary({ op: 'isnt', value: null }).toString().should.eql('id($self) IS NOT NULL');
 		});
+		test('regex', function() {
+			$binary({ field: 'name', op: 'regex', value: ".*" }).toString()
+				.should.eql('$self.`name` =~ "(?i).*"');
+		});
 	});
 	test('with context', function() {
 		$binary({ value: 15 }).on('market').toString().should.eql('id(market) = 15');

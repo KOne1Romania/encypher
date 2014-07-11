@@ -7,11 +7,12 @@ var encode = require('./util/encode');
 var BaseCondition = require('./BaseCondition.js');
 
 var OPS_MAPPING = {
-	'eq'  : '=',
-	'lt'  : '<',
-	'gt'  : '>',
-	'ne'  : '<>',
-	'isnt': 'IS NOT'
+	'eq'   : '=',
+	'lt'   : '<',
+	'gt'   : '>',
+	'ne'   : '<>',
+	'isnt' : 'IS NOT',
+	'regex': '=~'
 };
 
 function BinaryCondition(def) {
@@ -26,18 +27,24 @@ function BinaryCondition(def) {
 		? $resultParts.id()
 		: $resultParts.field(encode.field(this.field));
 
-	this.value = encode.value(this.value);
+	this.value = this.op === 'regex'
+		? encode.regex(this.value)
+		:encode.value(this.value)
 }
 
 BinaryCondition.prototype = _.create(BaseCondition.prototype, {
 	constructor: BinaryCondition,
 
-	_opSign: function() {
+	_opSymbol: function() {
 		return OPS_MAPPING[this.op] || this.op.toUpperCase();
 	},
 
 	toString: function() {
-		return [this.fieldPart.withContext(this.contextChain).value(), this._opSign(), this.value].join(' ');
+		return [
+			this.fieldPart.withContext(this.contextChain).value(),
+			this._opSymbol(),
+			this.value
+		].join(' ');
 	}
 });
 
