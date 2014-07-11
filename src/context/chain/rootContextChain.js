@@ -15,7 +15,7 @@ var rootContextChain = create(ContextChain.prototype, {
 	},
 
 	nestIn: function(contextName) {
-		return contextName == null
+		return contextName == null || contextName === rootContextChain
 			? this
 			: new NestedContextChain([contextName]);
 	}
