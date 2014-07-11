@@ -2,12 +2,12 @@
 
 var rootContextChain = require('../context/chain');
 
-function Condition() {
+function BaseCondition() {
 	this.contextChain = rootContextChain;
 }
 
-Condition.prototype = {
-	constructor: Condition,
+BaseCondition.prototype = {
+	constructor: BaseCondition,
 
 	on: function(node) {
 		this.contextChain = this.contextChain.nestIn(node);
@@ -15,4 +15,4 @@ Condition.prototype = {
 	}
 };
 
-module.exports = Condition;
+module.exports = BaseCondition;
