@@ -1,10 +1,10 @@
 "use strict";
 
-var RelationDescriptor = require('../RelationDescriptor');
+var $relation = require('..').relation;
 
 module.exports = function() {
 	suite('all provided', function() {
-		var fullDescriptor = new RelationDescriptor({
+		var fullDescriptor = $relation({
 			type: 'SOLD_BY',
 			self: { label: 'Competitor' },
 			related: { label: 'CompetitorProduct', alias: 'product' },
@@ -21,7 +21,7 @@ module.exports = function() {
 		});
 	});
 	suite('minimum provided', function() {
-		var minimalDescriptor = new RelationDescriptor({
+		var minimalDescriptor = $relation({
 			type: 'COVERS',
 			related: 'market'
 		});

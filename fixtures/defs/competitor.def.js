@@ -1,14 +1,14 @@
 module.exports = {
-	label: 'Competitor',
+	label : 'Competitor',
 	fields: ['name', 'coverage'],
-	relationDescriptors: [
+	rels  : [
 		{
-			type: 'SOLD_BY',
+			type   : 'SOLD_BY',
 			related: { label: 'CompetitorProduct', alias: 'product' },
-			dir: 'inbound'
+			dir    : 'inbound'
 		},
 		{
-			type: 'COVERS',
+			type   : 'COVERS',
 			related: { label: 'Market' }
 		}
 	]

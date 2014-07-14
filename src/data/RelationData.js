@@ -1,13 +1,11 @@
 'use strict';
 
-var ensureInstance = require('ensure-instance');
-
-var RelationDescriptor = require('../descriptors/RelationDescriptor');
+var $relationDescriptor = require('../descriptors').relation;
 var FetchOptions = require('./FetchOptions');
 
 function RelationData(def) {
-	this.descriptor = ensureInstance(RelationDescriptor)(def.descriptor);
-	this.fetchOptions = ensureInstance(FetchOptions)(
+	this.descriptor = $relationDescriptor(def.descriptor);
+	this.fetchOptions = FetchOptions.ensureInstance(
 		def.fetchOptions,
 		this.descriptor.cardinality
 	);
