@@ -1,11 +1,13 @@
 'use strict';
 
+var ensureInstance = require('ensure-instance');
+
 var RelationDescriptor = require('../descriptors/RelationDescriptor');
-var FetchData = require('./FetchData');
+var FetchOptions = require('./FetchOptions');
 
 function RelationData(def) {
-	this.descriptor = RelationDescriptor.ensureInstance(def.descriptor);
-	this.fetchData = new FetchData(
+	this.descriptor = ensureInstance(RelationDescriptor)(def.descriptor);
+	this.fetchOptions = ensureInstance(FetchOptions)(
 		def.fetchOptions,
 		this.descriptor.cardinality
 	);
@@ -19,14 +21,8 @@ RelationData.prototype = {
 	},
 
 	resultPart: function() {
-		return this.fetchData.resultPart(this.descriptor.identifier);
+		return this.fetchOptions.resultPart(this.descriptor.identifier);
 	}
-};
-
-RelationData.ensureInstance = function(instance) {
-	return instance instanceof  RelationData
-		? instance
-		: new RelationData(instance);
 };
 
 module.exports = RelationData;

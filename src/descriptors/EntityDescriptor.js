@@ -1,5 +1,7 @@
 "use strict";
 
+var ensureInstance = require('ensure-instance');
+
 var RelationDescriptor = require('./RelationDescriptor');
 
 function EntityDescriptor(def) {
@@ -7,14 +9,8 @@ function EntityDescriptor(def) {
 	this.fields = def.fields || [];
 	this.relationDescriptors = (def.rels || [])
 		.map(function(relationDescriptor) {
-			return RelationDescriptor.ensureInstance(relationDescriptor);
+			return ensureInstance(RelationDescriptor)(relationDescriptor);
 		});
 }
-
-EntityDescriptor.ensureInstance = function(instance) {
-	return instance instanceof  EntityDescriptor
-		? instance
-		: new EntityDescriptor(instance);
-};
 
 module.exports = EntityDescriptor;

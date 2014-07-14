@@ -1,14 +1,15 @@
 'use strict';
 
-var _ = require('lodash-node');
+var _ = require('lodash-node'),
+    ensureInstance = require('ensure-instance');
 
-var RelationData = require('../data/RelationData');
-var $resultParts = require('../parts').result;
+var RelationData = require('../data/RelationData'),
+    $resultParts = require('../parts').result;
 
 function ReturnSection(fields, relationDataList) {
 	this.fields = fields || [];
 	this.relationDataList = (relationDataList || []).map(function(relationData) {
-		return RelationData.ensureInstance(relationData);
+		return ensureInstance(RelationData)(relationData);
 	});
 }
 

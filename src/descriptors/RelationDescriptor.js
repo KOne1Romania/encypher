@@ -31,10 +31,4 @@ RelationDescriptor.prototype = {
 	}
 };
 
-RelationDescriptor.ensureInstance = function(instance) {
-	return instance instanceof  RelationDescriptor
-		? instance
-		: new RelationDescriptor(instance);
-};
-
 module.exports = RelationDescriptor;

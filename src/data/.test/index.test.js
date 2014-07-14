@@ -3,6 +3,6 @@
 require('chai').should();
 
 suite('data', function() {
-	suite('fetch', require('./FetchData.test'));
+	suite('fetch', require('./FetchOptions.test.js'));
 	suite('relation', require('./RelationData.test'));
 });
