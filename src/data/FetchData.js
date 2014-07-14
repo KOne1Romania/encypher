@@ -5,8 +5,7 @@ var defaults = require('lodash-node').defaults;
 
 var $resultParts = require('../parts').result;
 
-function FetchData(context, fetchOptions, cardinality) {
-	this.context = context;
+function FetchData(fetchOptions, cardinality) {
 	this.fetchOptions = buildFetchOptions(fetchOptions, cardinality);
 }
 
@@ -33,9 +32,9 @@ FetchData.prototype = {
 		return $resultParts[this.fetchOptions.aggregate];
 	},
 
-	resultPart: function() {
+	resultPart: function(context) {
 		var baseResultPart = buildBaseResultPart(this.fetchOptions.fetch);
-		return this.aggregateFn(baseResultPart).of(this.context);
+		return this.aggregateFn(baseResultPart).of(context);
 	}
 };
 

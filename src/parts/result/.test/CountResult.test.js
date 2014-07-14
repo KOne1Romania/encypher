@@ -5,7 +5,11 @@ var QueryPartError = require('../../../errors/QueryPartError');
 
 module.exports = function() {
 	test('throws error if no context provided', function() {
-		var fn = function() {	$count().toString(); r};
+		var fn = function() {	$count().toString(); };
+		fn.should.throw(QueryPartError, /requires a context/);
+	});
+	test('throws error if context is null', function() {
+		var fn = function() {	$count().of().toString(); };
 		fn.should.throw(QueryPartError, /requires a context/);
 	});
 	test('with context from reference', function() {

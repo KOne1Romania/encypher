@@ -14,9 +14,11 @@ Context.prototype = {
 	constructor: Context,
 
 	of: function(nodeName) {
-		this.absoluteChain = this.absoluteChain.nestIn(nodeName);
-		this.relativeChain = this.relativeChain.nestIn(nodeName);
-		this._isRoot = false;
+		if (nodeName) {
+			this.absoluteChain = this.absoluteChain.nestIn(nodeName);
+			this.relativeChain = this.relativeChain.nestIn(nodeName);
+			this._isRoot = false;
+		}
 		return this;
 	},
 

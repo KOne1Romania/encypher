@@ -25,24 +25,24 @@ module.exports = function() {
 	});
 	suite('#resultPart', function() {
 		test('context only', function() {
-			new FetchData('market').resultPart().toString().should.eql('collect(distinct market) as markets')
+			new FetchData().resultPart().toString().should.eql('collect(distinct $self) as $selves')
 		});
 		test('with id', function() {
-			new FetchData('market', { fetch: 'id' }, 'one').resultPart().toString()
-				.should.eql('id(market) as marketId');
+			new FetchData({ fetch: 'id' }, 'one').resultPart().toString()
+				.should.eql('id($self) as id');
 		});
 		test('with fields', function() {
-			var fetchData = new FetchData('competitor', { fetch: ['name'] }, 'one');
+			var fetchData = new FetchData({ fetch: ['name'] }, 'one');
 			fetchData.resultPart().toString()
-				.should.eql('{ id: id(competitor), name: competitor.name } as competitor');
+				.should.eql('{ id: id($self), name: $self.name } as $self');
 		});
 		test('count', function() {
-			new FetchData('market', { aggregate: 'count' }).resultPart().toString()
+			new FetchData({ aggregate: 'count' }).resultPart('market').toString()
 				.should.eql('count(distinct market) as marketsCount');
 		});
 		test('collect', function() {
-			new FetchData('market', {}, 'many').resultPart().toString()
-				.should.eql('collect(distinct market) as markets');
+			new FetchData({}, 'many').resultPart().toString()
+				.should.eql('collect(distinct $self) as $selves');
 		});
 	});
 };
