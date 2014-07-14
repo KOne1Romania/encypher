@@ -4,7 +4,7 @@ var defn = require('defn');
 var defaults = require('lodash-node').defaults;
 var ensureInstance = require('ensure-instance');
 
-var $resultParts = require('../parts').result;
+var $resultParts = require('../../parts/index').result;
 
 function FetchOptions(def, cardinality) {
 	defaults(this, def, {
@@ -34,7 +34,5 @@ FetchOptions.prototype = {
 		return this.aggregateFn(baseResultPart).of(context);
 	}
 };
-
-FetchOptions.ensureInstance = ensureInstance(FetchOptions);
 
 module.exports = FetchOptions;

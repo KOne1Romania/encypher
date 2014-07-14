@@ -27,7 +27,7 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('one relation - fetch node', function() {
-		new ReturnSection([], [{ descriptor: relToOneDescriptor }]).toString().should.eql([
+		new ReturnSection([], [{ relationDescriptor: relToOneDescriptor }]).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
 			'RETURN {',
 				'id: id($self),',
@@ -37,7 +37,7 @@ module.exports = function() {
 	});
 	test('one relation - fetch embedded', function() {
 		new ReturnSection([], [{
-			descriptor: relToOneDescriptor,
+			relationDescriptor: relToOneDescriptor,
 			fetchOptions: { fetch: ['name'] }
 		}]).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
@@ -49,7 +49,7 @@ module.exports = function() {
 	});
 	test('to many relation - fetch count', function() {
 		new ReturnSection([], [{
-			descriptor: relToManyDescriptor,
+			relationDescriptor: relToManyDescriptor,
 			fetchOptions: { aggregate: 'count' }
 		}]).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
@@ -61,7 +61,7 @@ module.exports = function() {
 	});
 	test('to many relation - fetch ids', function() {
 		new ReturnSection([], [{
-			descriptor: relToManyDescriptor,
+			relationDescriptor: relToManyDescriptor,
 			fetchOptions: { fetch: 'id' }
 		}]).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',

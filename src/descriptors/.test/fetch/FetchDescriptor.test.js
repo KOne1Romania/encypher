@@ -1,28 +1,28 @@
 'use strict';
 
-var RelationData = require('../RelationData');
+var $fetch = require('../..').fetch;
 
 module.exports = function() {
 	suite('basic', function() {
-		var relationData;
+		var fetchDescriptor;
 		setup(function() {
-			relationData = new RelationData({descriptor: {
+			fetchDescriptor = $fetch({relationDescriptor: {
 				type   : 'COVERS',
 				related: { label: 'Market' }
 			}});
 		});
 		test('#matchPart', function() {
-			relationData.matchPart().toString().should.eql('$self-[:COVERS]->(market:Market)')
+			fetchDescriptor.matchPart().toString().should.eql('$self-[:COVERS]->(market:Market)')
 		});
 		test('#resultPart', function() {
-			relationData.resultPart().toString().should.eql('collect(distinct market) as markets');
+			fetchDescriptor.resultPart().toString().should.eql('collect(distinct market) as markets');
 		});
 	});
 	suite('complex', function() {
-		var relationData;
+		var fetchDescriptor;
 		setup(function() {
-			relationData = new RelationData({
-				descriptor  : {
+			fetchDescriptor = $fetch({
+				relationDescriptor  : {
 					self     : { label: 'Competitor' },
 					type     : 'SOLD_BY',
 					direction: 'inbound',
@@ -32,11 +32,11 @@ module.exports = function() {
 			});
 		});
 		test('#matchPart', function() {
-			relationData.matchPart().toString()
+			fetchDescriptor.matchPart().toString()
 				.should.eql('(competitor:Competitor)<-[:SOLD_BY]-(product:CompetitorProduct)')
 		});
 		test('#resultPart', function() {
-			relationData.resultPart().toString().should.eql('count(distinct product) as productsCount');
+			fetchDescriptor.resultPart().toString().should.eql('count(distinct product) as productsCount');
 		});
 	});
 };

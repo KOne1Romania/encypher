@@ -1,6 +1,6 @@
 'use strict';
 
-var FetchOptions = require('../FetchOptions');
+var FetchOptions = require('../../fetch/FetchOptions');
 var buildFetchOptions = FetchOptions.buildFetchOptions;
 
 module.exports = function() {

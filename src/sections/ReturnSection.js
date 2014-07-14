@@ -1,15 +1,14 @@
 'use strict';
 
-var _ = require('lodash-node'),
-    ensureInstance = require('ensure-instance');
+var _ = require('lodash-node');
 
-var RelationData = require('../data/RelationData'),
+var $fetchDescriptor = require('../descriptors').fetch,
     $resultParts = require('../parts').result;
 
-function ReturnSection(fields, relationDataList) {
+function ReturnSection(fields, fetchDescriptorList) {
 	this.fields = fields || [];
-	this.relationDataList = (relationDataList || []).map(function(relationData) {
-		return ensureInstance(RelationData)(relationData);
+	this.fetchDescriptors = (fetchDescriptorList || []).map(function(fetchDescriptor) {
+		return $fetchDescriptor(fetchDescriptor);
 	});
 }
 
@@ -21,8 +20,8 @@ ReturnSection.prototype = {
 	},
 
 	_relatedResultParts: function() {
-		return this.relationDataList.map(function(relationData) {
-			return relationData.resultPart()
+		return this.fetchDescriptors.map(function(fetchDescriptor) {
+			return fetchDescriptor.resultPart()
 		});
 	},
 
@@ -35,8 +34,8 @@ ReturnSection.prototype = {
 	},
 
 	_matchRelationsPart: function() {
-		return this.relationDataList.map(function(relationData) {
-			return ['OPTIONAL MATCH', relationData.matchPart()].join(' ')
+		return this.fetchDescriptors.map(function(fetchDescriptor) {
+			return ['OPTIONAL MATCH', fetchDescriptor.matchPart()].join(' ')
 		}).join(' ');
 	},
 
