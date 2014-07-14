@@ -9,6 +9,9 @@ module.exports = function() {
 			test('is collect when none provided and many cardinality', function() {
 				buildFetchOptions({}, 'many').aggregate.should.eql('collect');
 			});
+			test('assumes default cardinality to be `many`', function() {
+				buildFetchOptions({}).aggregate.should.eql('collect');
+			});
 			test('is identity when none provided and one cardinality', function() {
 				buildFetchOptions({}, 'one').aggregate.should.eql('identity');
 			});
@@ -22,14 +25,14 @@ module.exports = function() {
 	});
 	suite('#resultPart', function() {
 		test('context only', function() {
-			new FetchData('market').resultPart().toString().should.eql('market')
+			new FetchData('market').resultPart().toString().should.eql('collect(distinct market) as markets')
 		});
 		test('with id', function() {
-			new FetchData('market', { fetch: 'id' }).resultPart().toString()
+			new FetchData('market', { fetch: 'id' }, 'one').resultPart().toString()
 				.should.eql('id(market) as marketId');
 		});
 		test('with fields', function() {
-			var fetchData = new FetchData('competitor', { fetch: ['name'] });
+			var fetchData = new FetchData('competitor', { fetch: ['name'] }, 'one');
 			fetchData.resultPart().toString()
 				.should.eql('{ id: id(competitor), name: competitor.name } as competitor');
 		});
