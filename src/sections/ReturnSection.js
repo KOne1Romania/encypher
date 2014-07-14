@@ -5,9 +5,12 @@ var _ = require('lodash-node');
 var $fetchDescriptor = require('../descriptors').fetch,
     $resultParts = require('../parts').result;
 
-function ReturnSection(fields, fetchDescriptorList) {
-	this.fields = fields || [];
-	this.fetchDescriptors = (fetchDescriptorList || []).map(function(fetchDescriptor) {
+function ReturnSection(def) {
+	_.defaults(this, def, {
+		fields: [],
+		fetchDescriptors: []
+	});
+	this.fetchDescriptors = this.fetchDescriptors.map(function(fetchDescriptor) {
 		return $fetchDescriptor(fetchDescriptor);
 	});
 }

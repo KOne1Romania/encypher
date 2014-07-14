@@ -18,7 +18,7 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('fields only', function() {
-		new ReturnSection(['name', 'coverage']).toString().should.eql([
+		new ReturnSection({ fields: ['name', 'coverage'] }).toString().should.eql([
 			'RETURN {',
 				'id: id($self),',
 				'name: $self.name,',
@@ -27,7 +27,9 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('one relation - fetch node', function() {
-		new ReturnSection([], [{ relationDescriptor: relToOneDescriptor }]).toString().should.eql([
+		new ReturnSection({	fetchDescriptors: [{
+			relationDescriptor: relToOneDescriptor
+		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
 			'RETURN {',
 				'id: id($self),',
@@ -36,10 +38,10 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('one relation - fetch embedded', function() {
-		new ReturnSection([], [{
+		new ReturnSection({ fetchDescriptors: [{
 			relationDescriptor: relToOneDescriptor,
 			fetchOptions: { fetch: ['name'] }
-		}]).toString().should.eql([
+		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
 			'RETURN {',
 				'id: id($self),',
@@ -48,10 +50,10 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('to many relation - fetch count', function() {
-		new ReturnSection([], [{
+		new ReturnSection({ fetchDescriptors: [{
 			relationDescriptor: relToManyDescriptor,
 			fetchOptions: { aggregate: 'count' }
-		}]).toString().should.eql([
+		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
 			'RETURN {',
 				'id: id($self),',
@@ -60,10 +62,10 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('to many relation - fetch ids', function() {
-		new ReturnSection([], [{
+		new ReturnSection({ fetchDescriptors: [{
 			relationDescriptor: relToManyDescriptor,
 			fetchOptions: { fetch: 'id' }
-		}]).toString().should.eql([
+		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
 			'RETURN {',
 				'id: id($self),',
