@@ -1,10 +1,9 @@
-
-  - [Descriptors](#markdown-header-descriptors)
-    - [Node](#markdown-header-node)
-      - [1. BareNode](#markdown-header-1-barenode)
-      - [2. LabeledNode](#markdown-header-2-labelednode)
-    - [Relation](#markdown-header-relation)
-    - [Entity](#markdown-header-entity)
+- [Descriptors](#markdown-header-descriptors)
+  - [Node](#markdown-header-node)
+    - [1. BareNode](#markdown-header-1-barenode)
+    - [2. LabeledNode](#markdown-header-2-labelednode)
+  - [Relation](#markdown-header-relation)
+  - [Entity](#markdown-header-entity)
 
 # Encypher
 
