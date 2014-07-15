@@ -16,5 +16,6 @@ var nodeDescriptor = module.exports = function(def) {
 	}
 };
 
+nodeDescriptor.Base = NodeDescriptor;
 nodeDescriptor.Bare = BareNodeDescriptor;
 nodeDescriptor.Labeled = LabeledNodeDescriptor;
