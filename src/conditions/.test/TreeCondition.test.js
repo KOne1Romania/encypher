@@ -15,15 +15,15 @@ module.exports = function() {
 			$tree({ op: 'and', children: [
 				$binary({ value: 15 }),
 				$binary({ field: 'name', value: 'someName' })
-			] }).toString().should.eql('id($self) = 15 AND $self.`name` = "someName"');
+			] }).toString().should.eql('(id($self) = 15 AND $self.`name` = "someName")');
 		});
 		test('children joined by operator if more', function() {
-			$tree({ op: 'or', children: ['a', 'b', 'c'] }).toString().should.eql('a OR b OR c');
+			$tree({ op: 'or', children: ['a', 'b', 'c'] }).toString().should.eql('(a OR b OR c)');
 		});
 	});
 	suite('default', function() {
 		test('op is AND', function() {
-			$tree({ children: ['a', 'b'] }).toString().should.eql('a AND b');
+			$tree({ children: ['a', 'b'] }).toString().should.eql('(a AND b)');
 		});
 		test('children is []', function() {
 			$tree({ op: 'or' }).toString().should.eql('');
@@ -36,6 +36,6 @@ module.exports = function() {
 		$tree({ children: [
 			$binary({ value: 15 }),
 			$binary({ field: 'name', value: 'someName' })
-		] }).on('other').toString().should.eql('id(other) = 15 AND other.`name` = "someName"');
+		] }).on('other').toString().should.eql('(id(other) = 15 AND other.`name` = "someName")');
 	});
 };

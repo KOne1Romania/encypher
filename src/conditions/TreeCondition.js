@@ -24,7 +24,10 @@ TreeCondition.prototype = _.create(BaseCondition.prototype, {
 
 	toString: function() {
 		var separator = ' ' + this.op.toUpperCase() + ' ';
-		return this.children.join(separator);
+		var joinedClause = this.children.join(separator);
+		return this.children.length > 1
+			? '(' + joinedClause + ')'
+			: joinedClause;
 	}
 });
 
