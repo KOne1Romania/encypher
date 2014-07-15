@@ -20,7 +20,7 @@ module.exports = function() {
 	});
 	suite('with object parameter', function() {
 		var labeledNodeDescriptor;
-		test('is a BareNodeDescriptor', function() {
+		test('is a LabeledNodeDescriptor', function() {
 			labeledNodeDescriptor = nodeDescriptor({ label: 'CompetitorProduct' });
 			labeledNodeDescriptor.should.be.instanceOf(nodeDescriptor.Labeled);
 		});
@@ -31,6 +31,10 @@ module.exports = function() {
 		test('default alias is lower case label', function() {
 			labeledNodeDescriptor = nodeDescriptor({ label: 'Market' });
 			labeledNodeDescriptor.toString().should.eql('(market:Market)');
+		});
+		test('with context', function() {
+			nodeDescriptor({ label: 'Market' }).withContext('competitor').toString()
+				.should.eql('(competitor_market:Market)');
 		});
 	});
 };

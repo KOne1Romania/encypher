@@ -14,8 +14,13 @@ function LabeledNodeDescriptor(def) {
 LabeledNodeDescriptor.prototype = create(NodeDescriptor.prototype, {
 	constructor: LabeledNodeDescriptor,
 
+	withContext: function(context) {
+		this.context = context;
+		return this;
+	},
+
 	matchPart: function() {
-		return $matchNodePart(this);
+		return $matchNodePart(this).of(this.context);
 	}
 });
 
