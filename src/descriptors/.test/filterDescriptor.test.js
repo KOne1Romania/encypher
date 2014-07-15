@@ -11,7 +11,7 @@ module.exports = function() {
 		});
 		test('just matches self if no conditions', function() {
 			var noConditionsDescriptor = $filter.self({
-				nodeDescriptor: { label: 'Competitor' }
+				label: 'Competitor'
 			});
 			testFilterDescriptor(noConditionsDescriptor, {
 				matchString: '($self:Competitor)'
@@ -19,7 +19,7 @@ module.exports = function() {
 		});
 		test('adds condition if provided', function() {
 			var conditionedDescriptor = $filter.self({
-				nodeDescriptor: { label: 'Competitor' },
+				label: 'Competitor',
 				conditions    : [
 					{ value: 12 }
 				]
@@ -30,7 +30,7 @@ module.exports = function() {
 		});
 		test('handles multiple conditions', function() {
 			var conditionedDescriptor = $filter.self({
-				nodeDescriptor: { label: 'Competitor' },
+				label: 'Competitor',
 				conditions    : [
 					{ value: 12 },
 					{ field: 'age', op: 'gt', value: 30 }

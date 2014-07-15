@@ -8,17 +8,16 @@ var $nodeDescriptor = require('../node'),
 
 function SelfFilterDescriptor(def) {
 	_.defaults(this, def, {
-		nodeDescriptor: {},
-		conditions    : []
+		conditions: []
 	});
-	if (this.nodeDescriptor.label == null) {
+	if (this.label == null) {
 		var errorMessage = 'the received nodeDescriptor requires a `label`';
 		throw new DescriptorArgsError(errorMessage);
 	}
 	this.conditions = this.conditions.map(function(conditionDef) {
 		return $condition(conditionDef)
 	});
-	this.nodeDescriptor = $nodeDescriptor(_.merge(this.nodeDescriptor, { alias: '$self' }));
+	this.nodeDescriptor = $nodeDescriptor({ label: this.label, alias: '$self' });
 }
 
 SelfFilterDescriptor.prototype = {
