@@ -1,11 +1,12 @@
-#Encypher
 
-- [Descriptors](#descriptors)
-  - Node
-    - 1. BareNode
-    - 2. LabeledNode
-  - Relation
-  - Entity
+  - [Descriptors](#markdown-header-descriptors)
+    - [Node](#markdown-header-node)
+      - [1. BareNode](#markdown-header-1-barenode)
+      - [2. LabeledNode](#markdown-header-2-labelednode)
+    - [Relation](#markdown-header-relation)
+    - [Entity](#markdown-header-entity)
+
+# Encypher
 
 ## Descriptors
 ### Node
@@ -14,6 +15,7 @@ Describes a node. Can be of two types:
 #### 1. BareNode
   
 *Fields:*
+
 * `string` [**alias** = '$self']
 
 *Example:*
@@ -27,6 +29,7 @@ Describes a node. Can be of two types:
 #### 2. LabeledNode
 
 *Fields:*
+
 * `string` **label**
 * `string` [**alias** = lowercase(label)]
 
