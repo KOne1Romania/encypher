@@ -1,5 +1,6 @@
 "use strict";
 
+require('chai').should();
 var forOwn = require('lodash-node').forOwn;
 
 var suiteDefs = require('require-all')({
