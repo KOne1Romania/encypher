@@ -1,11 +1,11 @@
 "use strict";
 
-var create = require('lodash-node').create;
+var _ = require('lodash-node');
 
 var ContextChain = require('./ContextChain');
 var NestedContextChain = require('./NestedContextChain');
 
-var rootContextChain = create(ContextChain.prototype, {
+var rootContextChain = _.create(ContextChain.prototype, {
 	value: function() {
 		return '$self';
 	},
@@ -15,7 +15,7 @@ var rootContextChain = create(ContextChain.prototype, {
 	},
 
 	nestIn: function(contextName) {
-		return contextName == null || contextName === rootContextChain
+		return contextName == null || contextName === rootContextChain || contextName === '$self'
 			? this
 			: new NestedContextChain([contextName]);
 	}

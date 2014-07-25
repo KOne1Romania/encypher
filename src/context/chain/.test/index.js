@@ -13,6 +13,7 @@ module.exports = function() {
 	suite('rootContextChain', testsForRootContext(rootContextChain));
 	var nestedInItself = rootContextChain.nestIn(rootContextChain);
 	suite('rootContextChain & nest in itself', testsForRootContext(nestedInItself));
+	suite('rootContextChain & nest in $self', testsForRootContext(rootContextChain.nestIn('$self')));
 	suite('rootContextChain & nest in nothing', testsForRootContext(rootContextChain.nestIn()));
 	suite('rootContextChain & nested in', testsForOneContext(rootContextChain.nestIn('a')));
 	suite('rootContextChain & nested in twice',
