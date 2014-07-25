@@ -55,6 +55,18 @@ module.exports = function() {
 				matchString: '$self-[:COVERS]->(market:Market)'
 			});
 		});
+		test('simple inbound', function() {
+			var noConditionDescriptor = new $filter.Related({
+				relation: {
+					direction: 'inbound',
+					type: 'SOLD_BY',
+					related: { label: 'Product' }
+				}
+			});
+			testFilterDescriptor(noConditionDescriptor, {
+				matchString: '$self<-[:SOLD_BY]-(product:Product)'
+			});
+		});
 		test('one condition', function() {
 			var conditionedDescriptor = new $filter.Related({
 				relation: { type: 'COVERS', related: { label: 'Market' } },

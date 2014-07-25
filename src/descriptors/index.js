@@ -6,5 +6,6 @@ module.exports = {
 	node    : require('./node'),
 	relation: ensureInstance(require('./RelationDescriptor')),
 	entity  : ensureInstance(require('./EntityDescriptor')),
-	fetch   : ensureInstance(require('./fetch/FetchDescriptor'))
+	fetch   : ensureInstance(require('./fetch/FetchDescriptor')),
+	filter  : require('./filter')
 };

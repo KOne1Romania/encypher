@@ -1,8 +1,9 @@
 'use strict';
 
-var _ = require('lodash-node');
+var _ = require('lodash-node'),
+    ensureInstance = require('ensure-instance');
 
-var $relationDescriptor = require('..').relation,
+var $relationDescriptor = ensureInstance(require('../RelationDescriptor')),
     $condition = require('../../conditions'),
     DescriptorArgsError = require('../../errors/DescriptorArgsError');
 

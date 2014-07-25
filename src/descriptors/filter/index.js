@@ -1,7 +1,6 @@
 'use strict';
 
-var generator = require('obj-generator'),
-    _ = require('lodash-node');
+var _ = require('lodash-node');
 
 var SelfFilterDescriptor = require('./SelfFilterDescriptor'),
     RelatedFilterDescriptor = require('./RelatedFilterDescriptor');
