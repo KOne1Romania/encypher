@@ -9,6 +9,11 @@ NodeDescriptor.prototype = {
 	matchPart: function() {
 	},
 
+	withContext: function(node) {
+		this.context = node;
+		return this;
+	},
+
 	toString: function() {
 		return this.matchPart().toString();
 	}

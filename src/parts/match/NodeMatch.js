@@ -17,7 +17,7 @@ NodeMatch.prototype = {
 	},
 
 	toString: function() {
-		return '(' + [this.contextChain.value(), this.label].join(':') + ')';
+		return '(' + [this.alias, this.label].join(':') + ')';
 	}
 
 };

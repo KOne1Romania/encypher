@@ -8,7 +8,7 @@ var $matchRelationPart = require('../parts/match').relation;
 
 function RelationDescriptor(def) {
 	defaults(this, def, {
-		self       : '$self',
+		self       : {},
 		direction  : 'outbound',
 		cardinality: 'many'
 	});
@@ -23,10 +23,15 @@ RelationDescriptor.prototype = {
 		return this.related.alias;
 	},
 
+	withContext: function(context) {
+		this.context = context;
+		return this;
+	},
+
 	matchPart: function() {
 		return $matchRelationPart(merge(this, {
-			self   : this.self.matchPart(),
-			related: this.related.matchPart()
+			self   : this.self.withContext(this.context).matchPart(),
+			related: this.related.withContext(this.context).matchPart()
 		}));
 	}
 };

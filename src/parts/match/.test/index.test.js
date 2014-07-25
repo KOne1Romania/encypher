@@ -10,10 +10,6 @@ suite('matchParts', function() {
 			$m.node({ label: 'Market', alias: 'market' }).toString()
 				.should.eql('(market:Market)');
 		});
-		test('nested', function() {
-			$m.node({ label: 'Market', alias: 'market' }).of('competitor').toString()
-				.should.eql('(competitor_market:Market)');
-		});
 	});
 	suite('relation', function() {
 		test('outbound', function() {

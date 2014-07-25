@@ -8,11 +8,11 @@ var nodeDescriptor = module.exports = function(def) {
 	switch (true) {
 		case def instanceof NodeDescriptor:
 			return def;
-		case typeof def === 'string':
+		case def != null && def.hasOwnProperty('label'):
+			return new LabeledNodeDescriptor(def);
+		case typeof def === 'object':
 		case def == null:
 			return new BareNodeDescriptor(def);
-		case def.hasOwnProperty('label'):
-			return new LabeledNodeDescriptor(def);
 	}
 };
 

@@ -11,7 +11,6 @@ var filter = module.exports = function(def) {
 };
 
 _.merge(filter, {
-	self: function(def) {
-		return new SelfFilterDescriptor(def);
-	}
+	self   : generator(SelfFilterDescriptor),
+	related: generator(RelatedFilterDescriptor)
 });

@@ -1,18 +1,20 @@
 "use strict";
 
-var create = require('lodash-node').create;
+var _ = require('lodash-node');
 
-var NodeDescriptor = require('./NodeDescriptor');
+var NodeDescriptor = require('./NodeDescriptor'),
+    rootContextChain = require('../../context/chain');
 
-function BareNodeDescriptor(alias) {
-	this.alias = alias || '$self';
+function BareNodeDescriptor(def) {
+	_.defaults(this, def);
+	this.contextChain = rootContextChain.nestIn(this.alias);
 }
 
-BareNodeDescriptor.prototype = create(NodeDescriptor.prototype, {
+BareNodeDescriptor.prototype = _.create(NodeDescriptor.prototype, {
 	constructor: BareNodeDescriptor,
 
 	matchPart: function() {
-		return this.alias;
+		return this.contextChain.nestIn(this.context).value();
 	}
 });
 

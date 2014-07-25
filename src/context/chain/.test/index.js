@@ -6,6 +6,7 @@ var rootContextChain = require('../rootContextChain');
 module.exports = function() {
 	suite('NestedContextChain', function() {
 		suite('one arg', testsForOneContext(new NestedContextChain(['a'])));
+		suite('one arg & nested in root', testsForOneContext(new NestedContextChain(['a']).nestIn(rootContextChain)));
 		suite('two args', testsForTwoNestedContexts(new NestedContextChain(['aa', 'bb'])));
 		suite('one arg & nested in', testsForTwoNestedContexts(new NestedContextChain(['bb']).nestIn('aa')));
 	});

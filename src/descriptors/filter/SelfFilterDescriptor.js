@@ -11,7 +11,7 @@ function SelfFilterDescriptor(def) {
 		conditions: []
 	});
 	if (this.label == null) {
-		var errorMessage = 'the received nodeDescriptor requires a `label`';
+		var errorMessage = '`label` is required in the arguments map';
 		throw new DescriptorArgsError(errorMessage);
 	}
 	this.conditions = this.conditions.map(function(conditionDef) {

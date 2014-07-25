@@ -24,7 +24,7 @@ module.exports = function() {
 		});
 	});
 	suite('#resultPart', function() {
-		test('context only', function() {
+		test('no arg', function() {
 			new FetchOptions().resultPart().toString().should.eql('collect(distinct $self) as $selves')
 		});
 		test('with id', function() {

@@ -2,7 +2,6 @@
 
 var defn = require('defn');
 var defaults = require('lodash-node').defaults;
-var ensureInstance = require('ensure-instance');
 
 var $resultParts = require('../../parts/index').result;
 

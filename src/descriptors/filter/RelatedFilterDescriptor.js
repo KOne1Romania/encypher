@@ -2,30 +2,29 @@
 
 var _ = require('lodash-node');
 
-var $nodeDescriptor = require('../node'),
+var $relationDescriptor = require('..').relation,
     $condition = require('../../conditions'),
     DescriptorArgsError = require('../../errors/DescriptorArgsError');
 
 function RelatedFilterDescriptor(def) {
 	_.defaults(this, def, {
-		nodeDescriptor: {},
-		conditions    : []
+		relation  : {},
+		conditions: []
 	});
-	if (this.nodeDescriptor.label == null) {
-		var errorMessage = 'the received nodeDescriptor requires a `label`';
-		throw new DescriptorArgsError(errorMessage);
+	if (this.relation.type == null || this.relation.related == null) {
+		throw new DescriptorArgsError('got invalid relationDescriptor ', this.relation);
 	}
+	this.relation = $relationDescriptor(this.relation).withContext(this.context);
 	this.conditions = this.conditions.map(function(conditionDef) {
-		return $condition(conditionDef)
-	});
-	this.nodeDescriptor = $nodeDescriptor(_.merge(this.nodeDescriptor, { alias: '$self' }));
+		return $condition(conditionDef).on(this.relation.identifier).on(this.context);
+	}.bind(this));
 }
 
 RelatedFilterDescriptor.prototype = {
 	constructor: RelatedFilterDescriptor,
 
 	matchPart: function() {
-		return this.nodeDescriptor.matchPart();
+		return this.relation.matchPart();
 	},
 
 	conditionParts: function() {

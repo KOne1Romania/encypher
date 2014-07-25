@@ -14,6 +14,9 @@ NestedContextChain.prototype = create(ContextChain, {
 	constructor: NestedContextChain,
 
 	nestIn: function(nodeName) {
+		if (nodeName == null || (nodeName.value &&  nodeName.value() === '$self') || nodeName === '$self') {
+			return this;
+		}
 		this.contextNames.unshift(nodeName);
 		return this;
 	},
