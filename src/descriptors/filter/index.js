@@ -7,10 +7,15 @@ var SelfFilterDescriptor = require('./SelfFilterDescriptor'),
     RelatedFilterDescriptor = require('./RelatedFilterDescriptor');
 
 var filter = module.exports = function(def) {
-
+	switch (true) {
+		case def.hasOwnProperty('label'):
+			return new SelfFilterDescriptor(def);
+		case def.hasOwnProperty('relation'):
+			return new RelatedFilterDescriptor(def);
+	}
 };
 
 _.merge(filter, {
-	self   : generator(SelfFilterDescriptor),
-	related: generator(RelatedFilterDescriptor)
+	Self   : SelfFilterDescriptor,
+	Related: RelatedFilterDescriptor
 });

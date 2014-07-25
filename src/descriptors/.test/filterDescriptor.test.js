@@ -6,19 +6,20 @@ var DescriptorArgsError = require('../../errors/DescriptorArgsError');
 module.exports = function() {
 	suite('self', function() {
 		test('throws Error if it does not receive a valid nodeDescriptor format', function() {
-			var call = function() { return $filter.self() };
+			var call = function() { return new $filter.Self() };
 			call.should.throw(DescriptorArgsError, /`label` is required/);
 		});
 		test('just matches self if no conditions', function() {
-			var noConditionsDescriptor = $filter.self({
+			var noConditionsDescriptor = new $filter.Self({
 				label: 'Competitor'
 			});
 			testFilterDescriptor(noConditionsDescriptor, {
-				matchString: '($self:Competitor)'
+				matchString: '($self:Competitor)',
+				conditionsString: ''
 			});
 		});
 		test('adds condition if provided', function() {
-			var conditionedDescriptor = $filter.self({
+			var conditionedDescriptor = new $filter.Self({
 				label: 'Competitor',
 				conditions    : [
 					{ value: 12 }
@@ -29,7 +30,7 @@ module.exports = function() {
 			})
 		});
 		test('handles multiple conditions', function() {
-			var conditionedDescriptor = $filter.self({
+			var conditionedDescriptor = new $filter.Self({
 				label: 'Competitor',
 				conditions    : [
 					{ value: 12 },
@@ -43,11 +44,11 @@ module.exports = function() {
 	});
 	suite('related', function() {
 		test('throws Error for invalid relation descriptor', function() {
-			var call = function() { return $filter.related() };
+			var call = function() { return new $filter.Related() };
 			call.should.throw(DescriptorArgsError, /invalid relationDescriptor/);
 		});
 		test('simple', function() {
-			var noConditionDescriptor = $filter.related({
+			var noConditionDescriptor = new $filter.Related({
 				relation: { type: 'COVERS', related: { label: 'Market' } }
 			});
 			testFilterDescriptor(noConditionDescriptor, {
@@ -55,7 +56,7 @@ module.exports = function() {
 			});
 		});
 		test('one condition', function() {
-			var conditionedDescriptor = $filter.related({
+			var conditionedDescriptor = new $filter.Related({
 				relation: { type: 'COVERS', related: { label: 'Market' } },
 				conditions: [
 					{ value: 15 }
@@ -67,7 +68,7 @@ module.exports = function() {
 			});
 		});
 		test('with context', function() {
-			var conditionedDescriptor = $filter.related({
+			var conditionedDescriptor = new $filter.Related({
 				relation: { type: 'COVERS', related: { label: 'Market' } },
 				conditions: [
 					{ value: 15 }
@@ -78,6 +79,15 @@ module.exports = function() {
 				matchString: 'competitor-[:COVERS]->(competitor_market:Market)',
 				conditionsString: 'id(competitor_market) = 15'
 			});
+		});
+	});
+	suite('instanceCreator', function() {
+		test('is selfFilter if label provided', function() {
+			$filter({ label: 'Competitor' }).should.be.instanceOf($filter.Self);
+		});
+		test('is relatedFilter if relation provided', function() {
+			$filter({ relation: { type: 'COVERS', related: { label: 'Market' } } })
+				.should.be.instanceOf($filter.Related);
 		});
 	});
 };
