@@ -40,7 +40,7 @@ module.exports = function() {
 	test('one relation - fetch embedded', function() {
 		new ReturnSection({ fetchDescriptors: [{
 			relationDescriptor: relToOneDescriptor,
-			fetchOptions: { fetch: ['name'] }
+			fetchOptions: { retrieve: ['name'] }
 		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
 			'RETURN {',
@@ -64,7 +64,7 @@ module.exports = function() {
 	test('to many relation - fetch ids', function() {
 		new ReturnSection({ fetchDescriptors: [{
 			relationDescriptor: relToManyDescriptor,
-			fetchOptions: { fetch: 'id' }
+			fetchOptions: { retrieve: 'id' }
 		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
 			'RETURN {',

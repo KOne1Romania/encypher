@@ -1,7 +1,6 @@
 'use strict';
 
 var FetchOptions = require('../../fetch/FetchOptions');
-var buildFetchOptions = FetchOptions.buildFetchOptions;
 
 module.exports = function() {
 	suite('defaults', function() {
@@ -19,8 +18,8 @@ module.exports = function() {
 		test('assumes default cardinality to be `many`', function() {
 			new FetchOptions({}).aggregate.should.eql('collect');
 		});
-		test('.fetch is identity', function() {
-			new FetchOptions().fetch.should.eql('node');
+		test('.retrieve is node', function() {
+			new FetchOptions().retrieve.should.eql('node');
 		});
 	});
 	suite('#resultPart', function() {
@@ -28,11 +27,11 @@ module.exports = function() {
 			new FetchOptions().resultPart().toString().should.eql('collect(distinct $self) as $selves')
 		});
 		test('with id', function() {
-			new FetchOptions({ fetch: 'id' }, 'one').resultPart().toString()
+			new FetchOptions({ retrieve: 'id' }, 'one').resultPart().toString()
 				.should.eql('id($self) as id');
 		});
 		test('with fields', function() {
-			var fetchOptions = new FetchOptions({ fetch: ['name'] }, 'one');
+			var fetchOptions = new FetchOptions({ retrieve: ['name'] }, 'one');
 			fetchOptions.resultPart().toString()
 				.should.eql('{ id: id($self), name: $self.name } as $self');
 		});

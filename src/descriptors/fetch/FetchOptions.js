@@ -8,7 +8,7 @@ var $resultParts = require('../../parts/index').result;
 function FetchOptions(def, cardinality) {
 	defaults(this, def, {
 		aggregate: cardinality == 'one' ? 'identity' : 'collect',
-		fetch: 'node'
+		retrieve: 'node'
 	});
 }
 
@@ -29,7 +29,7 @@ FetchOptions.prototype = {
 	},
 
 	resultPart: function(context) {
-		var baseResultPart = buildBaseResultPart(this.fetch);
+		var baseResultPart = buildBaseResultPart(this.retrieve);
 		return this.aggregateFn(baseResultPart).of(context);
 	}
 };
