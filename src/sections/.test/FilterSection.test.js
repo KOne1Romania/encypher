@@ -5,15 +5,15 @@ var FilterSection = require('../FilterSection');
 module.exports = function() {
 	suite('no conditions', function() {
 		test('match one node', function() {
-			new FilterSection([
+			new FilterSection({ filterDescriptors: [
 				{ label: 'Competitor' }
-			]).toString().should.eql('MATCH ($self:Competitor)');
+			] }).toString().should.eql('MATCH ($self:Competitor)');
 		});
 		test('node and relation', function() {
-			new FilterSection([
+			new FilterSection({ filterDescriptors: [
 				{ label: 'Competitor' },
 				{ relation: { type: 'COVERS', related: { label: 'Market'} } }
-			]).toString().should.eql([
+			] }).toString().should.eql([
 					'MATCH',
 					'($self:Competitor),',
 					'$self-[:COVERS]->(market:Market)'
@@ -22,14 +22,14 @@ module.exports = function() {
 	});
 	suite('with conditions', function() {
 		test('for self', function() {
-			new FilterSection([
+			new FilterSection({ filterDescriptors: [
 				{
 					label     : 'Competitor',
 					conditions: [
 						{ value: 15 }
 					]
 				}
-			]).toString().should.eql([
+			] }).toString().should.eql([
 					'MATCH',
 					'($self:Competitor)',
 					'WHERE',
@@ -37,7 +37,7 @@ module.exports = function() {
 				].join(' '));
 		});
 		test('for self and relation', function() {
-			new FilterSection([
+			new FilterSection({ filterDescriptors: [
 				{
 					label     : 'Competitor',
 					conditions: [
@@ -51,7 +51,7 @@ module.exports = function() {
 						{ field: 'coverage', op: 'ne', value: 'local' }
 					]
 				}
-			]).toString().should.eql([
+			] }).toString().should.eql([
 					'MATCH',
 					'($self:Competitor),',
 					'$self-[:COVERS]->(market:Market)',
@@ -62,7 +62,7 @@ module.exports = function() {
 				].join(' '));
 		});
 		test('for self and nested relations', function() {
-			new FilterSection([
+			new FilterSection({ filterDescriptors: [
 				{
 					label: 'Competitor'
 				},
@@ -83,7 +83,7 @@ module.exports = function() {
 						{ op: 'in', value: [12, 13] }
 					]
 				}
-			]).toString().should.eql([
+			] }).toString().should.eql([
 					'MATCH',
 					'($self:Competitor),',
 					'$self<-[:SOLD_BY]-(product:CompetitorProduct),',

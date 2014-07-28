@@ -3,7 +3,8 @@
 var _ = require('lodash-node');
 
 var $fetchDescriptor = require('../descriptors').fetch,
-    $resultParts = require('../parts').result;
+    $resultParts = require('../parts').result,
+    $clauses = require('../clauses');
 
 function ReturnSection(def) {
 	_.defaults(this, def, {
@@ -32,18 +33,16 @@ ReturnSection.prototype = {
 		return this._ownResultParts().concat(this._relatedResultParts());
 	},
 
-	_returnPart: function() {
-		return 'RETURN ' + $resultParts.map(this._resultParts());
-	},
-
-	_matchRelationsPart: function() {
+	_matchParts: function() {
 		return this.fetchDescriptors.map(function(fetchDescriptor) {
-			return ['OPTIONAL MATCH', fetchDescriptor.matchPart()].join(' ')
-		}).join(' ');
+			return fetchDescriptor.matchPart();
+		});
 	},
 
 	toString: function() {
-		return _.compact([this._matchRelationsPart(), this._returnPart()]).join(' ');
+		var returnClause = $clauses.return([$resultParts.map(this._resultParts())]);
+		var optionalMatchClause = $clauses.optionalMatch(this._matchParts());
+		return _.compact([optionalMatchClause.toString(), returnClause.toString()]).join(' ');
 	}
 };
 

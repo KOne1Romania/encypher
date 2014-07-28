@@ -2,10 +2,14 @@
 
 var _ = require('lodash-node');
 
-var $filterDescriptor = require('../descriptors').filter;
+var $filterDescriptor = require('../descriptors').filter,
+    $clauses = require('../clauses');
 
-function FilterSection(filterDescriptors) {
-	this.filterDescriptors = (filterDescriptors || []).map(function(filterDescriptor) {
+function FilterSection(def) {
+	_.defaults(this, def, {
+		filterDescriptors: []
+	});
+	this.filterDescriptors = this.filterDescriptors.map(function(filterDescriptor) {
 		return $filterDescriptor(filterDescriptor);
 	})
 }
@@ -13,31 +17,22 @@ function FilterSection(filterDescriptors) {
 FilterSection.prototype = {
 	constructor: FilterSection,
 
-	_matchString: function() {
+	_matchParts: function() {
 		return this.filterDescriptors.map(function(filterDescriptor) {
 			return filterDescriptor.matchPart();
-		}).join(', ');
+		});
 	},
 
-	_conditionsString: function() {
+	_conditionParts: function() {
 		return _(this.filterDescriptors).map(function(filterDescriptor) {
 			return filterDescriptor.conditionParts();
-		}).flatten().join(' AND ');
-	},
-
-	_matchSubsection: function() {
-		return 'MATCH ' + this._matchString();
-	},
-
-	_conditionsSubsection: function() {
-		var conditionsString = this._conditionsString();
-		return conditionsString.length
-			? 'WHERE ' + conditionsString
-			: '';
+		}).flatten().valueOf();
 	},
 
 	toString: function() {
-		return _.compact([this._matchSubsection(), this._conditionsSubsection()]).join(' ');
+		var matchClause = $clauses.match(this._matchParts()),
+		    conditionsClause = $clauses.conditions(this._conditionParts());
+		return _.compact([matchClause.toString(), conditionsClause.toString()]).join(' ');
 	}
 };
 

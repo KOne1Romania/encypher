@@ -1,5 +1,6 @@
-var generator = require('obj-generator');
-var forOwn = require('lodash-node').forOwn;
+var generator = require('obj-generator'),
+    forOwn = require('lodash-node').forOwn,
+    inflection = require('inflection');
 
 exports.exportGenerators = function(exports, dirname, suffix) {
 	var klasses = require('require-all')({
@@ -9,6 +10,6 @@ exports.exportGenerators = function(exports, dirname, suffix) {
 	});
 
 	forOwn(klasses, function(klass, name) {
-		exports[name.toLowerCase()] = generator(klass);
+		exports[inflection.camelize(name, true)] = generator(klass);
 	});
 };
