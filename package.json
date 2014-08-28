@@ -16,10 +16,9 @@
     "query",
     "builder"
   ],
-  "author": "bogdan.zaharia@kalon.ro",
-  "license": "ISC",
+  "author": "Kalon",
+  "license": "MIT",
   "devDependencies": {
-    "LiveScript": "^1.2.0",
     "chai": "^1.9.1",
     "mocha": "^1.20.1"
   },
