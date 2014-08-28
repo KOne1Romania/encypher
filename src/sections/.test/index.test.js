@@ -3,6 +3,7 @@
 require('chai').should();
 
 suite('sections', function() {
-	suite('return', require('./ReturnSection.test'));
-	suite('filter', require('./FilterSection.test'));
+	suite('common', require('../common/.test'));
+	suite('simple', require('../simple/.test'));
+	suite('optimized', require('../optimized/.test'));
 });

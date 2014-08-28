@@ -2,11 +2,15 @@
 
 require('chai').should();
 
-var fixture = require('../../../fixtures/templates/findAll'),
+var fixtures = require('../../../fixtures/templates/findAll'),
     FindAllTemplate = require('../FindAllTemplate');
 
 suite('FindAllTemplate', function() {
-	test('works', function() {
-		new FindAllTemplate(fixture.template).toString().should.eql(fixture.queryString);
+	fixtures.filter(function(fixture) {
+		return !fixture.skip;
+	}).forEach(function(fixture) {
+		test(fixture.name, function() {
+			new FindAllTemplate(fixture.template).toString().should.eql(fixture.queryString);
+		});
 	});
 });

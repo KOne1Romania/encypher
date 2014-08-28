@@ -2,9 +2,9 @@
 
 var _ = require('lodash-node');
 
-var $fetchDescriptor = require('../descriptors').fetch,
-    $resultParts = require('../parts').result,
-    $clauses = require('../clauses');
+var $fetchDescriptor = require('../../descriptors/index').fetch,
+    $resultParts = require('../../parts/index').result,
+    $clauses = require('../../clauses/index');
 
 function ReturnSection(def) {
 	_.defaults(this, def, {

@@ -38,7 +38,7 @@ module.exports = function() {
 			type       : 'SOLD_BY',
 			related    : { label: 'CompetitorProduct', alias: 'product' },
 			direction  : 'inbound',
-			cardinality: 'one',
+			cardinality: 'one'
 		}).withContext('competitor');
 		var fullMatchClause = [
 			'competitor',

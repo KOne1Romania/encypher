@@ -2,15 +2,18 @@
 
 var _ = require('lodash-node');
 
-var $sections = require('../sections');
+var $basicSections = require('../sections/simple');
 
-function FindAllTemplate(def) {
+function FindAllTemplate(def, deps) {
 	_.defaults(this, def, {
 		filterSection: {},
 		returnSection: {}
 	});
-	this.filterSection = $sections.filter(this.filterSection);
-	this.returnSection = $sections.return(this.returnSection);
+	_.defaults(this, deps, {
+		$sections: $basicSections
+	});
+	this.filterSection = this.$sections.filter(this.filterSection);
+	this.returnSection = this.$sections.return(this.returnSection);
 }
 
 FindAllTemplate.prototype = {

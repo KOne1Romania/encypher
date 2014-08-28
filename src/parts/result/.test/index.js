@@ -9,8 +9,8 @@ var suiteDefs = require('require-all')({
 	excludeDirs: /.+/
 });
 
-suite('resultParts', function() {
+module.exports = function() {
 	forOwn(suiteDefs, function(suiteDef, suiteName) {
 		suite(suiteName.toLowerCase(), suiteDef);
 	});
-});
+};

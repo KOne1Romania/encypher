@@ -2,8 +2,8 @@
 
 var _ = require('lodash-node');
 
-var $filterDescriptor = require('../descriptors').filter,
-    $clauses = require('../clauses');
+var $filterDescriptor = require('../../descriptors').filter,
+    $clauses = require('../../clauses');
 
 function FilterSection(def) {
 	_.defaults(this, def, {

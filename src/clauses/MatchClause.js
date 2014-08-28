@@ -2,6 +2,9 @@
 
 function MatchClause(matchParts) {
 	this.matchParts = matchParts || [];
+	if (!Array.isArray(matchParts)) {
+		this.matchParts = [ this.matchParts ];
+	}
 }
 
 MatchClause.prototype = {

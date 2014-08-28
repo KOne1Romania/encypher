@@ -1,10 +1,8 @@
 'use strict';
 
-require('chai').should();
-
 var $m = require('..');
 
-suite('matchParts', function() {
+module.exports = function() {
 	suite('node', function() {
 		test('simple', function() {
 			$m.node({ label: 'Market', alias: 'market' }).toString()
@@ -29,4 +27,4 @@ suite('matchParts', function() {
 			}).toString().should.eql('$self<-[:SOLD_BY]-product');
 		});
 	});
-});
+};

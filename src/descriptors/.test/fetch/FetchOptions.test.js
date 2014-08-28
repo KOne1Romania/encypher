@@ -14,9 +14,9 @@ module.exports = function() {
 			test('is count when provided', function() {
 				new FetchOptions({ aggregate: 'count' }).aggregate.should.eql('count');
 			});
-		});
-		test('assumes default cardinality to be `many`', function() {
-			new FetchOptions({}).aggregate.should.eql('collect');
+			test('is collect when no cardinality provided', function() {
+				new FetchOptions({}).aggregate.should.eql('collect');
+			});
 		});
 		test('.retrieve is node', function() {
 			new FetchOptions().retrieve.should.eql('node');
