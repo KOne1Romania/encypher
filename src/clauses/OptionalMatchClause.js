@@ -1,16 +1,17 @@
 'use strict';
 
-function OptionalMatchClause(relationParts) {
-	this.relationParts = relationParts || [];
+function OptionalMatchClause(matchParts) {
+	this.matchParts = matchParts || [];
+	if (!Array.isArray(matchParts)) {
+		this.matchParts = [ this.matchParts ];
+	}
 }
 
 OptionalMatchClause.prototype = {
 	constructor: OptionalMatchClause,
 
 	toString: function() {
-		return this.relationParts.map(function(relationPart) {
-			return ['OPTIONAL MATCH', relationPart].join(' ')
-		}).join(' ');
+		return this.matchParts.length ? 'OPTIONAL MATCH ' + this.matchParts.join(', ') : '';
 	}
 };
 

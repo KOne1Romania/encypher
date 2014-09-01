@@ -9,6 +9,19 @@ var relToManyDescriptor = {
 	type: 'HAS', related: { label: 'Other', alias: 'child' }
 };
 
+var x = [
+	"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
+	"WITH $self, id(competitor) as competitorId",
+	"OPTIONAL MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
+	"WITH $self, competitorId, collect(distinct id(product)) as productIds",
+	"RETURN {",
+		"id: id($self),",
+		"name: $self.`name`,",
+		"competitorId: competitorId,",
+		"productIds: productIds",
+	"} as $self"
+];
+
 module.exports = function() {
 	test('contains only id when nothing provided', function() {
 		new ReturnSection().toString().should.eql([
@@ -18,11 +31,10 @@ module.exports = function() {
 		].join(' '));
 	});
 	test('fields only', function() {
-		new ReturnSection({ fields: ['name', 'coverage'] }).toString().should.eql([
+		new ReturnSection({ fields: ['name'] }).toString().should.eql([
 			'RETURN {',
 				'id: id($self),',
-				'name: $self.name,',
-				'coverage: $self.coverage',
+				'name: $self.name',
 			'} as $self'
 		].join(' '));
 	});
@@ -31,21 +43,23 @@ module.exports = function() {
 			relationDescriptor: relToOneDescriptor
 		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+			'WITH $self, other',
 			'RETURN {',
 				'id: id($self),',
 				'other: other',
 			'} as $self'
 		].join(' '));
 	});
-	test('one relation - fetch embedded', function() {
+	test('one relation - fetch id', function() {
 		new ReturnSection({ fetchDescriptors: [{
 			relationDescriptor: relToOneDescriptor,
-			fetchOptions: { retrieve: ['name'] }
+			fetchOptions: { retrieve: 'id' }
 		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+			'WITH $self, id(other) as otherId',
 			'RETURN {',
 				'id: id($self),',
-				'other: { id: id(other), name: other.name }',
+				'otherId: otherId',
 			'} as $self'
 		].join(' '));
 	});
@@ -55,21 +69,28 @@ module.exports = function() {
 			fetchOptions: { aggregate: 'count' }
 		}] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
+			'WITH $self, count(distinct child) as childrenCount',
 			'RETURN {',
 				'id: id($self),',
-				'childrenCount: count(distinct child)',
+				'childrenCount: childrenCount',
 			'} as $self'
 		].join(' '));
 	});
-	test('to many relation - fetch ids', function() {
-		new ReturnSection({ fetchDescriptors: [{
-			relationDescriptor: relToManyDescriptor,
-			fetchOptions: { retrieve: 'id' }
-		}] }).toString().should.eql([
+	test('multiple relations', function() {
+		new ReturnSection({
+			fetchDescriptors: [
+				{ relationDescriptor: relToManyDescriptor },
+				{ relationDescriptor: relToOneDescriptor, fetchOptions: { retrieve: 'id' } }
+			]
+		}).toString().should.eql([
 			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
+			'WITH $self, collect(distinct child) as children',
+			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+			'WITH $self, children, id(other) as otherId',
 			'RETURN {',
 				'id: id($self),',
-				'childIds: collect(distinct id(child))',
+				'children: children,',
+				'otherId: otherId',
 			'} as $self'
 		].join(' '));
 	});
