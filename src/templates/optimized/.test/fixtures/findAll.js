@@ -2,37 +2,23 @@
 
 module.exports = [
 	{
-		name       : 'simple',
-		template   : {
+		name: 'basic',
+		template: {
 			filterSection: {
 				filterDescriptors: [
-					{ label: 'Competitor' }
-				]},
-			returnSection: {
-				fields          : ['name', 'coverage'],
-				fetchDescriptors: [
-					{
-						relationDescriptor: { type: 'COVERS', related: { label: 'Market' } },
-						fetchOptions      : {
-							aggregate: 'count'
-						}
-					}
+					{ label: 'Activity' }
 				]
 			}
 		},
 		queryString: [
-			"MATCH ($self:Competitor)",
-			"OPTIONAL MATCH $self-[:COVERS]->(market:Market)",
-			"RETURN {",
-			"id: id($self),",
-			"name: $self.name,",
-			"coverage: $self.coverage,",
-			"marketsCount: count(distinct market)",
-			"} as $self"
+			'MATCH ($self:Activity)',
+			'WITH distinct $self',
+			'RETURN {',
+				'id: id($self)',
+			'} as $self'
 		].join(' ')
 	},
 	{
-		skip       : true,
 		name       : 'complex',
 		template   : {
 			filterSection       : {
@@ -51,11 +37,13 @@ module.exports = [
 					}
 				]
 			},
-			orderedSubsetSection: {
-				order: [
+			orderSection        : {
+				orderParts: [
 					{ field: 'name' },
 					{ field: 'timestamp', direction: 'desc' }
-				],
+				]
+			},
+			subsetSection       : {
 				skip : 10,
 				limit: 10
 			},
@@ -68,27 +56,27 @@ module.exports = [
 							related    : { label: 'Competitor' },
 							direction  : 'inbound',
 							cardinality: 'one'
-						}
+						},
+						fetchOptions: { retrieve: 'id' }
 					},
 					{
 						relationDescriptor: {
-							type       : 'RUNS',
-							related    : { label: 'Competitor' },
-							direction  : 'inbound',
-							cardinality: 'one'
-						}
+							type       : 'PROMOTES',
+							related    : { label: 'CompetitorProduct', alias: 'product' }
+						},
+						fetchOptions: { retrieve: 'id' }
 					}
 				]
 			}
 		},
 		queryString: [
 			"MATCH ($self:Activity)",
-				"WHERE $self.name =~ '.*Month.*'",
+				"WHERE $self.`name` =~ \"(?i).*Month.*\"",
 			"WITH distinct $self",
 			"MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
 				"WHERE id(product) = 3039",
 			"WITH distinct $self",
-				"ORDER BY $self.name, $self.timestamp DESC",
+				"ORDER BY $self.name ASC, $self.timestamp DESC",
 				"SKIP 10",
 				"LIMIT 10",
 			"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
@@ -97,10 +85,10 @@ module.exports = [
 			"WITH $self, competitorId, collect(distinct id(product)) as productIds",
 			"RETURN {",
 				"id: id($self),",
-				"name: $self.`name`,",
+				"name: $self.name,",
 				"competitorId: competitorId,",
 				"productIds: productIds",
-			"}"
+			"} as $self"
 		].join(' ')
 	}
 ];
