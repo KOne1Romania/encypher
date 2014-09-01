@@ -1,6 +1,6 @@
 {
   "name": "enchypher",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Neo4j Cypher queries builder",
   "main": "index.js",
   "scripts": {
