@@ -9,21 +9,21 @@ module.exports = function() {
 			$tree({ children: [] }).toString().should.eql('');
 		});
 		test('the child itself if one', function() {
-			$tree({ children: [ $binary({ value: 15 }) ] }).toString().should.eql('id($self) = 15');
+			$tree({ children: [ $binary({ value: 15 }) ] }).toString().should.eql('(id($self) = 15)');
 		});
 		test('children joined by operator if two', function() {
 			$tree({ op: 'and', children: [
 				$binary({ value: 15 }),
 				$binary({ field: 'name', value: 'someName' })
-			] }).toString().should.eql('(id($self) = 15 AND $self.`name` = "someName")');
+			] }).toString().should.eql('(id($self) = 15) AND ($self.`name` = "someName")');
 		});
 		test('children joined by operator if more', function() {
-			$tree({ op: 'or', children: ['a', 'b', 'c'] }).toString().should.eql('(a OR b OR c)');
+			$tree({ op: 'or', children: ['a', 'b', 'c'] }).toString().should.eql('(a) OR (b) OR (c)');
 		});
 	});
 	suite('default', function() {
 		test('op is AND', function() {
-			$tree({ children: ['a', 'b'] }).toString().should.eql('(a AND b)');
+			$tree({ children: ['a', 'b'] }).toString().should.eql('(a) AND (b)');
 		});
 		test('children is []', function() {
 			$tree({ op: 'or' }).toString().should.eql('');
@@ -36,13 +36,13 @@ module.exports = function() {
 		$tree({ children: [
 			$binary({ value: 15 }),
 			$binary({ field: 'name', value: 'someName' })
-		] }).on('other').toString().should.eql('(id(other) = 15 AND other.`name` = "someName")');
+		] }).on('other').toString().should.eql('(id(other) = 15) AND (other.`name` = "someName")');
 	});
 	test('explicit context on one child works', function() {
 		$tree({ children: [
 			$binary({ value: 15, context: 'market' }),
 			$binary({ field: 'name', value: 'someName' })
-		] }).toString().should.eql('(id(market) = 15 AND $self.`name` = "someName")');
+		] }).toString().should.eql('(id(market) = 15) AND ($self.`name` = "someName")');
 	});
 	test('explicit context on parent propagates to children', function() {
 		$tree({
@@ -51,6 +51,6 @@ module.exports = function() {
 				$binary({ field: 'name', value: 'someName' })
 			],
 			context: 'market'
-		}).toString().should.eql('(id(market) = 15 AND market.`name` = "someName")');
+		}).toString().should.eql('(id(market) = 15) AND (market.`name` = "someName")');
 	});
 };
