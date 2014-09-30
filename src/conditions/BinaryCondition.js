@@ -30,6 +30,10 @@ function BinaryCondition(def) {
 	this.value = this.op === 'regex'
 		? encode.regex(this.value)
 		:encode.value(this.value)
+
+	if (this.context) {
+		this.contextChain = this.contextChain.nestIn(this.context);
+	}
 }
 
 BinaryCondition.prototype = _.create(BaseCondition.prototype, {

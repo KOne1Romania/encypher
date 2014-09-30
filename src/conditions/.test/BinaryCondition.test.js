@@ -38,4 +38,8 @@ module.exports = function() {
 	test('with context', function() {
 		$binary({ value: 15 }).on('market').toString().should.eql('id(market) = 15');
 	});
+	test('with explicit nested context', function() {
+		$binary({ value: 15, context: 'market' }).toString()
+			.should.eql('id(market) = 15');
+	});
 };
