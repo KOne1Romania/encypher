@@ -10,6 +10,9 @@ function TreeCondition(def) {
 		op: 'and',
 		children: []
 	});
+	if (this.context) {
+		this.on(this.context);
+	}
 }
 
 TreeCondition.prototype = _.create(BaseCondition.prototype, {

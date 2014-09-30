@@ -38,4 +38,19 @@ module.exports = function() {
 			$binary({ field: 'name', value: 'someName' })
 		] }).on('other').toString().should.eql('(id(other) = 15 AND other.`name` = "someName")');
 	});
+	test('explicit context on one child works', function() {
+		$tree({ children: [
+			$binary({ value: 15, context: 'market' }),
+			$binary({ field: 'name', value: 'someName' })
+		] }).toString().should.eql('(id(market) = 15 AND $self.`name` = "someName")');
+	});
+	test('explicit context on parent propagates to children', function() {
+		$tree({
+			children: [
+				$binary({ value: 15 }),
+				$binary({ field: 'name', value: 'someName' })
+			],
+			context: 'market'
+		}).toString().should.eql('(id(market) = 15 AND market.`name` = "someName")');
+	});
 };
