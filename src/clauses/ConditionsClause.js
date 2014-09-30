@@ -8,8 +8,8 @@ ConditionsClause.prototype = {
 	constructor: ConditionsClause,
 
 	toString: function() {
-		return this.conditionParts.length ?
-			'WHERE ' + this.conditionParts.join(' AND ')
+		return this.conditionParts.length
+			? 'WHERE ' + this.conditionParts.join(' AND ')
 			: '';
 	}
 };
