@@ -3,7 +3,7 @@
 var _ = require('lodash-node');
 
 var $resultParts = require('../parts/result');
-var encode = require('./util/encode');
+var encode = require('../util/encode');
 var BaseCondition = require('./BaseCondition.js');
 
 var OPS_MAPPING = {
