@@ -1,16 +1,16 @@
 'use strict';
 
-var rootContextChain = require('../context/chain');
+var Context = require('../context');
 
 function BaseCondition() {
-	this.contextChain = rootContextChain;
+	this.context = new Context();
 }
 
 BaseCondition.prototype = {
 	constructor: BaseCondition,
 
 	on: function(node) {
-		this.contextChain = this.contextChain.nestIn(node);
+		this.context = this.context.of(node);
 		return this;
 	}
 };

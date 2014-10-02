@@ -4,7 +4,6 @@ var _ = require('lodash-node'),
     inflection = require('inflection');
 
 var $resultParts = require('../parts/result'),
-    encode = require('../util/encode'),
     BaseCondition = require('./BaseCondition.js'),
     QueryObject = require('../query/QueryObject');
 
@@ -51,21 +50,23 @@ function BinaryCondition(def) {
 
 	this.fieldPart = this.field === 'id'
 		? $resultParts.id()
-		: $resultParts.field(encode.field(this.field));
+		: $resultParts.field(this.field);
 
 	this.value = this.op === 'regex' ? caseInsensitiveRegex(this.value) : this.value;
 
-	this.on(this.context);
-
-	this.decoratedField = this._decorateField();
+	this.on(this.contextName);
 }
 
 BinaryCondition.prototype = _.create(BaseCondition.prototype, {
 	constructor: BinaryCondition,
 
-	_decorateField: function() {
+	_fieldPartWithContext: function() {
+		return this.fieldPart.withContext(this.context);
+	},
+
+	_decoratedField: function() {
 		var decorator = OPS_FIELD_DECORATORS[this.op] || _.identity;
-		return decorator(this.field);
+		return decorator(this._fieldPartWithContext().alias());
 	},
 
 	_opSymbol: function() {
@@ -74,15 +75,15 @@ BinaryCondition.prototype = _.create(BaseCondition.prototype, {
 
 	_queryString: function() {
 		return [
-			this.fieldPart.withContext(this.contextChain).value(),
+			this._fieldPartWithContext().value(),
 			this._opSymbol(),
-			QueryObject.varNameToToken(this.decoratedField)
+			QueryObject.varNameToToken(this._decoratedField())
 		].join(' ');
 	},
 
 	_queryParams: function() {
 		var params = {};
-		params[this.decoratedField] = this.value;
+		params[this._decoratedField()] = this.value;
 		return params;
 	},
 

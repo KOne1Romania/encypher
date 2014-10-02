@@ -32,25 +32,19 @@ module.exports = function() {
 			$tree().toString().should.eql('');
 		});
 	});
-	test('context propagates to children', function() {
+	test('context on one child works', function() {
 		$tree({ children: [
-			$binary({ value: 15 }),
-			$binary({ field: 'name', value: 'someName' })
-		] }).on('other').toString().should.eql('(id(other) = 15) AND (other.`name` = "someName")');
-	});
-	test('explicit context on one child works', function() {
-		$tree({ children: [
-			$binary({ value: 15, context: 'market' }),
+			$binary({ value: 15, contextName: 'market' }),
 			$binary({ field: 'name', value: 'someName' })
 		] }).toString().should.eql('(id(market) = 15) AND ($self.`name` = "someName")');
 	});
-	test('explicit context on parent propagates to children', function() {
+	test('context on parent propagates to children', function() {
 		$tree({
 			children: [
 				$binary({ value: 15 }),
 				$binary({ field: 'name', value: 'someName' })
 			],
-			context: 'market'
+			contextName: 'market'
 		}).toString().should.eql('(id(market) = 15) AND (market.`name` = "someName")');
 	});
 };

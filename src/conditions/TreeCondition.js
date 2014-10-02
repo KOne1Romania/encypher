@@ -10,8 +10,8 @@ function TreeCondition(def) {
 		op: 'and',
 		children: []
 	});
-	if (this.context) {
-		this.on(this.context);
+	if (this.contextName) {
+		this.on(this.contextName);
 	}
 }
 
