@@ -21,8 +21,8 @@ module.exports = function() {
 		new ReturnSection({ fields: ['name', 'coverage'] }).toString().should.eql([
 			'RETURN {',
 				'id: id($self),',
-				'name: $self.name,',
-				'coverage: $self.coverage',
+				'name: $self.`name`,',
+				'coverage: $self.`coverage`',
 			'} as $self'
 		].join(' '));
 	});
@@ -45,7 +45,7 @@ module.exports = function() {
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
 			'RETURN {',
 				'id: id($self),',
-				'other: { id: id(other), name: other.name }',
+				'other: { id: id(other), name: other.`name` }',
 			'} as $self'
 		].join(' '));
 	});

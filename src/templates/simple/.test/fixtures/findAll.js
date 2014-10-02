@@ -25,8 +25,8 @@ module.exports = [
 			"OPTIONAL MATCH $self-[:COVERS]->(market:Market)",
 			"RETURN {",
 			"id: id($self),",
-			"name: $self.name,",
-			"coverage: $self.coverage,",
+			"name: $self.`name`,",
+			"coverage: $self.`coverage`,",
 			"marketsCount: count(distinct market)",
 			"} as $self"
 		].join(' ')

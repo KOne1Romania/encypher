@@ -2,7 +2,8 @@
 
 var create = require('lodash-node').create;
 
-var BaseResult = require('./BaseResult');
+var BaseResult = require('./BaseResult'),
+    encode = require('../../util/encode');
 
 function FieldResult(name) {
 	BaseResult.call(this);
@@ -13,7 +14,7 @@ FieldResult.prototype = create(BaseResult.prototype, {
 	constructor: FieldResult,
 
 	value: function() {
-		return [this.context.value(), this.name].join('.');
+		return [this.context.value(), encode.field(this.name)].join('.');
 	},
 
 	alias: function() {

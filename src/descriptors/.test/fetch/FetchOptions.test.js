@@ -33,7 +33,7 @@ module.exports = function() {
 		test('with fields', function() {
 			var fetchOptions = new FetchOptions({ retrieve: ['name'] }, 'one');
 			fetchOptions.resultPart().toString()
-				.should.eql('{ id: id($self), name: $self.name } as $self');
+				.should.eql('{ id: id($self), name: $self.`name` } as $self');
 		});
 		test('count', function() {
 			new FetchOptions({ aggregate: 'count' }).resultPart('market').toString()

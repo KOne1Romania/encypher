@@ -34,7 +34,7 @@ module.exports = function() {
 		new ReturnSection({ fields: ['name'] }).toString().should.eql([
 			'RETURN {',
 				'id: id($self),',
-				'name: $self.name',
+				'name: $self.`name`',
 			'} as $self'
 		].join(' '));
 	});

@@ -16,11 +16,11 @@ module.exports = function() {
 	});
 	test('string', function() {
 		$map('name').toString()
-			.should.eql('{ name: $self.name } as $self');
+			.should.eql('{ name: $self.`name` } as $self');
 	});
 	test('id and field', function() {
 		$map([$id(), $field('name')]).toString()
-			.should.eql('{ id: id($self), name: $self.name } as $self');
+			.should.eql('{ id: id($self), name: $self.`name` } as $self');
 	});
 	test('one id with context', function() {
 		$map([$id().of('competitor')]).toString()
@@ -32,7 +32,7 @@ module.exports = function() {
 	});
 	test('two parts with context', function() {
 		$map([$id(), $field('name')]).of('competitor').toString()
-			.should.eql('{ id: id(competitor), name: competitor.name } as competitor');
+			.should.eql('{ id: id(competitor), name: competitor.`name` } as competitor');
 	});
 	test('nested collect', function() {
 		$map($collect($id()).of('market')).of('competitor').toString()
@@ -40,11 +40,11 @@ module.exports = function() {
 	});
 	test('nested map', function() {
 		$map($map($field('name')).of('competitor')).toString()
-			.should.eql('{ competitor: { name: competitor.name } } as $self');
+			.should.eql('{ competitor: { name: competitor.`name` } } as $self');
 	});
 	test('nested map', function() {
 		$map($map($field('name')).of('competitor')).toString()
-			.should.eql('{ competitor: { name: competitor.name } } as $self');
+			.should.eql('{ competitor: { name: competitor.`name` } } as $self');
 	});
 	test('double nested map', function() {
 		var parentMap = $map($id()).of('parent');

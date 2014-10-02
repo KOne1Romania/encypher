@@ -4,6 +4,8 @@ var _ = require('lodash-node');
 
 function _escapeString(string, delimiter) {
 	delimiter = delimiter || '"';
+	var delimiterAtBoundariesRegex = new RegExp('[\\^' + delimiter + '|' + delimiter + '$]', 'g');
+	string = string.replace(delimiterAtBoundariesRegex, '');
 	return [
 		delimiter,
 		string.replace(new RegExp(delimiter, 'g'), '\\' + delimiter),

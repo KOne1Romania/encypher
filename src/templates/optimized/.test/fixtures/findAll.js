@@ -76,7 +76,7 @@ module.exports = [
 			"MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
 				"WHERE id(product) = 3039",
 			"WITH distinct $self",
-				"ORDER BY $self.name ASC, $self.timestamp DESC",
+				"ORDER BY $self.`name` ASC, $self.`timestamp` DESC",
 				"SKIP 10",
 				"LIMIT 10",
 			"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
@@ -85,7 +85,7 @@ module.exports = [
 			"WITH $self, competitorId, collect(distinct id(product)) as productIds",
 			"RETURN {",
 				"id: id($self),",
-				"name: $self.name,",
+				"name: $self.`name`,",
 				"competitorId: competitorId,",
 				"productIds: productIds",
 			"} as $self"

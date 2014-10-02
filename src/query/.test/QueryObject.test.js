@@ -6,7 +6,7 @@ var QueryObject = require('../QueryObject');
 
 suite('QueryObject', function() {
 	test('no params', function() {
-		var paramsFreeString = '$self.name = "a"',
+		var paramsFreeString = '$self.`name` = "a"',
 		    emptyParams = {};
 		new QueryObject(paramsFreeString, emptyParams).toString().should.eql(paramsFreeString);
 	});
@@ -23,9 +23,9 @@ suite('QueryObject', function() {
 		new QueryObject(originalString, params).toString().should.eql(expectedResult);
 	});
 	test('string param', function() {
-		var originalString = '$self.name = {name}',
+		var originalString = '$self.`name` = {name}',
 		    params = { name: 'abc' },
-		    expectedResult = '$self.name = "abc"';
+		    expectedResult = '$self.`name` = "abc"';
 		new QueryObject(originalString, params).toString().should.eql(expectedResult);
 	});
 	test('array param', function() {
