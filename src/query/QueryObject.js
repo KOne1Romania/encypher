@@ -18,6 +18,13 @@ QueryObject.prototype = {
 			this.string = this.string.replace(varToken, encodedValue);
 		}, this);
 		return this.string;
+	},
+
+	valueOf: function() {
+		return {
+			string: this.string,
+			params: this.params
+		}
 	}
 };
 
@@ -39,4 +46,5 @@ function varNameToToken(varName) {
 	return '{' + varName + '}';
 }
 
+QueryObject.varNameToToken = varNameToToken;
 module.exports = QueryObject;

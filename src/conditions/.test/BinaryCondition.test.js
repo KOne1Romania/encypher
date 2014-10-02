@@ -3,36 +3,42 @@
 var $binary = require('..').binary;
 
 module.exports = function() {
-	suite('defaults', function() {
-		test('op defaults to eq', function() {
-			$binary({ field: 'name', value: 'KFC' }).toString().should.eql('$self.`name` = "KFC"');
+	suite('#queryObject', function() {
+		test('eq', function() {
+			$binary({ op: 'eq', value: 15 }).queryObject().valueOf().should.eql({
+				string: 'id($self) = {id}',
+				params: { id: 15 }
+			});
 		});
-		test('field defaults to id', function() {
-			$binary({ value: 15 }).toString().should.eql('id($self) = 15');
-		});
-	});
-	suite('ops', function() {
 		test('lt', function() {
-			$binary({ op: 'lt', value: 15 }).toString().should.eql('id($self) < 15');
+			$binary({ field: 'age', op: 'lt', value: 15 }).queryObject().valueOf().should.eql({
+				string: '$self.`age` < {maxAge}',
+				params: { maxAge: 15 }
+			});
 		});
 		test('gt', function() {
-			$binary({ op: 'gt', value: 15 }).toString().should.eql('id($self) > 15');
+			$binary({ op: 'gt', value: 15 }).queryObject().valueOf().should.eql({
+				string: 'id($self) > {minId}',
+				params: { minId: 15 }
+			});
 		});
 		test('ne', function() {
-			$binary({ op: 'ne', value: 15 }).toString().should.eql('id($self) <> 15');
+			$binary({ op: 'ne', value: 15 }).queryObject().valueOf().should.eql({
+				string: 'id($self) <> {wrongId}',
+				params: { wrongId: 15 }
+			});
 		});
 		test('in', function() {
-			$binary({ op: 'in', value: [15, 16] }).toString().should.eql('id($self) IN [15, 16]');
-		});
-		test('is', function() {
-			$binary({ op: 'is', value: null }).toString().should.eql('id($self) IS NULL');
-		});
-		test('isnt', function() {
-			$binary({ op: 'isnt', value: null }).toString().should.eql('id($self) IS NOT NULL');
+			$binary({ op: 'in', value: [15, 16] }).queryObject().valueOf().should.eql({
+				string: 'id($self) IN {ids}',
+				params: { ids: [15, 16] }
+			});
 		});
 		test('regex', function() {
-			$binary({ field: 'name', op: 'regex', value: ".*" }).toString()
-				.should.eql('$self.`name` =~ "(?i).*"');
+			$binary({ field: 'name', op: 'regex', value: ".*" }).queryObject().valueOf().should.eql({
+				string: '$self.`name` =~ {nameRegex}',
+				params: { nameRegex: '(?i).*' }
+			});
 		});
 	});
 	test('with context', function() {

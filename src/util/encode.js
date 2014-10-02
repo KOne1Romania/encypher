@@ -22,10 +22,6 @@ function _encodeObject(object) {
 	return '{' + pairsString + '}';
 }
 
-function encodeRegex(regexString) {
-	return _escapeString('(?i)' + regexString, '"');
-}
-
 function encodeFieldName(fieldName) {
 	return _escapeString(fieldName, '`');
 }
@@ -50,6 +46,5 @@ function encodeValue(value) {
 
 module.exports = {
 	field: encodeFieldName,
-	value: encodeValue,
-	regex: encodeRegex
+	value: encodeValue
 };
