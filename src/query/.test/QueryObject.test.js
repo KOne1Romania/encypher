@@ -76,13 +76,18 @@ suite('QueryObject', function() {
 		});
 		test('empty objects', function() {
 			var qObjects = [ new QueryObject(), new QueryObject() ],
-			    expectedMerged = { string: '', params: { } };
+			    expectedMerged = { string: '', params: {} };
 			QueryObject.merge(qObjects).valueOf().should.eql(expectedMerged);
 		});
 		test('no objects', function() {
 			var emptyObjectList = [ ],
-			    expectedMerged = { string: '', params: { } };
+			    expectedMerged = { string: '', params: {} };
 			QueryObject.merge(emptyObjectList).valueOf().should.eql(expectedMerged);
+		});
+		test('on strings', function() {
+			var stringList = ['a', 'b'],
+			    expectedMerged = { string: 'a b', params: {} };
+			QueryObject.merge(stringList).valueOf().should.eql(expectedMerged);
 		});
 	});
 });

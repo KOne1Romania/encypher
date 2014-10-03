@@ -40,7 +40,8 @@ QueryObject.merge = function QueryObject_merge(qObjects, opts) {
 		right    : ''
 	});
 	var fullString = _(qObjects).map(function(qObject) {
-		    return opts.left + qObject.string + opts.right;
+		    var queryString = qObject.string || qObject;
+		    return opts.left + queryString + opts.right;
 	    }).compact().join(opts.separator),
 	    combinedParams = _.map(qObjects, 'params').reduce(_.merge, {});
 	return new QueryObject(fullString, combinedParams);
