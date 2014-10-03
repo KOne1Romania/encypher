@@ -5,7 +5,7 @@ var _ = require('lodash-node');
 var encode = require('../util/encode');
 
 function QueryObject(string, params) {
-	this.string = string || "";
+	this.string = string || '';
 	this.params = params || {};
 }
 
@@ -32,15 +32,15 @@ QueryObject.prototype = {
 
 QueryObject.merge = function QueryObject_merge(qObjects, opts) {
 	qObjects = qObjects || [];
-	_.defaults(opts, {
+	opts = _.defaults(opts || {}, {
 		separator: ' ',
 		left     : '',
 		right    : ''
 	});
-	var fullString = _.map(qObjects, function(qObject) {
+	var fullString = _(qObjects).map(function(qObject) {
 		    return opts.left + qObject.string + opts.right;
-	    }).join(opts.separator),
-	    combinedParams = _.map(qObjects, 'params').reduce(_.merge);
+	    }).compact().join(opts.separator),
+	    combinedParams = _.map(qObjects, 'params').reduce(_.merge, {});
 	return new QueryObject(fullString, combinedParams);
 };
 

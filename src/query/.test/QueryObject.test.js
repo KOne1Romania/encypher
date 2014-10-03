@@ -56,7 +56,7 @@ suite('QueryObject', function() {
 			QueryObject.merge([qObject1, qObject2], { separator: ' AND ' }).valueOf()
 				.should.eql(expectedMerged);
 		});
-		test('w/ separator', function() {
+		test('w/ left and right', function() {
 			    var qObjects = [
 				    new QueryObject('$self.age = {age}', { age: 15 }),
 				    new QueryObject('$self.name = {name}', { name: 'a' })
@@ -67,6 +67,16 @@ suite('QueryObject', function() {
 			    };
 			QueryObject.merge(qObjects, { separator: ' AND ', left: '(', right: ')' }).valueOf()
 				.should.eql(expectedMerged);
+		});
+		test('empty objects', function() {
+			var qObjects = [ new QueryObject(), new QueryObject() ],
+			    expectedMerged = { string: '', params: { } };
+			QueryObject.merge(qObjects).valueOf().should.eql(expectedMerged);
+		});
+		test('no objects', function() {
+			var emptyObjectList = [ ],
+			    expectedMerged = { string: '', params: { } };
+			QueryObject.merge(emptyObjectList).valueOf().should.eql(expectedMerged);
 		});
 	});
 });
