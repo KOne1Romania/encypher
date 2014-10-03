@@ -4,6 +4,8 @@ var _ = require('lodash-node');
 
 var encode = require('../util/encode');
 
+var TOKEN_REGEX = /{[^:]+?}/g;
+
 function QueryObject(string, params) {
 	this.string = string || '';
 	this.params = params || {};
@@ -50,7 +52,7 @@ QueryObject.merge = function QueryObject_merge(qObjects, opts) {
  * @return [string] the list of variable names (without enclosing {})
  */
 function findInterpolatedNames(string) {
-	var interpolatedTokens = string.match(/{[^:]+}/g) || [];
+	var interpolatedTokens = string.match(TOKEN_REGEX) || [];
 	return interpolatedTokens.map(tokenToVarName);
 }
 

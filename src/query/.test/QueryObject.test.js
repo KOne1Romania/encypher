@@ -40,6 +40,12 @@ suite('QueryObject', function() {
 		    expectedResult = 'set $self = {"id": 1, "name": "abc"}';
 		new QueryObject(originalString, params).toString().should.eql(expectedResult);
 	});
+	test('two params', function() {
+		var originalString = '$self.age < {age} AND $self.name = {name}',
+		    params = { age: 15, name: 'someName' },
+		    expectedResult = '$self.age < 15 AND $self.name = "someName"';
+		new QueryObject(originalString, params).toString().should.eql(expectedResult);
+	});
 	test('does not replace object literals', function() {
 		var originalString = 'return { id: id($self) }',
 		    params = {};
