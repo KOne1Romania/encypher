@@ -51,6 +51,11 @@ suite('QueryObject', function() {
 		    params = {};
 		new QueryObject(originalString, params).toString().should.eql(originalString);
 	});
+	test('#surround', function() {
+		var originalString = 'a', left = '(', right = ')',
+		    expectedResult = '(a)';
+		new QueryObject(originalString, {}).surround(left, right).toString().should.eql(expectedResult);
+	});
 	suite('.merge', function() {
 		test('w/ separator', function() {
 			var qObject1 = new QueryObject('$self.age = {age}', { age: 15 }),
@@ -59,19 +64,7 @@ suite('QueryObject', function() {
 				    string: '$self.age = {age} AND $self.name = {name}',
 				    params: { age: 15, name: 'a' }
 			    };
-			QueryObject.merge([qObject1, qObject2], { separator: ' AND ' }).valueOf()
-				.should.eql(expectedMerged);
-		});
-		test('w/ left and right', function() {
-			    var qObjects = [
-				    new QueryObject('$self.age = {age}', { age: 15 }),
-				    new QueryObject('$self.name = {name}', { name: 'a' })
-			    ],
-			    expectedMerged = {
-				    string: '($self.age = {age}) AND ($self.name = {name})',
-				    params: { age: 15, name: 'a' }
-			    };
-			QueryObject.merge(qObjects, { separator: ' AND ', left: '(', right: ')' }).valueOf()
+			QueryObject.merge([qObject1, qObject2], ' AND ').valueOf()
 				.should.eql(expectedMerged);
 		});
 		test('empty objects', function() {

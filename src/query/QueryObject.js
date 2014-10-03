@@ -29,20 +29,20 @@ QueryObject.prototype = {
 			string: this.string,
 			params: this.params
 		}
+	},
+
+	surround: function(left, right) {
+		this.string = left + this.string + right;
+		return this;
 	}
 };
 
-QueryObject.merge = function QueryObject_merge(qObjects, opts) {
+QueryObject.merge = function QueryObject_merge(qObjects, separator) {
 	qObjects = qObjects || [];
-	opts = _.defaults(opts || {}, {
-		separator: ' ',
-		left     : '',
-		right    : ''
-	});
+	separator = separator || ' ';
 	var fullString = _(qObjects).map(function(qObject) {
-		    var queryString = qObject.string || qObject;
-		    return opts.left + queryString + opts.right;
-	    }).compact().join(opts.separator),
+		    return qObject.string != null ? qObject.string : qObject;
+	    }).compact().join(separator),
 	    combinedParams = _.map(qObjects, 'params').reduce(_.merge, {});
 	return new QueryObject(fullString, combinedParams);
 };
