@@ -30,11 +30,10 @@ TreeCondition.prototype = _.create(BaseCondition.prototype, {
 		var childrenQObjects = this.children.map(function(child) {
 			return child.queryObject();
 		});
-		return QueryObject.merge(childrenQObjects, {
-			separator: ' ' + this.op.toUpperCase() + ' ',
-			left     : '(',
-			right    : ')'
-		})
+		var mergedQObject = QueryObject.merge(childrenQObjects, ' ' + this.op.toUpperCase() + ' ');
+		if (childrenQObjects.length > 1)
+			mergedQObject.surround('(', ')');
+		return mergedQObject;
 	},
 
 	toString: function() {

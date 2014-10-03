@@ -22,7 +22,7 @@ module.exports = function() {
 		});
 		test('the child itself if one', function() {
 			$tree({ children: [ $binary({ value: 15 }) ] }).queryObject().valueOf().should.eql({
-				string: '(id($self) = {id})',
+				string: 'id($self) = {id}',
 				params: { id: 15 }
 			});
 		});
@@ -31,13 +31,13 @@ module.exports = function() {
 				$binary({ value: 15 }),
 				$binary({ field: 'name', value: 'someName' })
 			] }).queryObject().valueOf().should.eql({
-					string: '(id($self) = {id}) AND ($self.`name` = {name})',
+					string: '(id($self) = {id} AND $self.`name` = {name})',
 					params: { id: 15, name: 'someName' }
 				});
 		});
 		test('children joined by operator if more', function() {
 			$tree({ op: 'or', children: repeat(c_ID_EQ_15, 3) }).queryObject().valueOf().should.eql({
-				string: repeat('(' + s_ID_EQ + ')', 3).join(' OR '),
+				string: '(' + repeat(s_ID_EQ, 3).join(' OR ') + ')',
 				params: { id: 15 }
 			});
 		});
@@ -55,7 +55,7 @@ module.exports = function() {
 			$binary({ value: 15, contextName: 'market' }),
 			$binary({ field: 'name', value: 'someName' })
 		] }).queryObject().valueOf().should.eql({
-				string: '(id(market) = {marketId}) AND ($self.`name` = {name})',
+				string: '(id(market) = {marketId} AND $self.`name` = {name})',
 				params: { marketId: 15, name: 'someName' }
 			});
 	});
@@ -67,7 +67,7 @@ module.exports = function() {
 			],
 			contextName: 'market'
 		}).queryObject().valueOf().should.eql({
-				string: '(id(market) = {marketId}) AND (market.`name` = {marketName})',
+				string: '(id(market) = {marketId} AND market.`name` = {marketName})',
 				params: { marketId: 15, marketName: 'someName' }
 			});
 	});
