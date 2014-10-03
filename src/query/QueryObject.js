@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash-node');
+
 var encode = require('../util/encode');
 
 function QueryObject(string, params) {
@@ -26,6 +28,20 @@ QueryObject.prototype = {
 			params: this.params
 		}
 	}
+};
+
+QueryObject.merge = function QueryObject_merge(qObjects, opts) {
+	qObjects = qObjects || [];
+	_.defaults(opts, {
+		separator: ' ',
+		left     : '',
+		right    : ''
+	});
+	var fullString = _.map(qObjects, function(qObject) {
+		    return opts.left + qObject.string + opts.right;
+	    }).join(opts.separator),
+	    combinedParams = _.map(qObjects, 'params').reduce(_.merge);
+	return new QueryObject(fullString, combinedParams);
 };
 
 /**
