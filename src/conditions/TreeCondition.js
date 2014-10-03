@@ -2,12 +2,13 @@
 
 var _ = require('lodash-node');
 
-var BaseCondition = require('./BaseCondition.js');
+var BaseCondition = require('./BaseCondition.js'),
+    QueryObject = require('../query/QueryObject');
 
 function TreeCondition(def) {
 	BaseCondition.call(this);
 	_.defaults(this, def, {
-		op: 'and',
+		op      : 'and',
 		children: []
 	});
 	if (this.contextName) {
@@ -25,11 +26,19 @@ TreeCondition.prototype = _.create(BaseCondition.prototype, {
 		return this;
 	},
 
+	queryObject: function() {
+		var childrenQObjects = this.children.map(function(child) {
+			return child.queryObject();
+		});
+		return QueryObject.merge(childrenQObjects, {
+			separator: ' ' + this.op.toUpperCase() + ' ',
+			left     : '(',
+			right    : ')'
+		})
+	},
+
 	toString: function() {
-		var separator = ' ' + this.op.toUpperCase() + ' ';
-		return this.children.map(function(child) {
-			return '(' + child + ')';
-		}).join(separator);
+		return this.queryObject().toString();
 	}
 });
 
