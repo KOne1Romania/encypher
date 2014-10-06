@@ -56,5 +56,14 @@ module.exports = function() {
 			var minimalMatchClause = '$self-[:COVERS]->market';
 			minimalDescriptor.matchPart().toString().should.eql(minimalMatchClause);
 		});
+		test('calling #matchPart twice', function() {
+			var minimalDescriptor = $relation({
+				type   : 'COVERS',
+				related: { alias: 'market' }
+			});
+			var minimalMatchClause = '$self-[:COVERS]->market';
+			minimalDescriptor.matchPart();
+			minimalDescriptor.matchPart().toString().should.eql(minimalMatchClause);
+		});
 	});
 };

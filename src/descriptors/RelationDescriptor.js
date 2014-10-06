@@ -29,7 +29,7 @@ RelationDescriptor.prototype = {
 	},
 
 	matchPart: function() {
-		return $matchRelationPart(merge(this, {
+		return $matchRelationPart(merge({}, this, {
 			self   : this.self.withContext(this.context).matchPart(),
 			related: this.related.withContext(this.context).matchPart()
 		}));
