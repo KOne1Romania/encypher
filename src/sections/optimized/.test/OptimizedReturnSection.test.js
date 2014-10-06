@@ -9,19 +9,6 @@ var relToManyDescriptor = {
 	type: 'HAS', related: { label: 'Other', alias: 'child' }
 };
 
-var x = [
-	"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
-	"WITH $self, id(competitor) as competitorId",
-	"OPTIONAL MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
-	"WITH $self, competitorId, collect(distinct id(product)) as productIds",
-	"RETURN {",
-		"id: id($self),",
-		"name: $self.`name`,",
-		"competitorId: competitorId,",
-		"productIds: productIds",
-	"} as $self"
-];
-
 module.exports = function() {
 	test('contains only id when nothing provided', function() {
 		new ReturnSection().toString().should.eql([

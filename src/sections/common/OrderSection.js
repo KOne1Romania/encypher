@@ -3,7 +3,8 @@
 var _ = require('lodash-node');
 
 var $clauses = require('../../clauses/index'),
-    $orderPart = require('../../parts/index').order;
+    $orderPart = require('../../parts/index').order,
+    QueryObject = require('../../query/QueryObject');
 
 function OrderSection(def) {
 	_.defaults(this, def, {
@@ -17,9 +18,15 @@ function OrderSection(def) {
 OrderSection.prototype = {
 	constructor: OrderSection,
 
+	queryObject: function() {
+		var queryString = $clauses.order(this.orderParts).toString();
+		return new QueryObject(queryString);
+	},
+
 	toString: function() {
-		return $clauses.order(this.orderParts).toString();
+		return this.queryObject().toString();
 	}
+
 };
 
 module.exports = OrderSection;
