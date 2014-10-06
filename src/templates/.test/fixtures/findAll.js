@@ -15,7 +15,7 @@ module.exports = [
 			'WITH distinct $self',
 			'RETURN {',
 				'id: id($self)',
-			'} as $self'
+			'}'
 		].join(' '),
 		queryParams: {},
 		generatedString: [
@@ -23,7 +23,7 @@ module.exports = [
 			'WITH distinct $self',
 			'RETURN {',
 				'id: id($self)',
-			'} as $self'
+			'}'
 		].join(' ')
 	},
 	{
@@ -96,7 +96,7 @@ module.exports = [
 				"name: $self.`name`,",
 				"competitorId: competitorId,",
 				"productIds: productIds",
-			"} as $self"
+			"}"
 		].join(' '),
 		queryParams: {
 			nameRegex: '(?i).*Month.*',
@@ -123,7 +123,7 @@ module.exports = [
 				"name: $self.`name`,",
 				"competitorId: competitorId,",
 				"productIds: productIds",
-			"} as $self"
+			"}"
 		].join(' ')
 	}
 ];

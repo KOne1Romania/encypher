@@ -14,7 +14,7 @@ module.exports = function() {
 		new ReturnSection().toString().should.eql([
 			'RETURN {',
 				'id: id($self)',
-			'} as $self'
+			'}'
 		].join(' '));
 	});
 	test('fields only', function() {
@@ -22,7 +22,7 @@ module.exports = function() {
 			'RETURN {',
 				'id: id($self),',
 				'name: $self.`name`',
-			'} as $self'
+			'}'
 		].join(' '));
 	});
 	test('one relation - fetch node', function() {
@@ -34,7 +34,7 @@ module.exports = function() {
 			'RETURN {',
 				'id: id($self),',
 				'other: other',
-			'} as $self'
+			'}'
 		].join(' '));
 	});
 	test('one relation - fetch id', function() {
@@ -47,7 +47,7 @@ module.exports = function() {
 			'RETURN {',
 				'id: id($self),',
 				'otherId: otherId',
-			'} as $self'
+			'}'
 		].join(' '));
 	});
 	test('to many relation - fetch count', function() {
@@ -60,7 +60,7 @@ module.exports = function() {
 			'RETURN {',
 				'id: id($self),',
 				'childrenCount: childrenCount',
-			'} as $self'
+			'}'
 		].join(' '));
 	});
 	test('multiple relations', function() {
@@ -78,7 +78,7 @@ module.exports = function() {
 				'id: id($self),',
 				'children: children,',
 				'otherId: otherId',
-			'} as $self'
+			'}'
 		].join(' '));
 	});
 };
