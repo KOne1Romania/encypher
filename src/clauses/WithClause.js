@@ -1,6 +1,7 @@
 'use strict';
 
-var $resultParts = require('../parts/result');
+var $resultParts = require('../parts/result'),
+    QueryObject = require('../query/QueryObject');
 
 function WithClause(resultParts, distinct) {
 	this.resultParts = resultParts || [ $resultParts.node() ];
@@ -14,7 +15,11 @@ WithClause.prototype = {
 	constructor: WithClause,
 
 	toString: function() {
-		return 'WITH ' + (this.distinct ? 'distinct ' : '') + this.resultParts.join(', ');
+		return this.queryObject().toString();
+	},
+
+	queryObject: function() {
+		return new QueryObject('WITH ' + (this.distinct ? 'distinct ' : '') + this.resultParts.join(', '));
 	}
 };
 
