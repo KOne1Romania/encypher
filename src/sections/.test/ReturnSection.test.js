@@ -1,6 +1,6 @@
 "use strict";
 
-var ReturnSection = require('../OptimizedReturnSection');
+var ReturnSection = require('../ReturnSection');
 
 var relToOneDescriptor = {
 	cardinality: 'one', type: 'RELATES_TO', related: { label: 'Other' }

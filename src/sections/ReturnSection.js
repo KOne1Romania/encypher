@@ -7,7 +7,7 @@ var $fetchDescriptor = require('../descriptors/index').fetch,
     $clauses = require('../clauses/index'),
     QueryObject = require('../query/QueryObject');
 
-function OptimizedReturnSection(def) {
+function ReturnSection(def) {
 	_.defaults(this, def, {
 		fields: [],
 		fetchDescriptors: []
@@ -17,8 +17,8 @@ function OptimizedReturnSection(def) {
 	});
 }
 
-OptimizedReturnSection.prototype = {
-	constructor: OptimizedReturnSection,
+ReturnSection.prototype = {
+	constructor: ReturnSection,
 
 	_ownResultParts: function() {
 		return [$resultParts.id()].concat(this.fields);
@@ -57,4 +57,4 @@ OptimizedReturnSection.prototype = {
 	}
 };
 
-module.exports = OptimizedReturnSection;
+module.exports = ReturnSection;

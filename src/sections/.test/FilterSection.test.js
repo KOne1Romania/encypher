@@ -1,6 +1,6 @@
 'use strict';
 
-var OptimizedFilterSection = require('../OptimizedFilterSection');
+var FilterSection = require('../FilterSection');
 
 module.exports = function() {
 	suite('no conditions', function() {
@@ -104,7 +104,7 @@ module.exports = function() {
 };
 
 function checkFilter(descriptors, expected) {
-	var filterSection = new OptimizedFilterSection({ filterDescriptors: descriptors }),
+	var filterSection = new FilterSection({ filterDescriptors: descriptors }),
 	    queryObject = filterSection.queryObject();
 	if (expected.resultString) {
 		filterSection.toString().should.eql(expected.resultString);
