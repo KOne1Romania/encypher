@@ -34,6 +34,10 @@ QueryObject.prototype = {
 	surround: function(left, right) {
 		this.string = left + this.string + right;
 		return this;
+	},
+
+	isEmpty: function() {
+		return !this.string.length;
 	}
 };
 
@@ -46,6 +50,12 @@ QueryObject.merge = function QueryObject_merge(qObjects, separator) {
 	    combinedParams = _.map(qObjects, 'params').reduce(_.merge, {});
 	return new QueryObject(fullString, combinedParams);
 };
+
+QueryObject.resolve = function(qObjectContainer) {
+	return typeof qObjectContainer.queryObject === 'function' ? qObjectContainer.queryObject() : {};
+};
+
+QueryObject.EMPTY = new QueryObject();
 
 /**
  * looks for {interpolated} variable names inside a string
