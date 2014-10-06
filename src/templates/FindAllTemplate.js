@@ -2,7 +2,8 @@
 
 var _ = require('lodash-node');
 
-var $sections = require('../sections');
+var $sections = require('../sections'),
+    QueryObject = require('../query/QueryObject');
 
 var SECTION_IDENTIFIERS = [ 'filter', 'order', 'subset', 'return' ];
 
@@ -25,11 +26,12 @@ FindAllTemplate.prototype = {
 		}, this);
 	},
 
+	queryObject: function() {
+		return QueryObject.merge(this._allSections().map(QueryObject.resolve));
+	},
+
 	toString: function() {
-		return _(this._allSections())
-			.map(function(section){ return section.toString() })
-			.compact()
-			.join(' ');
+		return this.queryObject().toString();
 	}
 };
 

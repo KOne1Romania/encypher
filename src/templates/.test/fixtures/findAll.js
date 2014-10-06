@@ -16,6 +16,14 @@ module.exports = [
 			'RETURN {',
 				'id: id($self)',
 			'} as $self'
+		].join(' '),
+		queryParams: {},
+		generatedString: [
+			'MATCH ($self:Activity)',
+			'WITH distinct $self',
+			'RETURN {',
+				'id: id($self)',
+			'} as $self'
 		].join(' ')
 	},
 	{
@@ -70,6 +78,33 @@ module.exports = [
 			}
 		},
 		queryString: [
+			"MATCH ($self:Activity)",
+				"WHERE $self.`name` =~ {nameRegex}",
+			"WITH distinct $self",
+			"MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
+				"WHERE id(product) = {productId}",
+			"WITH distinct $self",
+				"ORDER BY $self.`name` ASC, $self.`timestamp` DESC",
+				"SKIP {skip}",
+				"LIMIT {limit}",
+			"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
+			"WITH $self, id(competitor) as competitorId",
+			"OPTIONAL MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
+			"WITH $self, competitorId, collect(distinct id(product)) as productIds",
+			"RETURN {",
+				"id: id($self),",
+				"name: $self.`name`,",
+				"competitorId: competitorId,",
+				"productIds: productIds",
+			"} as $self"
+		].join(' '),
+		queryParams: {
+			nameRegex: '(?i).*Month.*',
+			productId: 3039,
+			skip: 10,
+			limit: 10
+		},
+		generatedString: [
 			"MATCH ($self:Activity)",
 				"WHERE $self.`name` =~ \"(?i).*Month.*\"",
 			"WITH distinct $self",
