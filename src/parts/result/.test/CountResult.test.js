@@ -16,6 +16,9 @@ module.exports = function() {
 		$count().of('market').as('competitor').toString()
 			.should.eql('count(distinct competitor_market) as marketsCount');
 	});
+	test('#value with $self context', function() {
+		$count().of('$self').value().should.eql('count(distinct $self)');
+	});
 	test('from nested reference', function() {
 		var countResult = $count().of('parent').as('market').as('competitor');
 		var asString = 'count(distinct competitor_market_parent) as parentsCount';
