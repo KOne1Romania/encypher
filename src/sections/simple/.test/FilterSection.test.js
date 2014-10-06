@@ -56,9 +56,9 @@ module.exports = function() {
 					'($self:Competitor),',
 					'$self-[:COVERS]->(market:Market)',
 					'WHERE',
-					'id($self) = 15',
+					'(id($self) = 15',
 					'AND market.`name` = "Chicago"',
-					'AND market.`coverage` <> "local"'
+					'AND market.`coverage` <> "local")'
 				].join(' '));
 		});
 		test('for self and nested relations', function() {

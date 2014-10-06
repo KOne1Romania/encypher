@@ -2,9 +2,10 @@
 
 var _ = require('lodash-node');
 
-var $filterDescriptor = require('../../descriptors/index').filter,
-    $clauses = require('../../clauses/index'),
-    $resultParts = require('../../parts/result');
+var $filterDescriptor = require('../../descriptors').filter,
+    $clauses = require('../../clauses'),
+    $resultParts = require('../../parts/result'),
+    QueryObject = require('../../query/QueryObject');
 
 function FilterSection(def) {
 	_.defaults(this, def, {
@@ -18,10 +19,22 @@ function FilterSection(def) {
 FilterSection.prototype = {
 	constructor: FilterSection,
 
+	queryObject: function() {
+		return QueryObject.merge(this.filterDescriptors.map(filterQueryObject));
+	},
+
 	toString: function() {
 		return this.filterDescriptors.map(filterSubsection).join(' ');
 	}
 };
+
+function filterQueryObject(filterDescriptor) {
+	return QueryObject.merge([
+		$clauses.match(filterDescriptor.matchPart()),
+		$clauses.conditions(filterDescriptor.conditionParts()),
+		$clauses.with($resultParts.node(), true)
+	].map(QueryObject.resolve));
+}
 
 function filterSubsection(filterDescriptor) {
 	return _([
