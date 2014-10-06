@@ -24,7 +24,7 @@ FilterSection.prototype = {
 	},
 
 	toString: function() {
-		return this.filterDescriptors.map(filterSubsection).join(' ');
+		return this.queryObject().toString();
 	}
 };
 
@@ -34,16 +34,6 @@ function filterQueryObject(filterDescriptor) {
 		$clauses.conditions(filterDescriptor.conditionParts()),
 		$clauses.with($resultParts.node(), true)
 	].map(QueryObject.resolve));
-}
-
-function filterSubsection(filterDescriptor) {
-	return _([
-		$clauses.match(filterDescriptor.matchPart()),
-		$clauses.conditions(filterDescriptor.conditionParts()),
-		$clauses.with($resultParts.node(), true)
-	]).map(function(clause) {
-		return clause.toString();
-	}).compact().join(' ')
 }
 
 module.exports = FilterSection;
