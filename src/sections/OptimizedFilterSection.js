@@ -2,10 +2,10 @@
 
 var _ = require('lodash-node');
 
-var $filterDescriptor = require('../../descriptors').filter,
-    $clauses = require('../../clauses'),
-    $resultParts = require('../../parts/result'),
-    QueryObject = require('../../query/QueryObject');
+var $filterDescriptor = require('../descriptors/index').filter,
+    $clauses = require('../clauses/index'),
+    $resultParts = require('../parts/result/index'),
+    QueryObject = require('../query/QueryObject');
 
 function FilterSection(def) {
 	_.defaults(this, def, {

@@ -2,10 +2,10 @@
 
 var _ = require('lodash-node');
 
-var $fetchDescriptor = require('../../descriptors/index').fetch,
-    $resultParts = require('../../parts/index').result,
-    $clauses = require('../../clauses/index'),
-    QueryObject = require('../../query/QueryObject');
+var $fetchDescriptor = require('../descriptors/index').fetch,
+    $resultParts = require('../parts/index').result,
+    $clauses = require('../clauses/index'),
+    QueryObject = require('../query/QueryObject');
 
 function OptimizedReturnSection(def) {
 	_.defaults(this, def, {

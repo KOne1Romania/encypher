@@ -2,7 +2,7 @@
 
 var _ = require('lodash-node');
 
-var $sections = require('../../sections/optimized');
+var $sections = require('../sections');
 
 var SECTION_IDENTIFIERS = [ 'filter', 'order', 'subset', 'return' ];
 

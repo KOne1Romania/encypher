@@ -3,7 +3,8 @@
 require('chai').should();
 
 suite('sections', function() {
-	suite('common', require('../common/.test'));
-	suite('simple', require('../simple/.test'));
-	suite('optimized', require('../optimized/.test'));
+	suite('order', require('./OrderSection.test.js'));
+	suite('subset', require('./SubsetSection.test.js'));
+	suite('return', require('./OptimizedReturnSection.test.js'));
+	suite('filter', require('./OptimizedFilterSection.test.js'));
 });

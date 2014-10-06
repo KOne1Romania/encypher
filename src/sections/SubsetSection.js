@@ -2,7 +2,7 @@
 
 var _ = require('lodash-node');
 
-var QueryObject = require('../../query/QueryObject');
+var QueryObject = require('../query/QueryObject');
 
 function OrderSection(def) {
 	_.defaults(this, def, {
