@@ -2,7 +2,7 @@ var should = require('chai').should();
 
 var encypher = require('../src/encypher');
 
-suite('enchyper', function() {
+suite('encypher', function() {
 
 //	test('#findOne', function() {
 //			var query = encypher.findOne('Competitor', 12);
