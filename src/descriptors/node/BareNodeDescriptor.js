@@ -2,19 +2,17 @@
 
 var _ = require('lodash-node');
 
-var NodeDescriptor = require('./NodeDescriptor'),
-    rootContextChain = require('../../context/chain');
+var NodeDescriptor = require('./NodeDescriptor');
 
 function BareNodeDescriptor(def) {
 	_.defaults(this, def);
-	this.contextChain = rootContextChain.nestIn(this.alias);
 }
 
 BareNodeDescriptor.prototype = _.create(NodeDescriptor.prototype, {
 	constructor: BareNodeDescriptor,
 
 	matchPart: function() {
-		return this.contextChain.nestIn(this.context).value();
+		return this._aliasWithContext();
 	}
 });
 
