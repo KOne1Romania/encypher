@@ -19,21 +19,16 @@ function joinCamelCase(first, second) {
 	return inflection.camelize([first, second].join('_'), true);
 }
 
-function append(suffix) {
-	return _.partialRight(joinCamelCase, suffix);
-}
-
-function prepend(prefix) {
-	return _.partial(joinCamelCase, prefix);
-}
+var prepend = _.partial(_.partial, joinCamelCase),
+    append = _.partial(_.partialRight, joinCamelCase);
 
 var OPS_FIELD_DECORATORS = {
-	'eq': _.identity,
-	'ne': prepend('wrong'),
-	'lt': prepend('max'),
-	'gt': prepend('min'),
+	'eq'   : _.identity,
+	'ne'   : prepend('wrong'),
+	'lt'   : prepend('max'),
+	'gt'   : prepend('min'),
 	'regex': append('regex'),
-	'in': inflection.pluralize
+	'in'   : inflection.pluralize
 };
 
 function caseInsensitiveRegex(regexString) {
