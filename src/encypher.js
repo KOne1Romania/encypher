@@ -4,11 +4,11 @@ var $templates = require('./templates');
 
 var encypher = {
 	findTemplate: function(templateDescriptor) {
-		return $templates.findAll(templateDescriptor);
+		return $templates.findAll(templateDescriptor).queryObject();
 	},
 
 	countTemplate: function(templateDescriptor) {
-		return $templates.count(templateDescriptor);
+		return $templates.count(templateDescriptor).queryObject();
 	}
 };
 
