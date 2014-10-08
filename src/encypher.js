@@ -1,6 +1,7 @@
 'use strict';
 
-var $templates = require('./templates');
+var $templates = require('./templates'),
+    $descriptors = require('./descriptors');
 
 var encypher = {
 	findTemplate: function(templateDescriptor) {
@@ -9,7 +10,9 @@ var encypher = {
 
 	countTemplate: function(templateDescriptor) {
 		return $templates.count(templateDescriptor).queryObject();
-	}
+	},
+
+	$entity: $descriptors.entity
 };
 
 module.exports = encypher;
