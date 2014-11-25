@@ -12,7 +12,9 @@ var encypher = {
 		return $templates.count(templateDescriptor).queryObject();
 	},
 
-	$entity: $descriptors.entity
+	$entity: $descriptors.entity,
+
+	$node: $descriptors.node
 };
 
 module.exports = encypher;
