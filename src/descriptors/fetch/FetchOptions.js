@@ -18,6 +18,10 @@ var buildBaseResultPart = defn({
 	},
 	'[String]': function(fetchedFields) {
 		return $resultParts.map([$resultParts.id()].concat(fetchedFields));
+	},
+	'{field: String}': function(fieldDef) {
+		var fieldName = fieldDef.field;
+		return $resultParts.field(fieldName);
 	}
 });
 

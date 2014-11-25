@@ -35,6 +35,11 @@ module.exports = function() {
 			fetchOptions.resultPart().toString()
 				.should.eql('{ id: id($self), name: $self.`name` } as $self');
 		});
+		test('one field', function() {
+			var fetchOptions = new FetchOptions({ retrieve: { field: 'name' } }, 'one');
+			fetchOptions.resultPart().toString()
+				.should.eql('$self.`name` as name');
+		});
 		test('count', function() {
 			new FetchOptions({ aggregate: 'count' }).resultPart('market').toString()
 				.should.eql('count(distinct market) as marketsCount');
