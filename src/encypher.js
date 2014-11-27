@@ -14,7 +14,9 @@ var encypher = {
 
 	$entity: $descriptors.entity,
 
-	$node: $descriptors.node
+	$node: $descriptors.node,
+
+	$relation: $descriptors.relation
 };
 
 module.exports = encypher;

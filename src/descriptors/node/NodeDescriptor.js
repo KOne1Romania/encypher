@@ -1,5 +1,7 @@
 'use strict';
 
+var _ = require('lodash-node');
+
 var rootContextChain = require('../../context/chain');
 
 function NodeDescriptor() {
@@ -16,8 +18,9 @@ NodeDescriptor.prototype = {
 	},
 
 	withContext: function(node) {
-		this.context = node;
-		return this;
+		return _.create(this, {
+			context: node
+		});
 	},
 
 	toString: function() {
