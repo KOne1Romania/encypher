@@ -1,5 +1,7 @@
 "use strict";
 
+var _ = require('lodash-node');
+
 var ReturnSection = require('../ReturnSection');
 
 var relToOneDescriptor = {
@@ -11,74 +13,49 @@ var relToManyDescriptor = {
 
 module.exports = function() {
 	test('contains only id when nothing provided', function() {
-		new ReturnSection().toString().should.eql([
-			'RETURN {',
-				'id: id($self)',
-			'}'
-		].join(' '));
+		new ReturnSection().toString().should.eql('RETURN { id: id($self) }');
 	});
 	test('fields only', function() {
-		new ReturnSection({ fields: ['name'] }).toString().should.eql([
-			'RETURN {',
-				'id: id($self),',
-				'name: $self.`name`',
-			'}'
-		].join(' '));
+		new ReturnSection({ fields: ['name'] }).toString()
+			.should.eql('RETURN { id: id($self), name: $self.`name` }');
 	});
 	test('one relation - fetch node', function() {
-		new ReturnSection({	fetchDescriptors: [{
-			relationDescriptor: relToOneDescriptor
-		}] }).toString().should.eql([
+		new ReturnSection({ relationDescriptors: [relToOneDescriptor] }).toString().should.eql([
 			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
 			'WITH $self, other',
-			'RETURN {',
-				'id: id($self),',
-				'other: other',
-			'}'
+			'RETURN { id: id($self), other: other }'
 		].join(' '));
 	});
 	test('one relation - fetch id', function() {
-		new ReturnSection({ fetchDescriptors: [{
-			relationDescriptor: relToOneDescriptor,
-			fetchOptions: { retrieve: 'id' }
-		}] }).toString().should.eql([
-			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
-			'WITH $self, id(other) as otherId',
-			'RETURN {',
-				'id: id($self),',
-				'otherId: otherId',
-			'}'
-		].join(' '));
+		new ReturnSection({
+			relationDescriptors: [_.merge({}, relToOneDescriptor, { fetch: { retrieve: 'id' } })]
+		}).toString().should.eql([
+				'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+				'WITH $self, id(other) as otherId',
+				'RETURN { id: id($self), otherId: otherId }'
+			].join(' '));
 	});
-	test('to many relation - fetch count', function() {
-		new ReturnSection({ fetchDescriptors: [{
-			relationDescriptor: relToManyDescriptor,
-			fetchOptions: { aggregate: 'count' }
-		}] }).toString().should.eql([
-			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
-			'WITH $self, count(distinct child) as childrenCount',
-			'RETURN {',
-				'id: id($self),',
-				'childrenCount: childrenCount',
-			'}'
-		].join(' '));
+	test('to-many relation - fetch count', function() {
+		new ReturnSection({
+			relationDescriptors: [_.merge({}, relToManyDescriptor, { fetch: { aggregate: 'count' } })]
+		}).toString().should.eql([
+				'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
+				'WITH $self, count(distinct child) as childrenCount',
+				'RETURN { id: id($self), childrenCount: childrenCount }',
+			].join(' '));
 	});
 	test('multiple relations', function() {
 		new ReturnSection({
-			fetchDescriptors: [
-				{ relationDescriptor: relToManyDescriptor },
-				{ relationDescriptor: relToOneDescriptor, fetchOptions: { retrieve: 'id' } }
+			relationDescriptors: [
+				relToManyDescriptor,
+				_.merge({}, relToOneDescriptor, { fetch: { retrieve: 'id' } })
 			]
 		}).toString().should.eql([
-			'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
-			'WITH $self, collect(distinct child) as children',
-			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
-			'WITH $self, children, id(other) as otherId',
-			'RETURN {',
-				'id: id($self),',
-				'children: children,',
-				'otherId: otherId',
-			'}'
-		].join(' '));
+				'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
+				'WITH $self, collect(distinct child) as children',
+				'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+				'WITH $self, children, id(other) as otherId',
+				'RETURN { id: id($self), children: children, otherId: otherId }'
+			].join(' '));
 	});
 };

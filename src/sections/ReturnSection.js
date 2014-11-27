@@ -2,7 +2,7 @@
 
 var _ = require('lodash-node');
 
-var $fetchDescriptor = require('../descriptors/index').fetch,
+var $relationDescriptor = require('../descriptors/index').relation,
     $resultParts = require('../parts/index').result,
     $clauses = require('../clauses/index'),
     QueryObject = require('../query/QueryObject');
@@ -10,10 +10,10 @@ var $fetchDescriptor = require('../descriptors/index').fetch,
 function ReturnSection(def) {
 	_.defaults(this, def, {
 		fields: [],
-		fetchDescriptors: []
+		relationDescriptors: []
 	});
-	this.fetchDescriptors = this.fetchDescriptors.map(function(fetchDescriptor) {
-		return $fetchDescriptor(fetchDescriptor);
+	this.relationDescriptors = this.relationDescriptors.map(function(fetchDescriptor) {
+		return $relationDescriptor(fetchDescriptor);
 	});
 }
 
@@ -25,7 +25,7 @@ ReturnSection.prototype = {
 	},
 
 	_relatedResultParts: function() {
-		return this.fetchDescriptors.map(function(fetchDescriptor) {
+		return this.relationDescriptors.map(function(fetchDescriptor) {
 			return $resultParts.node().of(fetchDescriptor.resultPart().alias());
 		});
 	},
@@ -36,7 +36,7 @@ ReturnSection.prototype = {
 
 	_fetchSubsection: function() {
 		var fetchedEntities = ['$self'];
-		return this.fetchDescriptors.reduce(function(clauseStrings, fetchDescriptor) {
+		return this.relationDescriptors.reduce(function(clauseStrings, fetchDescriptor) {
 			clauseStrings.push(fetchDescriptor != null ? [
 				$clauses.optionalMatch(fetchDescriptor.matchPart()),
 				$clauses.with(fetchedEntities.concat(fetchDescriptor.resultPart()))

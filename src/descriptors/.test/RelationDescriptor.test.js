@@ -3,67 +3,54 @@
 var $relation = require('..').relation;
 
 module.exports = function() {
-	test('all provided', function() {
-		var fullDescriptor = $relation({
-			type       : 'SOLD_BY',
-			self       : { label: 'Competitor' },
-			related    : { label: 'CompetitorProduct', alias: 'product' },
-			direction  : 'inbound',
-			cardinality: 'one'
+	suite('basic', function() {
+		var fetchDescriptor;
+		setup(function() {
+			fetchDescriptor = $relation({
+				type: 'COVERS',
+				related: { label: 'Market' }
+			});
 		});
-		var fullMatchClause = [
-			'(competitor:Competitor)',
-			'<-[:SOLD_BY]-',
-			'(product:CompetitorProduct)'
-		].join('');
-		fullDescriptor.matchPart().toString().should.eql(fullMatchClause);
-	});
-	test('with initial context', function() {
-		var fullDescriptor = $relation({
-			type       : 'SOLD_BY',
-			related    : { label: 'CompetitorProduct', alias: 'product' },
-			direction  : 'inbound',
-			cardinality: 'one',
-			context    : 'competitor'
-		});
-		var fullMatchClause = [
-			'competitor',
-			'<-[:SOLD_BY]-',
-			'(competitor_product:CompetitorProduct)'
-		].join('');
-		fullDescriptor.matchPart().toString().should.eql(fullMatchClause);
-	});
-	test('with added context', function() {
-		var fullDescriptor = $relation({
-			type       : 'SOLD_BY',
-			related    : { label: 'CompetitorProduct', alias: 'product' },
-			direction  : 'inbound',
-			cardinality: 'one'
-		}).withContext('competitor');
-		var fullMatchClause = [
-			'competitor',
-			'<-[:SOLD_BY]-',
-			'(competitor_product:CompetitorProduct)'
-		].join('');
-		fullDescriptor.matchPart().toString().should.eql(fullMatchClause);
-	});
-	suite('minimum provided', function() {
 		test('#matchPart', function() {
-			var minimalDescriptor = $relation({
-				type   : 'COVERS',
-				related: { alias: 'market' }
-			});
-			var minimalMatchClause = '$self-[:COVERS]->market';
-			minimalDescriptor.matchPart().toString().should.eql(minimalMatchClause);
+			fetchDescriptor.matchPart().toString().should.eql('$self-[:COVERS]->(market:Market)')
 		});
-		test('calling #matchPart twice', function() {
-			var minimalDescriptor = $relation({
-				type   : 'COVERS',
-				related: { alias: 'market' }
+		test('#resultPart', function() {
+			fetchDescriptor.resultPart().toString().should.eql('collect(distinct market) as markets');
+		});
+	});
+	suite('relation to-one', function() {
+		var fetchDescriptor;
+		setup(function() {
+			fetchDescriptor = $relation({
+				type: 'SOLD_BY',
+				related: { label: 'Competitor' },
+				cardinality: 'one'
 			});
-			var minimalMatchClause = '$self-[:COVERS]->market';
-			minimalDescriptor.matchPart();
-			minimalDescriptor.matchPart().toString().should.eql(minimalMatchClause);
+		});
+		test('#matchPart', function() {
+			fetchDescriptor.matchPart().toString().should.eql('$self-[:SOLD_BY]->(competitor:Competitor)')
+		});
+		test('#resultPart', function() {
+			fetchDescriptor.resultPart().toString().should.eql('competitor');
+		});
+	});
+	suite('complex', function() {
+		var fetchDescriptor;
+		setup(function() {
+			fetchDescriptor = $relation({
+				self: { label: 'Competitor' },
+				type: 'SOLD_BY',
+				direction: 'inbound',
+				related: { label: 'CompetitorProduct', alias: 'product' },
+				fetch: { aggregate: 'count' }
+			});
+		});
+		test('#matchPart', function() {
+			fetchDescriptor.matchPart().toString()
+				.should.eql('(competitor:Competitor)<-[:SOLD_BY]-(product:CompetitorProduct)')
+		});
+		test('#resultPart', function() {
+			fetchDescriptor.resultPart().toString().should.eql('count(distinct product) as productsCount');
 		});
 	});
 };

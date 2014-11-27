@@ -14,7 +14,7 @@ module.exports = [
 			'MATCH ($self:Activity)',
 			'WITH distinct $self',
 			'RETURN {',
-				'id: id($self)',
+			'id: id($self)',
 			'}'
 		].join(' '),
 		queryParams: {},
@@ -22,62 +22,62 @@ module.exports = [
 			'MATCH ($self:Activity)',
 			'WITH distinct $self',
 			'RETURN {',
-				'id: id($self)',
+			'id: id($self)',
 			'}'
 		].join(' ')
 	},
 	{
-		name       : 'complex',
-		template   : {
-			filterSection       : {
+		name: 'complex',
+		template: {
+			filterSection: {
 				filterDescriptors: [
 					{
-						label     : 'Activity',
+						label: 'Activity',
 						conditions: [
 							{ field: 'name', op: 'regex', value: '.*Month.*' }
 						]
 					},
 					{
-						relation  : { type: 'PROMOTES', related: { label: 'CompetitorProduct', alias: 'product' } },
+						relation: {
+							type: 'PROMOTES',
+							related: { label: 'CompetitorProduct', alias: 'product' }
+						},
 						conditions: [
 							{ value: 3039 }
 						]
 					}
 				]
 			},
-			orderSection        : {
+			orderSection: {
 				orderParts: [
 					{ field: 'name' },
 					{ field: 'timestamp', direction: 'desc' }
 				]
 			},
-			subsetSection       : {
-				skip : 10,
+			subsetSection: {
+				skip: 10,
 				limit: 10
 			},
 			returnSection: {
-				fields          : ['name'],
-				fetchDescriptors: [
+				fields: ['name'],
+				relationDescriptors: [
 					{
-						relationDescriptor: {
-							type       : 'RUNS',
-							related    : { label: 'Competitor' },
-							direction  : 'inbound',
-							cardinality: 'one'
-						},
-						fetchOptions: { retrieve: 'id' }
+
+						type: 'RUNS',
+						related: { label: 'Competitor' },
+						direction: 'inbound',
+						cardinality: 'one',
+						fetch: { retrieve: 'id' }
 					},
 					{
-						relationDescriptor: {
-							type       : 'PROMOTES',
-							related    : { label: 'CompetitorProduct', alias: 'product' }
-						},
-						fetchOptions: { retrieve: 'id' }
+						type: 'PROMOTES',
+						related: { label: 'CompetitorProduct', alias: 'product' },
+						fetch: { retrieve: 'id' }
 					}
 				]
 			}
 		},
-		queryString: [
+		queryString: [ // @formatter:off
 			"MATCH ($self:Activity)",
 				"WHERE $self.`name` =~ {nameRegex}",
 			"WITH distinct $self",
@@ -96,7 +96,7 @@ module.exports = [
 				"name: $self.`name`,",
 				"competitorId: competitorId,",
 				"productIds: productIds",
-			"}"
+			"}" // @formatter:on
 		].join(' '),
 		queryParams: {
 			nameRegex: '(?i).*Month.*',
@@ -104,7 +104,7 @@ module.exports = [
 			skip: 10,
 			limit: 10
 		},
-		generatedString: [
+		generatedString: [ // @formatter:off
 			"MATCH ($self:Activity)",
 				"WHERE $self.`name` =~ \"(?i).*Month.*\"",
 			"WITH distinct $self",
@@ -123,7 +123,7 @@ module.exports = [
 				"name: $self.`name`,",
 				"competitorId: competitorId,",
 				"productIds: productIds",
-			"}"
+			"}" // @formatter:on
 		].join(' ')
 	}
 ];
