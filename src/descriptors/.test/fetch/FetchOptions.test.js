@@ -19,12 +19,12 @@ module.exports = function() {
 			});
 		});
 		test('.retrieve is node', function() {
-			new FetchOptions().retrieve.should.eql('node');
+			new FetchOptions().retrieve.should.eql('id');
 		});
 	});
 	suite('#resultPart', function() {
 		test('no arg', function() {
-			new FetchOptions().resultPart().toString().should.eql('collect(distinct $self) as $selves')
+			new FetchOptions().resultPart().toString().should.eql('collect(distinct id($self)) as ids');
 		});
 		test('with id', function() {
 			new FetchOptions({ retrieve: 'id' }, 'one').resultPart().toString()
@@ -46,7 +46,7 @@ module.exports = function() {
 		});
 		test('collect', function() {
 			new FetchOptions({}, 'many').resultPart().toString()
-				.should.eql('collect(distinct $self) as $selves');
+				.should.eql('collect(distinct id($self)) as ids');
 		});
 	});
 };

@@ -15,7 +15,7 @@ module.exports = function() {
 			fetchDescriptor.matchPart().toString().should.eql('$self-[:COVERS]->(market:Market)')
 		});
 		test('#resultPart', function() {
-			fetchDescriptor.resultPart().toString().should.eql('collect(distinct market) as markets');
+			fetchDescriptor.resultPart().toString().should.eql('collect(distinct id(market)) as marketIds');
 		});
 	});
 	suite('relation to-one', function() {
@@ -31,7 +31,7 @@ module.exports = function() {
 			fetchDescriptor.matchPart().toString().should.eql('$self-[:SOLD_BY]->(competitor:Competitor)')
 		});
 		test('#resultPart', function() {
-			fetchDescriptor.resultPart().toString().should.eql('competitor');
+			fetchDescriptor.resultPart().toString().should.eql('id(competitor) as competitorId');
 		});
 	});
 	suite('complex', function() {

@@ -8,7 +8,7 @@ var $resultParts = require('../../parts/index').result;
 function FetchOptions(def, cardinality) {
 	defaults(this, def, {
 		aggregate: cardinality == 'one' ? 'identity' : 'collect',
-		retrieve: 'node'
+		retrieve: 'id'
 	});
 }
 

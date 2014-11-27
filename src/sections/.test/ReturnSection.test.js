@@ -20,11 +20,13 @@ module.exports = function() {
 			.should.eql('RETURN { id: id($self), name: $self.`name` }');
 	});
 	test('one relation - fetch node', function() {
-		new ReturnSection({ relationDescriptors: [relToOneDescriptor] }).toString().should.eql([
-			'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
-			'WITH $self, other',
-			'RETURN { id: id($self), other: other }'
-		].join(' '));
+		new ReturnSection({
+			relationDescriptors: [_.merge({}, relToOneDescriptor, { fetch: { retrieve: 'node' } })]
+		}).toString().should.eql([
+				'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
+				'WITH $self, other',
+				'RETURN { id: id($self), other: other }'
+			].join(' '));
 	});
 	test('one relation - fetch id', function() {
 		new ReturnSection({
@@ -48,14 +50,14 @@ module.exports = function() {
 		new ReturnSection({
 			relationDescriptors: [
 				relToManyDescriptor,
-				_.merge({}, relToOneDescriptor, { fetch: { retrieve: 'id' } })
+				relToOneDescriptor
 			]
 		}).toString().should.eql([
 				'OPTIONAL MATCH $self-[:HAS]->(child:Other)',
-				'WITH $self, collect(distinct child) as children',
+				'WITH $self, collect(distinct id(child)) as childIds',
 				'OPTIONAL MATCH $self-[:RELATES_TO]->(other:Other)',
-				'WITH $self, children, id(other) as otherId',
-				'RETURN { id: id($self), children: children, otherId: otherId }'
+				'WITH $self, childIds, id(other) as otherId',
+				'RETURN { id: id($self), childIds: childIds, otherId: otherId }'
 			].join(' '));
 	});
 };
