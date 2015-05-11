@@ -48,12 +48,6 @@ module.exports = [
 					}
 				]
 			},
-			orderSection: {
-				orderParts: [
-					{ field: 'name' },
-					{ field: 'timestamp', direction: 'desc' }
-				]
-			},
 			subsetSection: {
 				skip: 10,
 				limit: 10
