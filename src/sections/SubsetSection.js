@@ -4,15 +4,15 @@ var _ = require('lodash-node');
 
 var QueryObject = require('../query/QueryObject');
 
-function OrderSection(def) {
+function SubsetSection(def) {
 	_.defaults(this, def, {
 		skip : 0,
 		limit: 0
 	});
 }
 
-OrderSection.prototype = {
-	constructor: OrderSection,
+SubsetSection.prototype = {
+	constructor: SubsetSection,
 
 	queryObject: function() {
 		return QueryObject.merge(['skip', 'limit'].map(this._queryObjectFor.bind(this)));
@@ -40,4 +40,4 @@ function _compactObject(subsetOptions) {
 	return _.pick(subsetOptions, _.identity);
 }
 
-module.exports = OrderSection;
+module.exports = SubsetSection;
