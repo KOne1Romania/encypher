@@ -2,8 +2,8 @@
 
 var _ = require('lodash-node');
 
-var $clauses = require('../clauses/index'),
-    $orderPart = require('../parts/index').order,
+var $clauses = require('../clauses'),
+    $orderPart = require('../parts').order,
     QueryObject = require('../query/QueryObject');
 
 function OrderSection(def) {

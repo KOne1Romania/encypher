@@ -2,8 +2,8 @@
 
 var _ = require('lodash-node');
 
-var $resultParts = require('../parts/index').result,
-    $clauses = require('../clauses/index'),
+var $resultParts = require('../parts').result,
+    $clauses = require('../clauses'),
     QueryObject = require('../query/QueryObject');
 
 function ReturnSection() {

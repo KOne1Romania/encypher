@@ -3,7 +3,7 @@
 var defn = require('defn');
 var defaults = require('lodash-node').defaults;
 
-var $resultParts = require('../../parts/index').result;
+var $resultParts = require('../../parts').result;
 
 function FetchOptions(def, cardinality) {
 	defaults(this, def, {
