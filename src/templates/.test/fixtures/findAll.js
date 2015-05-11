@@ -60,6 +60,10 @@ module.exports = [
 			},
 			returnSection: {
 				fields: ['name'],
+				orderParts: [
+					{ field: 'name' },
+					{ field: 'timestamp', direction: 'desc' }
+				],
 				relationDescriptors: [
 					{
 
@@ -84,13 +88,13 @@ module.exports = [
 			"MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
 				"WHERE id(product) = {productId}",
 			"WITH distinct $self",
-				"ORDER BY $self.`name` ASC, $self.`timestamp` DESC",
 				"SKIP {skip}",
 				"LIMIT {limit}",
 			"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
 			"WITH $self, id(competitor) as competitorId",
 			"OPTIONAL MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
 			"WITH $self, competitorId, collect(distinct id(product)) as productIds",
+				"ORDER BY $self.`name` ASC, $self.`timestamp` DESC",
 			"RETURN {",
 				"id: id($self),",
 				"name: $self.`name`,",
@@ -111,13 +115,13 @@ module.exports = [
 			"MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
 				"WHERE id(product) = 3039",
 			"WITH distinct $self",
-				"ORDER BY $self.`name` ASC, $self.`timestamp` DESC",
 				"SKIP 10",
 				"LIMIT 10",
 			"OPTIONAL MATCH $self<-[:RUNS]-(competitor:Competitor)",
 			"WITH $self, id(competitor) as competitorId",
 			"OPTIONAL MATCH $self-[:PROMOTES]->(product:CompetitorProduct)",
 			"WITH $self, competitorId, collect(distinct id(product)) as productIds",
+				"ORDER BY $self.`name` ASC, $self.`timestamp` DESC",
 			"RETURN {",
 				"id: id($self),",
 				"name: $self.`name`,",

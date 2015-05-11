@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./templateGenerator')([ 'filter', 'order', 'subset', 'return' ]);
+module.exports = require('./templateGenerator')([ 'filter', 'subset', 'return' ]);
