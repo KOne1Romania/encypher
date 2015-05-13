@@ -6,11 +6,11 @@ var $resultParts = require('../parts').result,
     $clauses = require('../clauses'),
     QueryObject = require('../query/QueryObject');
 
-function ReturnSection() {
+function ReturnCountSection() {
 }
 
-ReturnSection.prototype = {
-	constructor: ReturnSection,
+ReturnCountSection.prototype = {
+	constructor: ReturnCountSection,
 
 	queryObject: function() {
 		var queryString = $clauses.return([$resultParts.count().of('$self')]).toString();
@@ -22,4 +22,4 @@ ReturnSection.prototype = {
 	}
 };
 
-module.exports = ReturnSection;
+module.exports = ReturnCountSection;
