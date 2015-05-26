@@ -1,22 +1,48 @@
-'use strict';
+'use strict'
 
-var $templates = require('./templates'),
-    $descriptors = require('./descriptors');
+var stampit = require('stampit'),
+    _       = require('lodash')
 
-var encypher = {
-	findTemplate: function(templateDescriptor) {
-		return $templates.findAll(templateDescriptor).queryObject();
-	},
+var Node         = require('./node/Node'),
+    CypherObject = require('./cypher/CypherObject'),
+    Ensure       = require('./util/stamps').Ensure
 
-	countTemplate: function(templateDescriptor) {
-		return $templates.count(templateDescriptor).queryObject();
-	},
+var Encypher = stampit()
+	.state({
+		node: {},
+		cypherObject: {}
+	})
+	.methods({
+		match: function(node) {
+			node = Node(node)
+			return this.extend({
+				node: node.bind(),
+				cypherObject: this.cypherObject.append(node.buildMatchCypher())
+			})
+		},
 
-	$entity: $descriptors.entity,
+		continue: function() {
+			return this.extend({
+				cypherObject: this.cypherObject.append(this.node.buildWithCypher())
+			})
+		},
 
-	$node: $descriptors.node,
+		return: function() {
+			return this.extend({
+				cypherObject: this.cypherObject.append(this.node.buildReturnCypher())
+			})
+		},
 
-	$relation: $descriptors.relation
-};
+		extend: function(newState) {
+			return Encypher(_.merge(this, newState))
+		},
 
-module.exports = encypher;
+		build: function() {
+			return this.cypherObject
+		}
+	})
+	.compose(Ensure({
+		cypherObject: CypherObject
+	}))
+
+module.exports = Encypher

@@ -1,6 +1,7 @@
 'use strict'
 
-var stampit = require('stampit')
+var stampit = require('stampit'),
+    _       = require('lodash')
 
 exports.Ensure = function(typesMapping) {
 	return stampit().enclose(function() {
@@ -10,3 +11,14 @@ exports.Ensure = function(typesMapping) {
 		}, this)
 	})
 }
+
+exports.Cloner = stampit()
+	.methods({
+		clone: function() {
+			return this.getStamp()(this)
+		},
+
+		extend: function(fields) {
+			return this.getStamp()(_.merge(this, fields || {}))
+		}
+	})
