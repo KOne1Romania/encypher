@@ -19,6 +19,6 @@ exports.Cloner = stampit()
 		},
 
 		extend: function(fields) {
-			return this.getStamp()(_.merge(this, fields || {}))
+			return this.getStamp()(_.merge({}, this, fields || {}))
 		}
 	})

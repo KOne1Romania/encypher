@@ -2,22 +2,39 @@
 
 var stampit = require('stampit')
 
+var Cloner        = require('../util/stamps').Cloner,
+    MainChainLink = require('./link/MainChainLink')
+
 var Chain = stampit()
 	.state({
-		first: {},
-		current: {}
+		main: null,
+		current: null
 	})
 	.methods({
-		addNode: function(newNode) {
-			return Chain({
-				first: this.first,
-				current: this.current.addNode(newNode)
-			})
+		toString: function() {
+			return this.current.toString()
+		},
+
+		addNode: function(node) {
+			return this.extend({ current: this.current.addNode(node) })
+		},
+
+		backToMain: function() {
+			return this.extend({ current: this.main })
+		},
+
+		getStamp: function() {
+			return Chain
 		}
 	})
+	.compose(Cloner)
 
-Chain.ofNode = function(node) {
-	return Chain({ node: node })
+Chain.fromNodeLabeled = function(label) {
+	var mainChainLink = MainChainLink.fromNode({ label: label })
+	return Chain({
+		main: mainChainLink,
+		current: mainChainLink
+	})
 }
 
 module.exports = Chain
