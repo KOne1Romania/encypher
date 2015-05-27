@@ -2,7 +2,7 @@
 
 require('chai').should()
 
-var Step = require('../Step'),
+var Step  = require('../Step'),
     Chain = require('../../chain/Chain')
 
 var _ = require('lodash')
@@ -11,17 +11,11 @@ var mainChain = Chain.fromNodeLabeled('User')
 
 var emptyStep = Step()
 var matchStep = Step.of({
-	chainTransformer: function(chain) {
-		return chain.bind()
-	},
-	cypherBuilder: function(chain) {
-		return chain.buildMatchCypher()
-	}
+	chainTransformer: _.method('bind'),
+	cypherBuilder: _.method('buildMatchCypher')
 })
 var returnStep = Step.of({
-	cypherBuilder: function(chain) {
-		return chain.buildReturnCypher()
-	}
+	cypherBuilder: _.method('buildReturnCypher')
 })
 
 suite('Step', function() {
