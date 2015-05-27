@@ -13,6 +13,12 @@ var Builder = stampit()
 		step: {}
 	})
 	.methods({
+		return: function() {
+			return this._record(Step.of({
+				cypherBuilder: _.method('buildReturnCypher')
+			})).build()
+		},
+
 		getStamp: function() {
 			return Builder
 		},
@@ -22,7 +28,7 @@ var Builder = stampit()
 		},
 
 		_record: function(step) {
-			this.extend({
+			return this.extend({
 				step: this.step.compose(step)
 			})
 		}
