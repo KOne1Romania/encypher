@@ -19,6 +19,7 @@
   "author": "Kalon",
   "license": "MIT",
   "devDependencies": {
+    "babel": "^5.4.7",
     "chai": "^1.9.1",
     "mocha": "^1.20.1"
   },

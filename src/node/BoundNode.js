@@ -25,6 +25,10 @@ var BoundNode = stampit()
 			})
 		},
 
+		bind: function() {
+			throw Error('Cannot bind node `' + this.alias +'` - already bound')
+		},
+
 		withAlias: function(alias) {
 			return BoundNode({ alias: alias })
 		},

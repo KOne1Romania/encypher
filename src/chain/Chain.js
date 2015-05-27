@@ -25,6 +25,22 @@ var Chain = stampit()
 
 		getStamp: function() {
 			return Chain
+		},
+
+		bind: function() {
+			return this.extend({ current: this.current.bind() })
+		},
+
+		buildMatchCypher: function() {
+			return this.current.node.buildMatchCypher()
+		},
+
+		buildReturnCypher: function() {
+			return this.current.node.buildReturnCypher()
+		},
+
+		buildWithString: function() {
+			return this.current.node.buildWithString()
 		}
 	})
 	.compose(Cloner)

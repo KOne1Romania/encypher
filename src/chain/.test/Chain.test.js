@@ -32,4 +32,14 @@ suite('Chain', function() {
 			threeNodesChain.backToMain().should.eql(initialChain)
 		})
 	})
+
+	suite('#bind', function() {
+		test('one node chain', function() {
+			initialChain.bind().toString().should.eql('$main')
+		})
+
+		test('two nodes chain', function() {
+			twoNodesChain.bind().toString().should.eql('post')
+		})
+	})
 })

@@ -15,6 +15,14 @@ var UnboundNode = stampit()
 			return CypherObject.fromString(this).prepend('MATCH')
 		},
 
+		buildReturnCypher: function() {
+			throw Error('Cannot build Return cypher - node `' + this + '` is not bound')
+		},
+
+		buildWithCypher: function() {
+			throw Error('Cannot build With cypher - node `' + this + '` is not bound')
+		},
+
 		toString: function() {
 			return '(' + this.alias + ':' + this.label + ')'
 		},
