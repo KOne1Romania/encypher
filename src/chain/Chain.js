@@ -20,7 +20,7 @@ var Chain = stampit()
 		},
 
 		backToMain: function() {
-			return this.extend({ current: this.main })
+			return this.extend({ current: this.main.bind() })
 		},
 
 		getStamp: function() {
@@ -39,8 +39,8 @@ var Chain = stampit()
 			return this.current.node.buildReturnCypher()
 		},
 
-		buildWithString: function() {
-			return this.current.node.buildWithString()
+		buildWithCypher: function() {
+			return this.current.node.buildWithCypher()
 		}
 	})
 	.compose(Cloner)

@@ -12,4 +12,9 @@ suite('Builder', function() {
 	test('#return', function() {
 		Builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
 	})
+
+	test('#backToMain', function() {
+		Builder.match('User').backToMain().return()
+			.toString().should.eql('MATCH ($main:User) WITH distinct $main RETURN $main')
+	})
 })

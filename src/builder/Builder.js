@@ -19,6 +19,13 @@ var Builder = stampit()
 			})).build()
 		},
 
+		backToMain: function() {
+			return this._record(Step.of({
+				chainTransformer: _.method('backToMain'),
+				cypherBuilder: _.method('buildWithCypher')
+			}))
+		},
+
 		getStamp: function() {
 			return Builder
 		},
