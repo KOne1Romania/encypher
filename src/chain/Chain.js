@@ -41,6 +41,10 @@ var Chain = stampit()
 
 		buildWithCypher: function() {
 			return this.current.node.buildWithCypher()
+		},
+
+		buildWhereIdCypher: function(id) {
+			return this.current.node.buildWhereIdCypher(id)
 		}
 	})
 	.compose(Cloner)

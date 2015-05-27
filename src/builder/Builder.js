@@ -26,6 +26,12 @@ var Builder = stampit()
 			}))
 		},
 
+		whereId: function(id) {
+			return this._record(Step.of({
+				cypherBuilder: _.method('buildWhereIdCypher', id)
+			}))
+		},
+
 		getStamp: function() {
 			return Builder
 		},

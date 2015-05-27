@@ -17,4 +17,9 @@ suite('Builder', function() {
 		Builder.match('User').backToMain().return()
 			.toString().should.eql('MATCH ($main:User) WITH distinct $main RETURN $main')
 	})
+
+	test('#whereId', function() {
+		Builder.match('User').whereId(10).return()
+			.toString().should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
+	})
 })
