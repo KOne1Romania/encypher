@@ -2,24 +2,40 @@
 
 require('chai').should()
 
-var Builder = require('../Builder')
+var builder = require('../Builder').base
 
-suite('Builder', function() {
+suite('builder', function() {
 	test('#match', function() {
-		Builder.match('User').build().toString().should.eql('MATCH ($main:User)')
+		builder.match('User').build().toString().should.eql('MATCH ($main:User)')
 	})
 
 	test('#return', function() {
-		Builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
+		builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
 	})
 
-	test('#backToMain', function() {
-		Builder.match('User').backToMain().return()
+	test('#continue', function() {
+		builder.match('User').continue().return()
 			.toString().should.eql('MATCH ($main:User) WITH distinct $main RETURN $main')
 	})
 
 	test('#whereId', function() {
-		Builder.match('User').whereId(10).return()
+		builder.match('User').whereId(10).return()
 			.toString().should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
+	})
+
+	test('#continue twice', function() {
+		var cypher = builder
+			.match('User')
+			.continue()
+			.whereId(10)
+			.continue()
+			.return()
+		cypher.toString().should.eql([
+			'MATCH ($main:User)',
+			'WITH distinct $main',
+			'WHERE id($main) = 10',
+			'WITH distinct $main',
+			'RETURN $main'
+		].join(' '))
 	})
 })

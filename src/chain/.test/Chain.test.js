@@ -5,37 +5,51 @@ require('chai').should()
 var Chain = require('../Chain')
 
 suite('Chain', function() {
-	var initialChain    = Chain.fromNodeLabeled('User'),
-	    twoNodesChain   = initialChain.addNode({ label: 'Post' }),
+	var emptyChain   = Chain(),
+	    oneNodeChain = emptyChain.addNode({ label: 'User' }),
+	    twoNodesChain   = oneNodeChain.addNode({ label: 'Post' }),
 	    threeNodesChain = twoNodesChain.addNode({ label: 'Tag' })
 
-	test('#toString', function() {
-		initialChain.toString().should.eql('($main:User)')
+	test('emptyChain', function() {
+		emptyChain.toString().should.eql('')
 	})
 
 	suite('#addNode', function() {
 		test('once', function() {
-			twoNodesChain.toString().should.eql('(post:Post)')
+			oneNodeChain.toString().should.equal('($main:User)')
 		})
 
 		test('twice', function() {
+			twoNodesChain.toString().should.eql('(post:Post)')
+		})
+
+		test('three times', function() {
 			threeNodesChain.toString().should.eql('(post_tag:Tag)')
 		})
 	})
 
 	suite('#backToMain', function() {
-		test('after adding one node', function() {
-			twoNodesChain.backToMain().should.eql(initialChain)
+		test('on one node chain', function() {
+			oneNodeChain.backToMain().should.eql(oneNodeChain)
 		})
 
-		test('after adding two nodes', function() {
-			threeNodesChain.backToMain().should.eql(initialChain)
+		test('twice on one node chain', function() {
+			oneNodeChain.backToMain().backToMain()
+				.should.eql(oneNodeChain)
+		})
+
+		test('on two nodes chain', function() {
+			twoNodesChain.backToMain().should.eql(oneNodeChain)
+		})
+
+		test('on three nodes chain', function() {
+			threeNodesChain.backToMain().should.eql(oneNodeChain)
 		})
 	})
 
 	suite('#bind', function() {
 		test('one node chain', function() {
-			initialChain.bind().toString().should.eql('$main')
+			oneNodeChain.bind().toString().should.eql('$main')
 		})
 
 		test('two nodes chain', function() {

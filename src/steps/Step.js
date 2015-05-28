@@ -3,7 +3,8 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var CypherObject = require('../cypher/CypherObject')
+var CypherObject = require('../cypher/CypherObject'),
+    EMPTY_CHAIN  = require('../chain/Chain').EMPTY
 
 var Step = stampit()
 	.state({
@@ -17,6 +18,10 @@ var Step = stampit()
 			}).cypherObject
 		},
 
+		run: function() {
+			return this.runOn(EMPTY_CHAIN)
+		},
+
 		compose: function(otherStep) {
 			return Step({
 				transformer: _.compose(otherStep.transformer, this.transformer)
@@ -24,22 +29,23 @@ var Step = stampit()
 		}
 	})
 
-Step.of = function(updatersMap) {
+Step.make = function(updatersMap) {
 	_.defaults(updatersMap, {
-		chainTransformer: _.identity,
-		cypherBuilder: _.constant({ string: '' })
+		before: _.identity,
+		cypherBuilder: _.constant({ string: '' }),
+		after: _.identity
 	})
-	var transformer = makeTransformer(updatersMap.chainTransformer, updatersMap.cypherBuilder)
+	var transformer = makeTransformer(updatersMap)
 	return Step({ transformer: transformer })
 }
 
-function makeTransformer(chainTransformer, cypherBuilder) {
+function makeTransformer(updaters) {
 	return function(encypherState) {
 		var cypherObject = encypherState.cypherObject,
-		    chain        = encypherState.chain
+		    chain        = updaters.before(encypherState.chain)
 		return {
-			chain: chainTransformer(chain),
-			cypherObject: CypherObject(cypherObject).merge(cypherBuilder(chain))
+			chain: updaters.after(chain),
+			cypherObject: CypherObject(cypherObject).merge(updaters.cypherBuilder(chain))
 		}
 	}
 }

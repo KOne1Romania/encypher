@@ -3,59 +3,43 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var Cloner = require('../util/stamps').Cloner,
-    Chain  = require('../chain/Chain'),
-    Step   = require('../step/Step')
+var Chain  = require('../chain/Chain'),
+    steps   = require('../steps')
 
 var Builder = stampit()
 	.state({
-		chain: {},
 		step: {}
 	})
 	.methods({
-		return: function() {
-			return this._record(Step.of({
-				cypherBuilder: _.method('buildReturnCypher')
-			})).build()
+		match: function(label) {
+			return this.compose(steps.Match(label))
 		},
 
-		backToMain: function() {
-			return this._record(Step.of({
-				chainTransformer: _.method('backToMain'),
-				cypherBuilder: _.method('buildWithCypher')
-			}))
+		return: function() {
+			return this.compose(steps.Return()).build()
+		},
+
+		continue: function() {
+			return this.compose(steps.Continue())
 		},
 
 		whereId: function(id) {
-			return this._record(Step.of({
-				cypherBuilder: _.method('buildWhereIdCypher', id)
-			}))
-		},
-
-		getStamp: function() {
-			return Builder
+			return this.compose(steps.WhereId(id))
 		},
 
 		build: function() {
-			return this.step.runOn(this.chain)
+			return this.step.run()
 		},
 
-		_record: function(step) {
-			return this.extend({
-				step: this.step.compose(step)
-			})
+		compose: function(step) {
+			return Builder.of(this.step.compose(step))
 		}
 	})
-	.compose(Cloner)
 
-Builder.match = function(label) {
-	return Builder({
-		chain: Chain.fromNodeLabeled(label),
-		step: Step.of({
-			chainTransformer: _.method('bind'),
-			cypherBuilder: _.method('buildMatchCypher')
-		})
-	})
+Builder.of = function(step) {
+	return Builder({ step: step })
 }
+
+Builder.base = Builder.of(steps.EMPTY)
 
 module.exports = Builder
