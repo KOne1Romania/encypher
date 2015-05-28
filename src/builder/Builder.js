@@ -3,7 +3,8 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var Chain  = require('../chain/Chain'),
+var Chain   = require('../chain/Chain'),
+    Stepper = require('./Stepper'),
     steps   = require('../steps')
 
 var Builder = stampit()
@@ -11,22 +12,6 @@ var Builder = stampit()
 		step: {}
 	})
 	.methods({
-		match: function(label) {
-			return this.addStep(steps.Match(label))
-		},
-
-		return: function() {
-			return this.addStep(steps.Return())
-		},
-
-		continue: function() {
-			return this.addStep(steps.Continue())
-		},
-
-		whereId: function(id) {
-			return this.addStep(steps.WhereId(id))
-		},
-
 		toString: function() {
 			return this.toCypher().toString()
 		},
@@ -43,6 +28,9 @@ var Builder = stampit()
 			return this.addStep(otherBuilder.step)
 		}
 	})
+	.compose(Stepper([
+		'match', 'return', 'continue', 'whereId'
+	]))
 
 Builder.of = function(step) {
 	return Builder({ step: step })
