@@ -17,6 +17,11 @@ suite('builder', function() {
 		})
 	})
 
+	test('#match twice', function() {
+		builder.match('User').match('Post').whereId(15).return().toString()
+			.should.eql('MATCH ($main:User) MATCH (post:Post) WHERE id(post) = 15 RETURN $main')
+	})
+
 	test('#return', function() {
 		builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
 	})

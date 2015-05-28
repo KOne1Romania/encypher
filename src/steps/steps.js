@@ -10,6 +10,7 @@ exports.Merge = makeInstantiateStep('merge')
 
 exports.Return = function ReturnStep() {
 	return Step.make({
+		before: _.method('backToMain'),
 		cypherBuilder: _.method('buildReturnCypher')
 	})
 }
