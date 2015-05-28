@@ -12,27 +12,35 @@ var Builder = stampit()
 	})
 	.methods({
 		match: function(label) {
-			return this.compose(steps.Match(label))
+			return this.addStep(steps.Match(label))
 		},
 
 		return: function() {
-			return this.compose(steps.Return()).build()
+			return this.addStep(steps.Return())
 		},
 
 		continue: function() {
-			return this.compose(steps.Continue())
+			return this.addStep(steps.Continue())
 		},
 
 		whereId: function(id) {
-			return this.compose(steps.WhereId(id))
+			return this.addStep(steps.WhereId(id))
 		},
 
-		build: function() {
+		toString: function() {
+			return this.toCypher().toString()
+		},
+
+		toCypher: function() {
 			return this.step.run()
 		},
 
-		compose: function(step) {
+		addStep: function(step) {
 			return Builder.of(this.step.compose(step))
+		},
+
+		compose: function(otherBuilder) {
+			return this.addStep(otherBuilder.step)
 		}
 	})
 

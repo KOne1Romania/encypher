@@ -6,7 +6,7 @@ var builder = require('../Builder').base
 
 suite('builder', function() {
 	test('#match', function() {
-		builder.match('User').build().toString().should.eql('MATCH ($main:User)')
+		builder.match('User').toString().should.eql('MATCH ($main:User)')
 	})
 
 	test('#return', function() {
@@ -37,5 +37,12 @@ suite('builder', function() {
 			'WITH distinct $main',
 			'RETURN $main'
 		].join(' '))
+	})
+
+	test('#compose', function() {
+		var matchWhereStep = builder.match('User').whereId(10),
+		    returnStep = builder.return()
+		matchWhereStep.compose(returnStep).toString()
+			.should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
 	})
 })
