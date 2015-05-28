@@ -22,3 +22,15 @@ exports.Cloner = stampit()
 			return this.getStamp()(_.merge({}, this, fields || {}))
 		}
 	})
+
+exports.Forwarder = function(methodsMappings) {
+	var methods = {}
+	_.each(methodsMappings, function(fieldMethods, field) {
+		_.each(fieldMethods, function(fieldMethod) {
+			methods[fieldMethod] = function() {
+				return this[field][fieldMethod].apply(this, arguments)
+			}
+		})
+	})
+	return stampit().methods(methods)
+}
