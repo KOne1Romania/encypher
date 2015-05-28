@@ -28,7 +28,7 @@ exports.Forwarder = function(methodsMappings) {
 	_.each(methodsMappings, function(fieldMethods, field) {
 		_.each(fieldMethods, function(fieldMethod) {
 			methods[fieldMethod] = function() {
-				return this[field][fieldMethod].apply(this, arguments)
+				return this[field][fieldMethod].apply(this[field], arguments)
 			}
 		})
 	})
