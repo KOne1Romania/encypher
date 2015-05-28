@@ -28,6 +28,12 @@ exports.WhereId = function WhereIdStep(id) {
 	})
 }
 
+exports.CreateRelation = function(relationArc) {
+	return Step.make({
+		cypherBuilder: _.method('buildCreateRelationCypher', relationArc)
+	})
+}
+
 function makeInstantiateStep(action) {
 	return function _InstantiateStep(label, data) {
 		return Step.make({

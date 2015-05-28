@@ -24,6 +24,19 @@ suite('builder', function() {
 		})
 	})
 
+	suite('relations', function() {
+		test('create', function() {
+			var expectedCypherString = [
+				'MATCH ($main:User)',
+				'MATCH (post:Post)',
+				'CREATE $main<-[:WRITTEN_BY]-post',
+				'RETURN $main'
+			].join(' ')
+			builder.match('User').match('Post').createRelation({ type: 'WRITTEN_BY', arrow: 'left'})
+				.return().toString().should.equal(expectedCypherString)
+		})
+	})
+
 	test('#return', function() {
 		builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
 	})

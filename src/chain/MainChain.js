@@ -14,12 +14,17 @@ var MainChain = stampit()
 		addNode: function(newNode) {
 			return PartialChain({
 				node: newNode,
-				main: this
+				main: this,
+				previous: this
 			})
 		},
 
 		getStamp: function() {
 			return MainChain
+		},
+
+		buildCreateRelationCypher: function() {
+			throw Error('Cannot create relation with only one node')
 		}
 	})
 	.compose(ChainCommon)
