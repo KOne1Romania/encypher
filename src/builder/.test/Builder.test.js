@@ -5,21 +5,23 @@ require('chai').should()
 var builder = require('../Builder').base
 
 suite('builder', function() {
-	test('#match', function() {
-		builder.match('User').toString().should.eql('MATCH ($main:User)')
-	})
-
-	test('#match by example', function() {
-		var example = { name: 'John' }
-		builder.match('User', example).toCypher().valueOf().should.eql({
-			string: 'MATCH ($main:User {data})',
-			params: { data: example }
+	suite('#match', function() {
+		test('once', function() {
+			builder.match('User').toString().should.eql('MATCH ($main:User)')
 		})
-	})
 
-	test('#match twice', function() {
-		builder.match('User').match('Post').whereId(15).return().toString()
-			.should.eql('MATCH ($main:User) MATCH (post:Post) WHERE id(post) = 15 RETURN $main')
+		test('by example', function() {
+			var example = { name: 'John' }
+			builder.match('User', example).toCypher().valueOf().should.eql({
+				string: 'MATCH ($main:User {data})',
+				params: { data: example }
+			})
+		})
+
+		test('twice', function() {
+			builder.match('User').match('Post').whereId(15).return().toString()
+				.should.eql('MATCH ($main:User) MATCH (post:Post) WHERE id(post) = 15 RETURN $main')
+		})
 	})
 
 	test('#return', function() {
