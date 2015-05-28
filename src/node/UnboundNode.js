@@ -11,8 +11,8 @@ var UnboundNode = stampit()
 		label: ''
 	})
 	.methods({
-		buildMatchCypher: function() {
-			return CypherObject.fromString(this).prepend('MATCH')
+		buildInstantiateCypher: function(action, data) {
+			return this._buildDataCypher(data).prepend(action.toUpperCase())
 		},
 
 		buildReturnCypher: function() {
@@ -21,6 +21,14 @@ var UnboundNode = stampit()
 
 		buildWithCypher: function() {
 			throw Error('Cannot build With cypher - node `' + this + '` is not bound')
+		},
+
+		_buildDataCypher: function(data) {
+			var dataString = data != null ? ' {data}' : ''
+			return CypherObject({
+				string: '(' + this.alias + ':' + this.label + dataString + ')',
+				params: { data: data }
+			})
 		},
 
 		toString: function() {

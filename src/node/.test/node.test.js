@@ -14,9 +14,9 @@ suite('Node', function() {
 			var node = Node({ label: 'Post' })
 			node.alias.should.eql('post')
 		})
-		test('#buildMatchCypher', function() {
+		test('#buildInstantiateCypher', function() {
 			var node = Node({ label: 'Post' })
-			node.buildMatchCypher().toString().should.eql('MATCH (post:Post)')
+			node.buildInstantiateCypher('match').toString().should.eql('MATCH (post:Post)')
 		})
 		test('#inContext', function() {
 			var node = Node({ label: 'Post' }).inContext({ alias: 'user' })
