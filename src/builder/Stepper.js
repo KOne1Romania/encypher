@@ -13,7 +13,11 @@ function Stepper(stepNames) {
 
 function makeStepperMethod(stepName) {
 	return function() {
-		var step = steps[_.capitalize(stepName)].apply(steps, arguments)
+		var stepBuilder = steps[_.capitalize(stepName)]
+		if (stepBuilder == null) {
+			throw Error('Step `' + stepName + '` not found!')
+		}
+		var step = stepBuilder.apply(steps, arguments)
 		return this.addStep(step)
 	}
 }

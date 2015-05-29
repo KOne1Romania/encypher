@@ -112,6 +112,62 @@ suite('builder', function() {
 				.mergeRelation({ type: 'WRITTEN_BY', arrow: 'left' })
 				.return().toString().should.equal(expectedCypherString)
 		})
+
+		suite('#matchRelation', function() {
+			test('once', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User')
+					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.return().toString().should.equal(expectedCypherString)
+			})
+
+			test('once with condition', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+					'WHERE id(post) = 20',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User')
+					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.whereId(20)
+					.return().toString().should.equal(expectedCypherString)
+			})
+
+			test('twice consecutive with condition', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+					'MATCH post-[:HAS_TAG]->(post_tag:Tag)',
+					'WHERE id(post_tag) = 13',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User')
+					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.matchRelation({ type: 'HAS_TAG' }, 'Tag')
+					.whereId(13)
+					.return().toString().should.equal(expectedCypherString)
+			})
+
+			test('two different relations', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+					'WITH distinct $main',
+					'MATCH $main-[:HAS_ADDRESS]->(address:Address)',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User')
+					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.reset()
+					.matchRelation({ type: 'HAS_ADDRESS' }, 'Address')
+					.return().toString().should.equal(expectedCypherString)
+			})
+		})
 	})
 
 	test('#compose', function() {

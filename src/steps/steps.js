@@ -11,6 +11,14 @@ exports.Merge = makeInstantiateStep('merge')
 exports.CreateRelation = makeNewRelationStep('create')
 exports.MergeRelation = makeNewRelationStep('merge')
 
+exports.MatchRelation = function MatchRelationStep(relationArc, label) {
+	return Step.make({
+		before: _.method('addNode', { label: label }),
+		cypherBuilder: _.method('buildNewRelationCypher', 'match', relationArc),
+		after: _.method('bind')
+	})
+}
+
 exports.Return = function ReturnStep() {
 	return Step.make({
 		before: _.method('backToMain'),
