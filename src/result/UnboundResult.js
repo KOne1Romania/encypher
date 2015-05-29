@@ -1,6 +1,9 @@
 'use strict'
 
-var stampit = require('stampit')
+var stampit = require('stampit'),
+    _       = require('lodash')
+
+var BoundResult = require('./BoundResult')
 
 var UnboundResult = stampit()
 	.state({
@@ -14,6 +17,10 @@ var UnboundResult = stampit()
 
 		toKeyValue: function() {
 			return [this.key, this.value].join(': ')
+		},
+
+		bind: function() {
+			return BoundResult(_.pick(this, ['key', 'value']))
 		}
 	})
 

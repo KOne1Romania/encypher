@@ -15,6 +15,17 @@ suite('Result', function() {
 			result.toKeyValue().should.equal('userId: id(user)')
 		})
 	})
+
+	suite('after bind', function() {
+		var boundResult = result.bind()
+		test('#toString uses only key', function() {
+			boundResult.toString().should.equal('userId')
+		})
+
+		test('#toKeyValue is unchanged', function() {
+			result.toKeyValue().should.equal('userId: id(user)')
+		})
+	})
 })
 
 /*
