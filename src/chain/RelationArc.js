@@ -1,10 +1,12 @@
 'use strict'
 
-var stampit = require('stampit')
+var stampit = require('stampit'),
+    _       = require('lodash')
+
 
 var CypherObject = require('../cypher/CypherObject')
 
-var RelationArc = stampit()
+var _RelationArc = stampit()
 	.state({
 		type: '',
 		arrow: 'right'
@@ -26,6 +28,12 @@ var RelationArc = stampit()
 var ARROWS = {
 	right: { before: '-', after: '->' },
 	left: { before: '<-', after: '-' }
+}
+
+function RelationArc(state) {
+	return _.isString(state)
+		? _RelationArc({ type: state })
+		: _RelationArc(state)
 }
 
 module.exports = RelationArc

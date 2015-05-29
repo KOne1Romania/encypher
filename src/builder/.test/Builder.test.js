@@ -81,7 +81,7 @@ suite('builder', function() {
 					'CREATE $main<-[:WRITTEN_BY]-post',
 					'RETURN $main'
 				].join(' ')
-				builder.match('User').match('Post').createRelation({ type: 'WRITTEN_BY', arrow: 'left' })
+				builder.match('User').match('Post').createRelation(WRITTEN_BY_RELATION_ARC)
 					.return().toString().should.equal(expectedCypherString)
 			})
 
@@ -95,7 +95,7 @@ suite('builder', function() {
 					'RETURN $main'
 				].join(' ')
 				builder.match('User').match('Tag').match('Post')
-					.createRelation({ type: 'WRITTEN_BY', arrow: 'left' })
+					.createRelation(WRITTEN_BY_RELATION_ARC)
 					.return().toString().should.equal(expectedCypherString)
 			})
 		})
@@ -109,7 +109,7 @@ suite('builder', function() {
 				'RETURN $main'
 			].join(' ')
 			builder.match('User').match('Post').whereId(12)
-				.mergeRelation({ type: 'WRITTEN_BY', arrow: 'left' })
+				.mergeRelation(WRITTEN_BY_RELATION_ARC)
 				.return().toString().should.equal(expectedCypherString)
 		})
 
@@ -121,7 +121,7 @@ suite('builder', function() {
 					'RETURN $main'
 				].join(' ')
 				builder.match('User')
-					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.matchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
 					.return().toString().should.equal(expectedCypherString)
 			})
 
@@ -133,7 +133,7 @@ suite('builder', function() {
 					'RETURN $main'
 				].join(' ')
 				builder.match('User')
-					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.matchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
 					.whereId(20)
 					.return().toString().should.equal(expectedCypherString)
 			})
@@ -147,8 +147,8 @@ suite('builder', function() {
 					'RETURN $main'
 				].join(' ')
 				builder.match('User')
-					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
-					.matchRelation({ type: 'HAS_TAG' }, 'Tag')
+					.matchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
+					.matchRelation('HAS_TAG', 'Tag')
 					.whereId(13)
 					.return().toString().should.equal(expectedCypherString)
 			})
@@ -162,9 +162,9 @@ suite('builder', function() {
 					'RETURN $main'
 				].join(' ')
 				builder.match('User')
-					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left' }, 'Post')
+					.matchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
 					.reset()
-					.matchRelation({ type: 'HAS_ADDRESS' }, 'Address')
+					.matchRelation('HAS_ADDRESS', 'Address')
 					.return().toString().should.equal(expectedCypherString)
 			})
 		})
@@ -177,3 +177,5 @@ suite('builder', function() {
 			.should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
  	})
 })
+
+var WRITTEN_BY_RELATION_ARC = { type: 'WRITTEN_BY', arrow: 'left' }

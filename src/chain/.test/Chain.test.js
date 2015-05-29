@@ -6,9 +6,9 @@ var Chain = require('../Chain')
 
 suite('Chain', function() {
 	var emptyChain   = Chain(),
-	    oneNodeChain = emptyChain.addNode({ label: 'User' }),
-	    twoNodesChain   = oneNodeChain.addNode({ label: 'Post' }),
-	    threeNodesChain = twoNodesChain.addNode({ label: 'Tag' })
+	    oneNodeChain = emptyChain.addNode('User'),
+	    twoNodesChain   = oneNodeChain.addNode('Post'),
+	    threeNodesChain = twoNodesChain.addNode('Tag')
 
 	test('emptyChain', function() {
 		emptyChain.toString().should.eql('')

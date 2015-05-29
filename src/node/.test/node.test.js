@@ -5,6 +5,10 @@ require('chai').should()
 var Node = require('../Node')
 
 suite('Node', function() {
+	test('creates unbound node with label when receiving string arg', function() {
+		Node('Post').toString().should.equal('(post:Post)')
+	})
+
 	suite('at first', function() {
 		test('#toString uses both label and alias', function() {
 			var node = Node({ label: 'Post', alias: 'myPost' })
@@ -23,10 +27,11 @@ suite('Node', function() {
 			node.toString().should.eql('(user_post:Post)')
 		})
 	})
+
 	suite('after binding', function() {
 		var boundNode
 		setup(function() {
-			boundNode = Node({ label: 'Post' }).bind()
+			boundNode = Node('Post').bind()
 		})
 		test('#toString uses only alias', function() {
 			boundNode.toString().should.eql('post')
