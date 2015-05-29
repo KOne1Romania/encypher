@@ -15,10 +15,10 @@ exports.Return = function ReturnStep() {
 	})
 }
 
-exports.Continue = function ContinueStep() {
+exports.Reset = function ResetStep() {
 	return Step.make({
 		cypherBuilder: _.method('buildWithCypher'),
-		before: _.method('backToMain')
+		after: _.method('backToMain')
 	})
 }
 

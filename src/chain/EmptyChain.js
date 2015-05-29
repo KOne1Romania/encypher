@@ -2,7 +2,8 @@
 
 var stampit = require('stampit')
 
-var MainChain = require('./MainChain')
+var MainChain = require('./MainChain'),
+    CypherObject = require('../cypher/CypherObject')
 
 var EmptyChain = stampit()
 	.methods({
@@ -11,6 +12,15 @@ var EmptyChain = stampit()
 				node: node
 			})
 		},
+
+		backToMain: function() {
+			return this
+		},
+
+		buildWithCypher: function() {
+			return CypherObject.EMPTY
+		},
+
 		toString: function() {
 			return ''
 		}

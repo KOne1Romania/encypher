@@ -26,6 +26,10 @@ var PartialChain = stampit()
 			return PartialChain
 		},
 
+		buildWithCypher: function() {
+			return this.main.node.buildWithCypher()
+		},
+
 		buildCreateRelationCypher: function(relationArc) {
 			return this._buildRelationCypher(relationArc).prepend('CREATE')
 		},

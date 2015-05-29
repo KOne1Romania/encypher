@@ -4,7 +4,8 @@ var stampit = require('stampit')
 
 var Node         = require('../node/Node'),
     PartialChain = require('./PartialChain'),
-    ChainCommon  = require('./ChainCommon')
+    ChainCommon  = require('./ChainCommon'),
+    CypherObject = require('../cypher/CypherObject')
 
 var MainChain = stampit()
 	.state({
@@ -21,6 +22,10 @@ var MainChain = stampit()
 
 		getStamp: function() {
 			return MainChain
+		},
+
+		buildWithCypher: function() {
+			return CypherObject.EMPTY
 		},
 
 		buildCreateRelationCypher: function() {

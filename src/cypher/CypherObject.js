@@ -79,6 +79,8 @@ CypherObject.merge = function CypherObject_merge(qObjects, separator) {
 	})
 }
 
+CypherObject.EMPTY = CypherObject()
+
 function findInterpolatedNames(string) {
 	var interpolatedTokens = string.match(TOKEN_REGEX) || []
 	return interpolatedTokens.map(tokenToVarName)

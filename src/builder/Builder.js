@@ -12,6 +12,10 @@ var Builder = stampit()
 		step: {}
 	})
 	.methods({
+		match: function(label, data) {
+			return this.reset().addStep(steps.Match(label, data))
+		},
+
 		toString: function() {
 			return this.toCypher().toString()
 		},
@@ -29,7 +33,7 @@ var Builder = stampit()
 		}
 	})
 	.compose(Stepper([
-		'match', 'return', 'continue', 'whereId', 'create', 'merge', 'createRelation'
+		'return', 'reset', 'whereId', 'create', 'merge', 'createRelation'
 	]))
 
 Builder.of = function(step) {

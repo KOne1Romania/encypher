@@ -23,7 +23,6 @@ var ChainCommon = stampit()
 			'buildMatchCypher',
 			'buildReturnCypher',
 			'buildWhereIdCypher',
-			'buildWithCypher',
 			'buildInstantiateCypher'
 		]
 	}))

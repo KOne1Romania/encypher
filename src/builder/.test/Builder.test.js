@@ -22,6 +22,17 @@ suite('builder', function() {
 			builder.match('User').match('Post').whereId(15).return().toString()
 				.should.eql('MATCH ($main:User) MATCH (post:Post) WHERE id(post) = 15 RETURN $main')
 		})
+
+		test('only advances one level even when matching third node', function() {
+			var expectedCypherString = [
+				'MATCH ($main:User)',
+				'MATCH (post:Post)',
+				'WITH distinct $main',
+				'MATCH (tag:Tag)',
+				'RETURN $main'].join(' ')
+			builder.match('User').match('Post').match('Tag').return().toString()
+				.should.eql(expectedCypherString)
+		})
 	})
 
 	suite('relations', function() {
@@ -37,34 +48,22 @@ suite('builder', function() {
 		})
 	})
 
-	test('#return', function() {
-		builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
+	suite('#reset', function() {
+		test('does nothing when called first', function() {
+			builder.reset().toString().should.equal('')
+		})
+		test('still does nothing on main chain', function() {
+			builder.match('User').reset().toString().should.eql('MATCH ($main:User)')
+		})
 	})
 
-	test('#continue', function() {
-		builder.match('User').continue().return()
-			.toString().should.eql('MATCH ($main:User) WITH distinct $main RETURN $main')
+	test('#return', function() {
+		builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
 	})
 
 	test('#whereId', function() {
 		builder.match('User').whereId(10).return()
 			.toString().should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
-	})
-
-	test('#continue twice', function() {
-		var cypher = builder
-			.match('User')
-			.continue()
-			.whereId(10)
-			.continue()
-			.return()
-		cypher.toString().should.eql([
-			'MATCH ($main:User)',
-			'WITH distinct $main',
-			'WHERE id($main) = 10',
-			'WITH distinct $main',
-			'RETURN $main'
-		].join(' '))
 	})
 
 	test('#compose', function() {
