@@ -28,7 +28,7 @@ var MainChain = stampit()
 			return CypherObject.EMPTY
 		},
 
-		buildCreateRelationCypher: function() {
+		buildNewRelationCypher: function() {
 			throw Error('Cannot create relation with only one node')
 		}
 	})

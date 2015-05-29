@@ -30,8 +30,8 @@ var PartialChain = stampit()
 			return this.main.node.buildWithCypher()
 		},
 
-		buildCreateRelationCypher: function(relationArc) {
-			return this._buildRelationCypher(relationArc).prepend('CREATE')
+		buildNewRelationCypher: function(action, relationArc) {
+			return this._buildRelationCypher(relationArc).prepend(action.toUpperCase())
 		},
 
 		_buildRelationCypher: function(relationArc) {

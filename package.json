@@ -18,9 +18,15 @@
   ],
   "author": "Kalon",
   "license": "MIT",
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "devDependencies": {
     "babel": "^5.4.7",
     "chai": "^1.9.1",
+    "ghooks": "^0.3.2",
     "mocha": "^1.20.1"
   },
   "dependencies": {

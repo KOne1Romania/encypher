@@ -73,36 +73,51 @@ suite('builder', function() {
 	})
 
 	suite('relations', function() {
-		test('create between main and second node', function() {
-			var expectedCypherString = [
-				'MATCH ($main:User)',
-				'MATCH (post:Post)',
-				'CREATE $main<-[:WRITTEN_BY]-post',
-				'RETURN $main'
-			].join(' ')
-			builder.match('User').match('Post').createRelation({ type: 'WRITTEN_BY', arrow: 'left'})
-				.return().toString().should.equal(expectedCypherString)
+		suite('#createRelation', function() {
+			test('between main and second node', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH (post:Post)',
+					'CREATE $main<-[:WRITTEN_BY]-post',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User').match('Post').createRelation({ type: 'WRITTEN_BY', arrow: 'left' })
+					.return().toString().should.equal(expectedCypherString)
+			})
+
+			test('ignores second node after matching the third', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH (tag:Tag)',
+					'WITH distinct $main',
+					'MATCH (post:Post)',
+					'CREATE $main<-[:WRITTEN_BY]-post',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User').match('Tag').match('Post')
+					.createRelation({ type: 'WRITTEN_BY', arrow: 'left' })
+					.return().toString().should.equal(expectedCypherString)
+			})
 		})
 
-		test('create ignores second node after matching the third', function() {
+		test('#mergeRelation is similar to #createRelation', function() {
 			var expectedCypherString = [
 				'MATCH ($main:User)',
-				'MATCH (tag:Tag)',
-				'WITH distinct $main',
 				'MATCH (post:Post)',
-				'CREATE $main<-[:WRITTEN_BY]-post',
+				'WHERE id(post) = 12',
+				'MERGE $main<-[:WRITTEN_BY]-post',
 				'RETURN $main'
 			].join(' ')
-			builder.match('User').match('Tag').match('Post')
-				.createRelation({ type: 'WRITTEN_BY', arrow: 'left'})
+			builder.match('User').match('Post').whereId(12)
+				.mergeRelation({ type: 'WRITTEN_BY', arrow: 'left' })
 				.return().toString().should.equal(expectedCypherString)
 		})
 	})
 
 	test('#compose', function() {
 		var matchWhereStep = builder.match('User').whereId(10),
-		    returnStep = builder.return()
+		    returnStep     = builder.return()
 		matchWhereStep.compose(returnStep).toString()
 			.should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
-	})
+ 	})
 })

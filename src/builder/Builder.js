@@ -33,7 +33,7 @@ var Builder = stampit()
 		}
 	})
 	.compose(Stepper([
-		'return', 'reset', 'whereId', 'create', 'merge', 'createRelation'
+		'return', 'reset', 'whereId', 'create', 'merge', 'createRelation', 'mergeRelation'
 	]))
 
 Builder.of = function(step) {

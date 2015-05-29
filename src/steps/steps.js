@@ -8,6 +8,9 @@ exports.Match = makeInstantiateStep('match')
 exports.Create = makeInstantiateStep('create')
 exports.Merge = makeInstantiateStep('merge')
 
+exports.CreateRelation = makeNewRelationStep('create')
+exports.MergeRelation = makeNewRelationStep('merge')
+
 exports.Return = function ReturnStep() {
 	return Step.make({
 		before: _.method('backToMain'),
@@ -28,10 +31,12 @@ exports.WhereId = function WhereIdStep(id) {
 	})
 }
 
-exports.CreateRelation = function(relationArc) {
-	return Step.make({
-		cypherBuilder: _.method('buildCreateRelationCypher', relationArc)
-	})
+function makeNewRelationStep(action) {
+	return function(relationArc) {
+		return Step.make({
+			cypherBuilder: _.method('buildNewRelationCypher', action, relationArc)
+		})
+	}
 }
 
 function makeInstantiateStep(action) {
