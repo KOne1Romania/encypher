@@ -1,13 +1,12 @@
 'use strict'
 
-var Result = require('../Result'),
-    BoundNode = require('../../node/BoundNode')
+var Result = require('../Result')
 
-function NodeSelector(node) {
-	var nodeAsString = BoundNode(node).toString()
+function NodeSelector(chain) {
+	var chainNodeAsString = chain.toString()
 	return Result({
-		key: nodeAsString,
-		value: nodeAsString
+		key: chainNodeAsString,
+		value: chainNodeAsString
 	})
 }
 
