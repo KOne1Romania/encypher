@@ -7,7 +7,7 @@ var NodeSelector  = require('../NodeSelector'),
     FieldSelector = require('../FieldSelector'),
     emptyChain    = require('../../../chain/Chain').EMPTY
 
-suite('selector', function() {
+suite('result/selector', function() {
 	var oneNodeChain  = emptyChain.addNode('User').bind(),
 	    twoNodesChain = oneNodeChain.addNode('Post').bind()
 	suite('Node', function() {

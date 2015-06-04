@@ -5,7 +5,7 @@ require('chai').should()
 var CountAggregator   = require('../CountAggregator'),
     CollectAggregator = require('../CollectAggregator')
 
-suite('aggregator', function() {
+suite('result/aggregator', function() {
 	var result = { key: 'post', value: 'post' }
 	test('CountAggregator', function() {
 		var countAggregatorResult = CountAggregator(result)
