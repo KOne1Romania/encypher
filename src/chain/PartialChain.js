@@ -1,6 +1,7 @@
 'use strict'
 
-var stampit = require('stampit')
+var stampit = require('stampit'),
+    _       = require('lodash')
 
 var Node        = require('../node/Node'),
     ChainCommon = require('./ChainCommon'),
@@ -36,6 +37,10 @@ var PartialChain = stampit()
 
 		_buildRelationCypher: function(relationArc) {
 			return RelationArc(relationArc).toCypher(this.previous, this.node)
+		},
+
+		toStringWithSuffix: function(suffix) {
+			return this.toString() + _.capitalize(suffix)
 		}
 	})
 	.compose(ChainCommon)
