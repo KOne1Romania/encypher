@@ -6,9 +6,7 @@ var selector   = require('./selector'),
     aggregator = require('./aggregator')
 
 function ResultMaker(opts) {
-	opts = _.defaults({}, opts, {
-		aggregate: ''
-	})
+	opts = opts || {}
 	var actualSelector   = selector(opts.select),
 	    actualAggregator = aggregator(opts.aggregate)
 
