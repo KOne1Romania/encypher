@@ -13,7 +13,7 @@ var BoundResult = stampit()
 		},
 
 		toKeyValue: function() {
-			return [this.key, this.value].join(': ')
+			return [this.key, this.key].join(': ')
 		}
 	})
 

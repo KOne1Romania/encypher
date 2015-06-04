@@ -22,8 +22,8 @@ suite('Result', function() {
 			boundResult.toString().should.equal('userId')
 		})
 
-		test('#toKeyValue is unchanged', function() {
-			result.toKeyValue().should.equal('userId: id(user)')
+		test('#toKeyValue', function() {
+			boundResult.toKeyValue().should.equal('userId: userId')
 		})
 	})
 })
