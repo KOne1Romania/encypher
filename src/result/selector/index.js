@@ -1,7 +1,15 @@
 'use strict'
 
-exports.Id = require('./IdSelector')
+var _ = require('lodash')
 
-exports.Field = require('./FieldSelector')
+function selector(selected) {
+	if (!_.isString(selected)) {
+		return require('./NodeSelector')
+	}
+	if (selected.toLowerCase() === 'id') {
+		return require('./IdSelector')
+	}
+	return require('./FieldSelector')(selected)
+}
 
-exports.Node = require('./NodeSelector')
+module.exports = selector

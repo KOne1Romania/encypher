@@ -2,20 +2,20 @@
 
 var _ = require('lodash')
 
-var selectors   = require('./selector'),
-    aggregators = require('./aggregator')
+var selector   = require('./selector'),
+    aggregator = require('./aggregator')
 
 function ResultMaker(opts) {
 	opts = _.defaults({}, opts, {
-		aggregate: '',
-		select: 'node'
+		aggregate: ''
 	})
-	var selector   = selectors[opts.select] || selectors.Node,
-	    aggregator = aggregators[opts.aggregate] || _.identity
+	var actualSelector   = selector(opts.select),
+	    actualAggregator = aggregator(opts.aggregate)
 
 	return function(chain) {
-		return aggregator(selector(chain))
+		return actualAggregator(actualSelector(chain))
 	}
 }
+
 
 module.exports = ResultMaker
