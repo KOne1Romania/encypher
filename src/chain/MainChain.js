@@ -30,6 +30,10 @@ var MainChain = stampit()
 
 		buildNewRelationCypher: function() {
 			throw Error('Cannot create relation with only one node')
+		},
+
+		toStringWithSuffix: function(suffix) {
+			return suffix
 		}
 	})
 	.compose(ChainCommon)

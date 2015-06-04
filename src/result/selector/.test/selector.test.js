@@ -3,6 +3,7 @@
 require('chai').should()
 
 var NodeSelector = require('../NodeSelector'),
+    IdSelector   = require('../IdSelector'),
     emptyChain   = require('../../../chain/Chain').EMPTY
 
 suite('selector', function() {
@@ -15,5 +16,10 @@ suite('selector', function() {
 		test('#toKeyValue', function() {
 			nodeSelectorResult.toKeyValue().should.equal('$main: $main')
 		})
+	})
+
+	test('Id #toString', function() {
+		var idSelector = IdSelector(oneNodeChain)
+		idSelector.toString().should.equal('id($main) as id')
 	})
 })
