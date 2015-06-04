@@ -20,7 +20,7 @@ suite('ResultMaker', function() {
 
 	test('select: field', function() {
 		var selectNameResultMaker = ResultMaker({ select: 'name' })
-		selectNameResultMaker(chain).toString().should.equal('post.name as postName')
+		selectNameResultMaker(chain).toString().should.equal('post.`name` as postName')
 	})
 
 	test('aggregate: count', function() {

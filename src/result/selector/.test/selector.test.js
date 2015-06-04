@@ -3,7 +3,6 @@
 require('chai').should()
 
 var selector      = require('..'),
-    FieldSelector = require('../FieldSelector'),
     emptyChain    = require('../../../chain/Chain').EMPTY
 
 suite('result/selector', function() {
@@ -42,11 +41,11 @@ suite('result/selector', function() {
 	suite('Field', function() {
 		test('for one-node chain', function() {
 			var oneNodeFieldSelector = selector('name')(oneNodeChain)
-			oneNodeFieldSelector.toString().should.equal('$main.name as name')
+			oneNodeFieldSelector.toString().should.equal('$main.`name` as name')
 		})
 		test('for two-nodes chain', function() {
 			var twoNodesFieldSelector = selector('name')(twoNodesChain)
-			twoNodesFieldSelector.toString().should.equal('post.name as postName')
+			twoNodesFieldSelector.toString().should.equal('post.`name` as postName')
 		})
 	})
 })

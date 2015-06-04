@@ -1,12 +1,13 @@
 'use strict'
 
-var Result = require('../Result')
+var Result = require('../Result'),
+    encode = require('../../util/encode')
 
 function FieldSelector(fieldName) {
 	return function SpecificFieldSelector(chain) {
 		return Result({
 			key: chain.toStringWithSuffix(fieldName),
-			value: [chain.toString(), fieldName].join('.')
+			value: [chain.toString(), encode.field(fieldName)].join('.')
 		})
 	}
 }
