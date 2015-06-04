@@ -2,9 +2,10 @@
 
 require('chai').should()
 
-var NodeSelector = require('../NodeSelector'),
-    IdSelector   = require('../IdSelector'),
-    emptyChain   = require('../../../chain/Chain').EMPTY
+var NodeSelector  = require('../NodeSelector'),
+    IdSelector    = require('../IdSelector'),
+    FieldSelector = require('../FieldSelector'),
+    emptyChain    = require('../../../chain/Chain').EMPTY
 
 suite('selector', function() {
 	var oneNodeChain  = emptyChain.addNode('User').bind(),
@@ -34,6 +35,17 @@ suite('selector', function() {
 		test('for two-nodes chain', function() {
 			var twoNodesIdSelector = IdSelector(twoNodesChain)
 			twoNodesIdSelector.toString().should.equal('id(post) as postId')
+		})
+	})
+
+	suite('Field', function() {
+		test('for one-node chain', function() {
+			var oneNodeFieldSelector = FieldSelector('name')(oneNodeChain)
+			oneNodeFieldSelector.toString().should.equal('$main.name as name')
+		})
+		test('for two-nodes chain', function() {
+			var twoNodesFieldSelector = FieldSelector('name')(twoNodesChain)
+			twoNodesFieldSelector.toString().should.equal('post.name as postName')
 		})
 	})
 })
