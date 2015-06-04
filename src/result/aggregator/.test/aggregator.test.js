@@ -2,18 +2,22 @@
 
 require('chai').should()
 
-var CountAggregator   = require('../CountAggregator'),
-    CollectAggregator = require('../CollectAggregator')
+var aggregator = require('..')
 
 suite('result/aggregator', function() {
 	var result = { key: 'post', value: 'post' }
-	test('CountAggregator', function() {
-		var countAggregatorResult = CountAggregator(result)
+	test('count', function() {
+		var countAggregatorResult = aggregator('count')(result)
 		countAggregatorResult.toString().should.equal('count(post) as postsCount')
 	})
 
-	test('CollectAggregator', function() {
-		var collectAggregatorResult = CollectAggregator(result)
+	test('collect', function() {
+		var collectAggregatorResult = aggregator('collect')(result)
 		collectAggregatorResult.toString().should.equal('collect(post) as posts')
+	})
+
+	test('does nothing if not defined', function() {
+		var unknownAggregatorResult = aggregator('unknown')(result)
+		unknownAggregatorResult.toString().should.equal('post as post')
 	})
 })

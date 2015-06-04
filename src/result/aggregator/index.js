@@ -2,9 +2,13 @@
 
 var _ = require('lodash')
 
+var Result = require('../Result')
+
+var DEFAULT_AGGREGATOR = Result
+
 function aggregator(aggregateType) {
 	if (!_.isString(aggregateType)) {
-		return _.identity
+		return DEFAULT_AGGREGATOR
 	}
 	aggregateType = aggregateType.toLowerCase()
 	if (aggregateType === 'count') {
@@ -13,7 +17,7 @@ function aggregator(aggregateType) {
 	if (aggregateType === 'collect') {
 		return require('./CollectAggregator')
 	}
-	return _.identity
+	return DEFAULT_AGGREGATOR
 }
 
 module.exports = aggregator
