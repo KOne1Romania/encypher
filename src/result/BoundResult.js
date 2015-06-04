@@ -4,8 +4,7 @@ var stampit = require('stampit')
 
 var BoundResult = stampit()
 	.state({
-		key: '',
-		value: ''
+		key: ''
 	})
 	.methods({
 		toString: function() {
