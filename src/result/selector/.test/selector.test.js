@@ -2,8 +2,8 @@
 
 require('chai').should()
 
-var selector      = require('..'),
-    emptyChain    = require('../../../chain/Chain').EMPTY
+var selector   = require('..'),
+    emptyChain = require('../../../chain/Chain').EMPTY
 
 suite('result/selector', function() {
 	var oneNodeChain  = emptyChain.addNode('User').bind(),
@@ -46,6 +46,14 @@ suite('result/selector', function() {
 		test('for two-nodes chain', function() {
 			var twoNodesFieldSelector = selector('name')(twoNodesChain)
 			twoNodesFieldSelector.toString().should.equal('post.`name` as postName')
+		})
+	})
+
+	suite('Expand', function() {
+		test('embed', function() {
+			var fieldsOnlyExpander = selector({ fields: ['id', 'name'] })
+			fieldsOnlyExpander(oneNodeChain).toString()
+				.should.equal('{ id: id($main), name: $main.`name` } as $main')
 		})
 	})
 })

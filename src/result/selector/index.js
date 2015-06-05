@@ -2,14 +2,18 @@
 
 var _ = require('lodash')
 
+var NodeSelector      = require('./NodeSelector'),
+    FieldOrIdSelector = require('./FieldOrIdSelector'),
+    ExpandSelector    = require('./ExpandSelector')
+
 function selector(selected) {
-	if (!_.isString(selected)) {
-		return require('./NodeSelector')
+	if (_.isString(selected)) {
+		return FieldOrIdSelector(selected)
 	}
-	if (selected.toLowerCase() === 'id') {
-		return require('./IdSelector')
+	if (_.isPlainObject(selected)) {
+		return ExpandSelector(selected)
 	}
-	return require('./FieldSelector')(selected)
+	return NodeSelector
 }
 
 module.exports = selector
