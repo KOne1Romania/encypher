@@ -64,5 +64,9 @@ suite('result/selector', function() {
 			complexExpander(oneNodeChain).toString()
 				.should.equal('{ id: id($main), postId: postId } as $main')
 		})
+
+		test('default', function() {
+			selector({})(oneNodeChain).toString().should.equal('{ id: id($main) } as $main')
+		})
 	})
 })

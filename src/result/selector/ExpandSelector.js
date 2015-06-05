@@ -6,7 +6,7 @@ var Result            = require('../Result'),
     FieldOrIdSelector = require('./FieldOrIdSelector')
 
 function ExpandSelector(opts) {
-	opts = _.defaults({}, opts, { fields: [], results: [] })
+	opts = _.defaults({}, opts, { fields: ['id'], results: [] })
 	return function(chain) {
 		return Result({
 			key: chain.toString(),
