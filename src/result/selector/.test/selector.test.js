@@ -50,10 +50,19 @@ suite('result/selector', function() {
 	})
 
 	suite('Expand', function() {
-		test('embed', function() {
+		test('with fields only', function() {
 			var fieldsOnlyExpander = selector({ fields: ['id', 'name'] })
 			fieldsOnlyExpander(oneNodeChain).toString()
 				.should.equal('{ id: id($main), name: $main.`name` } as $main')
+		})
+
+		test('with fields and other results', function() {
+			var complexExpander = selector({
+				fields: ['id'],
+				results: [{ key: 'postId' }]
+			})
+			complexExpander(oneNodeChain).toString()
+				.should.equal('{ id: id($main), postId: postId } as $main')
 		})
 	})
 })
