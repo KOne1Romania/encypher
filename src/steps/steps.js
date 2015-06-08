@@ -30,10 +30,10 @@ exports.MatchRelation = function MatchRelationStep(relationArc, node) {
 	})
 }
 
-exports.Return = function ReturnStep() {
+exports.Return = function ReturnStep(resultOptions) {
 	return StepMaker({
 		before: _.method('backToMain'),
-		cypherBuilder: _.method('buildReturnCypher')
+		cypherBuilder: _.method('buildReturnCypher', resultOptions)
 	})
 }
 

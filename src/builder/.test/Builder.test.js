@@ -45,11 +45,24 @@ suite('builder', function() {
 		})
 	})
 
-	suite('basic', function() {
-		test('#return', function() {
-			builder.match('User').return().toString().should.eql('MATCH ($main:User) RETURN $main')
+	suite('#return', function() {
+		test('node', function() {
+			builder.match('User').return().toString()
+				.should.eql('MATCH ($main:User) RETURN $main')
 		})
 
+		test('id', function() {
+			builder.match('User').return({ select: 'id' }).toString()
+				.should.eql('MATCH ($main:User) RETURN id($main) as id')
+		})
+
+		test('count', function() {
+			builder.match('User').return({ aggregate: 'count' }).toString()
+				.should.eql('MATCH ($main:User) RETURN count($main) as $mainsCount')
+		})
+	})
+
+	suite('basic', function() {
 		test('#whereId', function() {
 			builder.match('User').whereId(10).return()
 				.toString().should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')

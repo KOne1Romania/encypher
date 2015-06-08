@@ -10,7 +10,7 @@ suite('ResultMaker', function() {
 
 	test('returns node when no options provided', function() {
 		var defaultResultMaker = ResultMaker()
-		defaultResultMaker(chain).toString().should.equal('post as post')
+		defaultResultMaker(chain).toString().should.equal('post')
 	})
 
 	test('select: id', function() {

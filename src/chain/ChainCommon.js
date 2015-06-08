@@ -3,8 +3,10 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var Cloner = require('../util/stamps').Cloner,
-    Forwarder = require('../util/stamps').Forwarder
+var Cloner       = require('../util/stamps').Cloner,
+    Forwarder    = require('../util/stamps').Forwarder,
+    ResultMaker  = require('../result/ResultMaker'),
+    CypherObject = require('../cypher/CypherObject')
 
 var ChainCommon = stampit()
 	.methods({
@@ -14,6 +16,11 @@ var ChainCommon = stampit()
 
 		backToMain: function() {
 			return this.main
+		},
+
+		buildReturnCypher: function(resultOptions) {
+			var result = ResultMaker(resultOptions)(this)
+			return CypherObject.fromString(result).prepend('RETURN')
 		}
 	})
 	.compose(Cloner)
@@ -21,7 +28,6 @@ var ChainCommon = stampit()
 		node: [
 			'toString',
 			'buildMatchCypher',
-			'buildReturnCypher',
 			'buildWhereIdCypher',
 			'buildInstantiateCypher'
 		]

@@ -13,7 +13,7 @@ suite('result/selector', function() {
 		suite('for one-node chain', function() {
 			var nodeSelectorResult = NodeSelector(oneNodeChain)
 			test('#toString', function() {
-				nodeSelectorResult.toString().should.equal('$main as $main')
+				nodeSelectorResult.toString().should.equal('$main')
 			})
 			test('#toKeyValue', function() {
 				nodeSelectorResult.toKeyValue().should.equal('$main: $main')
@@ -22,7 +22,7 @@ suite('result/selector', function() {
 
 		test('for two-nodes chain', function() {
 			var twoNodesSelectorResult = NodeSelector(twoNodesChain)
-			twoNodesSelectorResult.toString().should.equal('post as post')
+			twoNodesSelectorResult.toString().should.equal('post')
 		})
 	})
 

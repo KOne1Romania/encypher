@@ -12,7 +12,9 @@ var UnboundResult = stampit()
 	})
 	.methods({
 		toString: function() {
-			return [this.value, this.key].join(' as ')
+			return this.value === this.key
+				? this.value
+				: [this.value, this.key].join(' as ')
 		},
 
 		toKeyValue: function() {

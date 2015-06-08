@@ -18,6 +18,6 @@ suite('result/aggregator', function() {
 
 	test('does nothing if not defined', function() {
 		var unknownAggregatorResult = aggregator('unknown')(result)
-		unknownAggregatorResult.toString().should.equal('post as post')
+		unknownAggregatorResult.toString().should.equal('post')
 	})
 })
