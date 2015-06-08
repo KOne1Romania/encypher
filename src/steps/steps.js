@@ -2,13 +2,16 @@
 
 var _ = require('lodash')
 
-var StepMaker    = require('./StepMaker'),
-    CypherObject = require('../cypher/CypherObject'),
-    EMPTY_CHAIN  = require('../chain/Chain').EMPTY
+var StepMaker            = require('./StepMaker'),
+    AccumulatorStepMaker = require('./AccumulatorStepMaker'),
+    CypherObject         = require('../cypher/CypherObject'),
+    EMPTY_CHAIN          = require('../chain/Chain').EMPTY,
+    baseAccumulator      = require('../result/resultAccumulator')
 
 exports.run = function(step) {
 	return step({
 		chain: EMPTY_CHAIN,
+		accumulator: baseAccumulator,
 		cypherObject: CypherObject()
 	}).cypherObject
 }
@@ -37,6 +40,12 @@ exports.Return = function ReturnStep(resultOptions) {
 	})
 }
 
+exports.ReturnExpanded = function ReturnExpandedStep(fields) {
+	return AccumulatorStepMaker({
+		cypherBuilder: _.method('buildReturnCypher', fields)
+	})
+}
+
 exports.Reset = function ResetStep() {
 	return StepMaker({
 		cypherBuilder: _.method('buildWithCypher'),
@@ -60,11 +69,15 @@ function makeNewRelationStep(action) {
 
 function makeInstantiateStep(action) {
 	return function _InstantiateStep(node, data) {
-		return StepMaker({
+		var chainStep = StepMaker({
 			before: _.method('addNode', node),
 			cypherBuilder: _.method('buildInstantiateCypher', action, data),
 			after: _.method('bind')
 		})
+		var accumulatorStep = AccumulatorStepMaker({
+			after: _.method('addNode', node)
+		})
+		return _.compose(accumulatorStep, chainStep)
 	}
 
 }

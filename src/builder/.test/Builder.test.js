@@ -189,6 +189,13 @@ suite('builder', function() {
 		matchWhereStep.compose(returnStep).toString()
 			.should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
  	})
+
+	suite('with accumulator', function() {
+		test('#returnExpanded', function() {
+			builder.match('User').returnExpanded(['id', 'name']).toString()
+				.should.equal('MATCH ($main:User) RETURN { id: id($main), name: $main.`name` } as $main')
+		})
+	})
 })
 
 var WRITTEN_BY_RELATION_ARC = { type: 'WRITTEN_BY', arrow: 'left' }

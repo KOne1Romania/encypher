@@ -34,6 +34,10 @@ var ResultAccumulator = stampit()
 			return CypherObject.fromString(['WITH', allResults].join(' '))
 		},
 
+		buildReturnCypher: function(fields) {
+			return CypherObject.fromString(this.toResult(fields)).prepend('RETURN')
+		},
+
 		toResult: function(fields) {
 			return ExpandSelector({
 				fields: fields,
