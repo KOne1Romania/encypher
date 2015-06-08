@@ -209,6 +209,24 @@ suite('builder', function() {
 				.returnExpanded().toString()
 				.should.equal(expectedCypherString)
 		})
+
+		test('#fetch twice', function() {
+			var expectedCypherString = [
+				'MATCH ($main:User)',
+				'MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+				'WITH $main, collect(id(post)) as postIds',
+				'MATCH $main-[:HAS_ADDRESS]->(address:Address)',
+				'WITH $main, postIds, id(address) as addressId',
+				'RETURN { id: id($main), postIds: postIds, addressId: addressId } as $main'
+			].join(' ')
+			builder.match('User')
+				.matchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
+				.fetch({ select: 'id', aggregate: 'collect' })
+				.matchRelation('HAS_ADDRESS', 'Address')
+				.fetch({ select: 'id' })
+				.returnExpanded().toString()
+				.should.equal(expectedCypherString)
+		})
 	})
 })
 

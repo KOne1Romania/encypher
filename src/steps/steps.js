@@ -51,10 +51,15 @@ exports.ReturnExpanded = function ReturnExpandedStep(fields) {
 }
 
 exports.Fetch = function(resultOpts) {
-	return AccumulatorStepMaker({
-		before: _.method('addResult', resultOpts),
-		cypherBuilder: _.method('buildWithCypher')
-	})
+	return _.compose(
+		StepMaker({
+			after: _.method('backToMain')
+		}),
+		AccumulatorStepMaker({
+			before: _.method('addResult', resultOpts),
+			cypherBuilder: _.method('buildWithCypher')
+		})
+	)
 }
 
 exports.Reset = function ResetStep() {
