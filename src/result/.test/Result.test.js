@@ -18,8 +18,8 @@ suite('Result', function() {
 
 	suite('after bind', function() {
 		var boundResult = result.bind()
-		test('#toString uses only key', function() {
-			boundResult.toString().should.equal('userId')
+		test('#toString', function() {
+			boundResult.toString().should.equal('userId as userId')
 		})
 
 		test('#toKeyValue', function() {
@@ -27,47 +27,3 @@ suite('Result', function() {
 		})
 	})
 })
-
-/*
- test('', function() {
- var result = {
- definition: 'user',
- alias: 'user'
- }
-
- function idSelector(result) {
- return {
- alias: result.alias + 'Id',
- definition: 'id(' + result.definition + ')'
- }
- }
-
- function EmbedSelector(results){
- return function embedSelector(result) {
- return {
- //key: result.key
- //value:
- }
- }
- }
-
- EmbedSelector({
- ownSelectors: ['name', 'id'],
- otherResults: [
- { key: 'postId', value: 'id(post)'}
- ]
- })
-
- var embedded = {
- name: $main.name,
- id: id($main),
- postId: id(post)
- }
-
- var opts = {
- aggregate: 'count', select:  {
- ownSelectors: []
- }
- }
- })
- */

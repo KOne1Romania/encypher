@@ -20,7 +20,7 @@ var UnboundResult = stampit()
 		},
 
 		bind: function() {
-			return BoundResult(_.pick(this, ['key', 'value']))
+			return BoundResult(_.pick(this, 'key'))
 		}
 	})
 
