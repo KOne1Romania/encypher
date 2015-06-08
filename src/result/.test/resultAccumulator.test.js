@@ -32,7 +32,7 @@ suite('resultAccumulator', function() {
 	suite('after accumulating two results', function() {
 		test('#buildWithCypher', function() {
 			twoResultsAccumulator.buildWithCypher().toString()
-				.should.equal('WITH $main, postId as postId, address.`name` as addressName')
+				.should.equal('WITH $main, postId, address.`name` as addressName')
 		})
 		test('#toResult', function() {
 			twoResultsAccumulator.toResult().toString()

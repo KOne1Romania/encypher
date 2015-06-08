@@ -8,7 +8,7 @@ var BoundResult = stampit()
 	})
 	.methods({
 		toString: function() {
-			return [this.key, this.key].join(' as ')
+			return [this.key].join(' as ')
 		},
 
 		toKeyValue: function() {

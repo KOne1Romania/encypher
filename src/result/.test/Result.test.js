@@ -19,7 +19,7 @@ suite('Result', function() {
 	suite('after bind', function() {
 		var boundResult = result.bind()
 		test('#toString', function() {
-			boundResult.toString().should.equal('userId as userId')
+			boundResult.toString().should.equal('userId')
 		})
 
 		test('#toKeyValue', function() {
