@@ -195,6 +195,20 @@ suite('builder', function() {
 			builder.match('User').returnExpanded(['id', 'name']).toString()
 				.should.equal('MATCH ($main:User) RETURN { id: id($main), name: $main.`name` } as $main')
 		})
+
+		test('#fetch once', function() {
+			var expectedCypherString = [
+				'MATCH ($main:User)',
+				'MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+				'WITH $main, collect(id(post)) as postIds',
+				'RETURN { id: id($main), postIds: postIds } as $main'
+			].join(' ')
+			builder.match('User')
+				.matchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
+				.fetch({ select: 'id', aggregate: 'collect' })
+				.returnExpanded().toString()
+				.should.equal(expectedCypherString)
+		})
 	})
 })
 

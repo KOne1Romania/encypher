@@ -26,11 +26,15 @@ exports.CreateRelation = makeNewRelationStep('create')
 exports.MergeRelation = makeNewRelationStep('merge')
 
 exports.MatchRelation = function MatchRelationStep(relationArc, node) {
-	return StepMaker({
+	var chainStep = StepMaker({
 		before: _.method('addNode', node),
 		cypherBuilder: _.method('buildNewRelationCypher', 'match', relationArc),
 		after: _.method('bind')
 	})
+	var accumulatorStep = AccumulatorStepMaker({
+		after: _.method('addNode', node)
+	})
+	return _.compose(accumulatorStep, chainStep)
 }
 
 exports.Return = function ReturnStep(resultOptions) {
@@ -43,6 +47,13 @@ exports.Return = function ReturnStep(resultOptions) {
 exports.ReturnExpanded = function ReturnExpandedStep(fields) {
 	return AccumulatorStepMaker({
 		cypherBuilder: _.method('buildReturnCypher', fields)
+	})
+}
+
+exports.Fetch = function(resultOpts) {
+	return AccumulatorStepMaker({
+		before: _.method('addResult', resultOpts),
+		cypherBuilder: _.method('buildWithCypher')
 	})
 }
 
