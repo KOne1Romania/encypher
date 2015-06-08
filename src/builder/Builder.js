@@ -21,11 +21,11 @@ var Builder = stampit()
 		},
 
 		toCypher: function() {
-			return this.step.run()
+			return steps.run(this.step)
 		},
 
 		addStep: function(step) {
-			return Builder.of(this.step.compose(step))
+			return Builder.of(steps.compose(step, this.step))
 		},
 
 		compose: function(otherBuilder) {

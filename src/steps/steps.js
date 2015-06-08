@@ -2,7 +2,18 @@
 
 var _ = require('lodash')
 
-var Step = require('./Step')
+var StepMaker    = require('./StepMaker'),
+    CypherObject = require('../cypher/CypherObject'),
+    EMPTY_CHAIN  = require('../chain/Chain').EMPTY
+
+exports.run = function(step) {
+	return step({
+		chain: EMPTY_CHAIN,
+		cypherObject: CypherObject()
+	}).cypherObject
+}
+
+exports.compose = _.compose
 
 exports.Match = makeInstantiateStep('match')
 exports.Create = makeInstantiateStep('create')
@@ -12,7 +23,7 @@ exports.CreateRelation = makeNewRelationStep('create')
 exports.MergeRelation = makeNewRelationStep('merge')
 
 exports.MatchRelation = function MatchRelationStep(relationArc, node) {
-	return Step.make({
+	return StepMaker({
 		before: _.method('addNode', node),
 		cypherBuilder: _.method('buildNewRelationCypher', 'match', relationArc),
 		after: _.method('bind')
@@ -20,28 +31,28 @@ exports.MatchRelation = function MatchRelationStep(relationArc, node) {
 }
 
 exports.Return = function ReturnStep() {
-	return Step.make({
+	return StepMaker({
 		before: _.method('backToMain'),
 		cypherBuilder: _.method('buildReturnCypher')
 	})
 }
 
 exports.Reset = function ResetStep() {
-	return Step.make({
+	return StepMaker({
 		cypherBuilder: _.method('buildWithCypher'),
 		after: _.method('backToMain')
 	})
 }
 
 exports.WhereId = function WhereIdStep(id) {
-	return Step.make({
+	return StepMaker({
 		cypherBuilder: _.method('buildWhereIdCypher', id)
 	})
 }
 
 function makeNewRelationStep(action) {
 	return function(relationArc) {
-		return Step.make({
+		return StepMaker({
 			cypherBuilder: _.method('buildNewRelationCypher', action, relationArc)
 		})
 	}
@@ -49,7 +60,7 @@ function makeNewRelationStep(action) {
 
 function makeInstantiateStep(action) {
 	return function _InstantiateStep(node, data) {
-		return Step.make({
+		return StepMaker({
 			before: _.method('addNode', node),
 			cypherBuilder: _.method('buildInstantiateCypher', action, data),
 			after: _.method('bind')
@@ -58,4 +69,4 @@ function makeInstantiateStep(action) {
 
 }
 
-exports.EMPTY = Step()
+exports.EMPTY = _.identity

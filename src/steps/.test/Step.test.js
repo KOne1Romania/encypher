@@ -2,8 +2,8 @@
 
 require('chai').should()
 
-var steps  = require('..'),
-    Chain = require('../../chain/Chain')
+var steps  = require('../steps'),
+    Chain  = require('../../chain/Chain')
 
 var _ = require('lodash')
 
@@ -13,21 +13,21 @@ suite('Step', function() {
 	    returnStep    = steps.Return()
 
 	test('empty step does nothing', function() {
-		emptyStep.run().toString().should.equal('')
+		steps.run(emptyStep).toString().should.equal('')
 	})
 
 	test('match step', function() {
-		matchUserStep.run().toString().should.equal('MATCH ($main:User)')
+		steps.run(matchUserStep).toString().should.equal('MATCH ($main:User)')
 	})
 
 	suite('#compose', function() {
 		test('does nothing when composing empty step', function() {
-			matchUserStep.compose(emptyStep).run()
+			steps.run(steps.compose(emptyStep, matchUserStep))
 				.toString().should.equal('MATCH ($main:User)')
 		})
 
 		test('does work for two actual steps', function() {
-			matchUserStep.compose(returnStep).run()
+			steps.run(steps.compose(returnStep, matchUserStep))
 				.toString().should.equal('MATCH ($main:User) RETURN $main')
 		})
 	})
