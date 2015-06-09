@@ -9,7 +9,7 @@ var Chain   = require('../chain/Chain'),
 
 var Builder = stampit()
 	.state({
-		step: {}
+		step: null
 	})
 	.methods({
 		match: function(label, data) {
@@ -25,7 +25,7 @@ var Builder = stampit()
 		},
 
 		addStep: function(step) {
-			return Builder.of(this.step.compose(step))
+			return Builder({ step: this.step.compose(step) })
 		},
 
 		compose: function(otherBuilder) {
@@ -36,11 +36,10 @@ var Builder = stampit()
 		'return', 'reset', 'whereId', 'create', 'merge', 'createRelation', 'mergeRelation',
 		'matchRelation', 'returnExpanded', 'fetch'
 	]))
+	.enclose(function() {
+		this.step = this.step || steps.EMPTY
+	})
 
-Builder.of = function(step) {
-	return Builder({ step: step })
-}
-
-Builder.base = Builder.of(steps.EMPTY)
+Builder.base = Builder()
 
 module.exports = Builder
