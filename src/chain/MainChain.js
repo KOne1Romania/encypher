@@ -24,7 +24,7 @@ var MainChain = stampit()
 			return MainChain
 		},
 
-		buildWithCypher: function() {
+		buildResetCypher: function() {
 			return CypherObject.EMPTY
 		},
 

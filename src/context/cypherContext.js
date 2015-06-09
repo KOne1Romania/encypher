@@ -8,6 +8,7 @@ var stamps           = require('../util/stamps'),
     Cloner           = stamps.Cloner,
     CypherObject     = require('../cypher/CypherObject'),
     EMPTY_CHAIN      = require('../chain/Chain').EMPTY,
+    ExpandSelector   = require('../result/selector/ExpandSelector'),
     EMPTY_RESULT_SET = require('../result/resultSet')
 
 var CypherContext = stampit()
@@ -24,7 +25,8 @@ var CypherContext = stampit()
 			'buildMatchCypher',
 			'buildWhereIdCypher',
 			'buildInstantiateCypher',
-			'buildReturnCypher'
+			'buildReturnCypher',
+			'buildResetCypher'
 		]
 	}))
 	.methods({
@@ -50,6 +52,11 @@ var CypherContext = stampit()
 
 		buildWithCypher: function() {
 			return CypherObject.fromString(this).prepend('WITH')
+		},
+
+		buildExpandedReturnCypher: function(fields) {
+			var expandedResult = this.resultSet.expand(this.chain, fields)
+			return CypherObject.fromString(expandedResult).prepend('RETURN')
 		},
 
 		toString: function() {

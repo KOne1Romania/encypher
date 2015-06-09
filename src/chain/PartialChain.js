@@ -27,7 +27,7 @@ var PartialChain = stampit()
 			return PartialChain
 		},
 
-		buildWithCypher: function() {
+		buildResetCypher: function() {
 			return this.main.node.buildWithCypher()
 		},
 
