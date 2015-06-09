@@ -6,6 +6,7 @@ var stampit = require('stampit'),
 var stamps           = require('../util/stamps'),
     Forwarder        = stamps.Forwarder,
     Cloner           = stamps.Cloner,
+    CypherObject     = require('../cypher/CypherObject'),
     EMPTY_CHAIN      = require('../chain/Chain').EMPTY,
     EMPTY_RESULT_SET = require('../result/resultSet')
 
@@ -16,6 +17,15 @@ var CypherContext = stampit()
 	})
 	.compose(Forwarder.extend({
 		chain: ['addNode', 'bind']
+	}))
+	.compose(Forwarder({
+		chain: [
+			'buildNewRelationCypher',
+			'buildMatchCypher',
+			'buildWhereIdCypher',
+			'buildInstantiateCypher',
+			'buildReturnCypher'
+		]
 	}))
 	.methods({
 		reset: function() {
@@ -38,6 +48,10 @@ var CypherContext = stampit()
 			})
 		},
 
+		buildWithCypher: function() {
+			return CypherObject.fromString(this).prepend('WITH')
+		},
+
 		toString: function() {
 			return [this.chain, this.resultSet].join(', ').replace(/,\s$/, '')
 		},
@@ -46,9 +60,6 @@ var CypherContext = stampit()
 			return CypherContext
 		}
 	})
-	//.compose(Forwarder({
-	//	chain: []
-	//}))
 	.compose(Cloner)
 	.enclose(function() {
 		this.chain = this.chain || EMPTY_CHAIN

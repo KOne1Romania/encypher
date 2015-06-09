@@ -33,4 +33,8 @@ suite('cypherContext', function() {
 			.fetch({ select: 'id' })
 			.toString().should.equal('$main, postId, id(address) as addressId')
 	})
+
+	test('#buildWithCypher', function() {
+		twoNodesContext.fetch({ select: 'id' }).toString().should.equal('$main, id(post) as postId')
+	})
 })
