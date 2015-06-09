@@ -34,3 +34,16 @@ exports.Forwarder = function(methodsMappings) {
 	})
 	return stampit().methods(methods)
 }
+
+exports.Forwarder.extend = function(methodsMappings) {
+	var methods = {}
+	_.each(methodsMappings, function(fieldMethods, field) {
+		_.each(fieldMethods, function(fieldMethod) {
+			methods[fieldMethod] = function() {
+				var fields = _.set({}, field, this[field][fieldMethod].apply(this[field], arguments))
+				return this.extend(fields)
+			}
+		})
+	})
+	return stampit().methods(methods)
+}
