@@ -4,7 +4,7 @@ var stampit = require('stampit'),
     _       = require('lodash')
 
 var BoundNode    = require('./BoundNode'),
-    CypherObject = require('../cypher/CypherObject')
+    CypherObject = require('../../cypher/CypherObject')
 
 var UnboundNode = stampit()
 	.state({

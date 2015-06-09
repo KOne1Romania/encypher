@@ -3,7 +3,7 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var Node        = require('../node/Node'),
+var Node        = require('./node/Node'),
     ChainCommon = require('./ChainCommon'),
     RelationArc = require('./RelationArc'),
     Ensure      = require('../util/stamps').Ensure

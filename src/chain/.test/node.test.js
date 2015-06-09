@@ -2,7 +2,7 @@
 
 require('chai').should()
 
-var Node = require('../Node')
+var Node = require('../node/Node')
 
 suite('Node', function() {
 	test('creates unbound node with label when receiving string arg', function() {

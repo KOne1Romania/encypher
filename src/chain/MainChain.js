@@ -2,7 +2,7 @@
 
 var stampit = require('stampit')
 
-var Node         = require('../node/Node'),
+var Node         = require('./node/Node'),
     PartialChain = require('./PartialChain'),
     ChainCommon  = require('./ChainCommon'),
     CypherObject = require('../cypher/CypherObject')
