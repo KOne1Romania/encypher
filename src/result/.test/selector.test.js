@@ -2,9 +2,9 @@
 
 require('chai').should()
 
-var selector       = require('..'),
-    ExpandSelector = require('../ExpandSelector'),
-    emptyChain     = require('../../../chain/Chain').EMPTY
+var selector       = require('../selector'),
+    ExpandSelector = require('../selector/ExpandSelector'),
+    emptyChain     = require('../../chain/Chain').EMPTY
 
 suite('result/selector', function() {
 	var oneNodeChain  = emptyChain.addNode('User').bind(),

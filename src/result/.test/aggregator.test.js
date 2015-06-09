@@ -2,7 +2,7 @@
 
 require('chai').should()
 
-var aggregator = require('..')
+var aggregator = require('../aggregator')
 
 suite('result/aggregator', function() {
 	var result = { key: 'post', value: 'post' }
