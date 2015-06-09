@@ -6,9 +6,8 @@ var stampit = require('stampit'),
 var stamps           = require('../util/stamps'),
     Forwarder        = stamps.Forwarder,
     Cloner           = stamps.Cloner,
-    CypherObject     = require('../cypher/CypherObject'),
+    CypherObject     = require('./CypherObject'),
     EMPTY_CHAIN      = require('../chain/Chain').EMPTY,
-    ExpandSelector   = require('../result/selector/ExpandSelector'),
     EMPTY_RESULT_SET = require('../result/resultSet')
 
 var CypherContext = stampit()

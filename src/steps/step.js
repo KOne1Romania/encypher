@@ -3,7 +3,7 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var emptyContext = require('../context/cypherContext'),
+var emptyContext = require('../cypher/cypherContext'),
     emptyCypher = require('../cypher/CypherObject').EMPTY
 
 var Step = stampit()
