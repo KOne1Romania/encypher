@@ -2,8 +2,9 @@
 
 require('chai').should()
 
-var selector   = require('..'),
-    emptyChain = require('../../../chain/Chain').EMPTY
+var selector       = require('..'),
+    ExpandSelector = require('../ExpandSelector'),
+    emptyChain     = require('../../../chain/Chain').EMPTY
 
 suite('result/selector', function() {
 	var oneNodeChain  = emptyChain.addNode('User').bind(),
@@ -51,13 +52,13 @@ suite('result/selector', function() {
 
 	suite('Expand', function() {
 		test('with fields only', function() {
-			var fieldsOnlyExpander = selector({ fields: ['id', 'name'] })
+			var fieldsOnlyExpander = ExpandSelector({ fields: ['id', 'name'] })
 			fieldsOnlyExpander(oneNodeChain).toString()
 				.should.equal('{ id: id($main), name: $main.`name` } as $main')
 		})
 
 		test('with fields and other results', function() {
-			var complexExpander = selector({
+			var complexExpander = ExpandSelector({
 				fields: ['id'],
 				results: [{ key: 'postId' }]
 			})
@@ -66,7 +67,7 @@ suite('result/selector', function() {
 		})
 
 		test('default', function() {
-			selector({})(oneNodeChain).toString().should.equal('{ id: id($main) } as $main')
+			ExpandSelector()(oneNodeChain).toString().should.equal('{ id: id($main) } as $main')
 		})
 	})
 })
