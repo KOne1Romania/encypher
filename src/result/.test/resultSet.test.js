@@ -37,4 +37,9 @@ suite('resultSet', function() {
 			resultSet.add({}, baseChain).clear().should.equal(resultSet)
 		})
 	})
+
+	test('#expand', function() {
+		resultSet.add({ select: 'id' }, postChain).resolve().expand(baseChain).toString()
+			.should.equal('{ id: id($main), postId: postId } as $main')
+	})
 })

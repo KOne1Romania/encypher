@@ -3,8 +3,9 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var ResultMaker = require('./ResultMaker'),
-    Cloner = require('../util/stamps').Cloner
+var ResultMaker    = require('./ResultMaker'),
+    Cloner         = require('../util/stamps').Cloner,
+    ExpandSelector = require('./selector/ExpandSelector')
 
 var ResultSet = stampit()
 	.state({
@@ -29,9 +30,19 @@ var ResultSet = stampit()
 			})
 		},
 
+		expand: function(mainChain, fields) {
+			return ExpandSelector({
+				fields: fields,
+				results: this._allResults()
+			})(mainChain)
+		},
+
 		toString: function() {
-			var allResults = this.resolvedResults.concat(this.currentResult)
-			return _.compact(allResults).join(', ')
+			return this._allResults().join(', ')
+		},
+
+		_allResults: function() {
+			return _.compact(this.resolvedResults.concat(this.currentResult))
 		},
 
 		getStamp: function() {
