@@ -3,8 +3,9 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var ResultMaker  = require('../result/ResultMaker'),
-    CypherObject = require('../cypher/CypherObject')
+var ResultMaker        = require('../result/ResultMaker'),
+    CypherObject       = require('../cypher/CypherObject'),
+    getTextForOperator = require('./getTextForOperator')
 
 function UnaryCondition(conditionOptions) {
 	conditionOptions = _.defaults({}, conditionOptions, {
@@ -19,15 +20,5 @@ function UnaryCondition(conditionOptions) {
 		return CypherObject.fromString(result.toValueFollowedBy(textForOperator))
 	}
 }
-
-function getTextForOperator(operator) {
-	return operatorsTextsMap[operator] || defaultOperatorText
-}
-
-var operatorsTextsMap = {
-	isNull: 'IS NULL',
-	isNotNull: 'IS NOT NULL'
-}
-var defaultOperatorText = operatorsTextsMap.isNull
 
 module.exports = UnaryCondition
