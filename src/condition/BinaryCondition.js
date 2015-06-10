@@ -6,18 +6,22 @@ var ResultMaker        = require('../result/ResultMaker'),
     CypherObject       = require('../cypher/CypherObject'),
     getTextForOperator = require('./getTextForOperator')
 
-function UnaryCondition(conditionOptions) {
+function BinaryCondition(conditionOptions) {
 	conditionOptions = _.defaults({}, conditionOptions, {
-		op: 'isNull',
-		field: ''
+		field: 'id',
+		op: 'eq',
+		value: null
 	})
 	var fieldResultMaker = ResultMaker({ select: conditionOptions.field }),
 	    textForOperator  = getTextForOperator(conditionOptions.op)
 
-	return function UnaryConditionMaker(chain) {
+	return function BinaryConditionMaker(chain) {
 		var result = fieldResultMaker(chain)
-		return CypherObject.fromString(result.toValueFollowedBy(textForOperator))
+		return CypherObject({
+			string: result.toValueFollowedBy(textForOperator, '{' + result.key + '}'),
+			params: _.set({}, result.key, conditionOptions.value)
+		})
 	}
 }
 
-module.exports = UnaryCondition
+module.exports = BinaryCondition

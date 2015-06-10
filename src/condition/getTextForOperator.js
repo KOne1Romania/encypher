@@ -17,6 +17,11 @@ function _buildTextFromOperatorName(operator) {
 }
 
 var operatorsTextsMap = {
+	'eq': '=',
+	'lt': '<',
+	'gt': '>',
+	'ne': '<>',
+	'regex': '=~'
 }
 
 module.exports = getTextForOperator

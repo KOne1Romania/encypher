@@ -21,8 +21,9 @@ var UnboundResult = stampit()
 			return [this.key, this.value].join(': ')
 		},
 
-		toValueFollowedBy: function(suffix) {
-			return [this.value, suffix].join(' ')
+		toValueFollowedBy: function() {
+			var args = [].slice.apply(arguments)
+			return [this.value].concat(args).join(' ')
 		},
 
 		bind: function() {
