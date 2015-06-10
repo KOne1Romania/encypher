@@ -11,12 +11,23 @@ function UnaryCondition(conditionOptions) {
 		op: 'isNull',
 		field: ''
 	})
-	var fieldResultMaker = ResultMaker({ select: conditionOptions.field })
+	var fieldResultMaker = ResultMaker({ select: conditionOptions.field }),
+	    textForOperator  = getTextForOperator(conditionOptions.op)
 
 	return function UnaryConditionMaker(chain) {
 		var result = fieldResultMaker(chain)
-		return CypherObject.fromString(result.toValueFollowedBy('IS NULL'))
+		return CypherObject.fromString(result.toValueFollowedBy(textForOperator))
 	}
 }
+
+function getTextForOperator(operator) {
+	return operatorsTextsMap[operator] || defaultOperatorText
+}
+
+var operatorsTextsMap = {
+	isNull: 'IS NULL',
+	isNotNull: 'IS NOT NULL'
+}
+var defaultOperatorText = operatorsTextsMap.isNull
 
 module.exports = UnaryCondition

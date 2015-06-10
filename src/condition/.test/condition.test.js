@@ -20,5 +20,10 @@ suite('condition', function() {
 				isNullCondition(twoNodesChain).toString().should.equal('post.`name` IS NULL')
 			})
 		})
+
+		test('isNotNull', function() {
+			var isNotNullCondition = UnaryCondition({ field: 'name', op: 'isNotNull' })
+			isNotNullCondition(oneNodeChain).toString().should.equal('$main.`name` IS NOT NULL')
+		})
 	})
 })
