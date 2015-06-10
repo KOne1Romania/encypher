@@ -45,33 +45,42 @@ suite('condition', function() {
 				})
 			})
 		})
-		test.skip('lt', function() {
-			$binary({ field: 'age', op: 'lt', value: 15 }).queryObject().valueOf().should.eql({
-				string: '$self.`age` < {maxAge}',
-				params: { maxAge: 15 }
+
+		test('lt', function() {
+			var ltCondition = BinaryCondition({ field: 'age', op: 'lt', value: 100 })
+			ltCondition(oneNodeChain).valueOf().should.eql({
+				string: '$main.`age` < {maxAge}',
+				params: { maxAge: 100 }
 			})
 		})
-		test.skip('gt', function() {
-			$binary({ op: 'gt', value: 15 }).queryObject().valueOf().should.eql({
-				string: 'id($self) > {minId}',
-				params: { minId: 15 }
+
+		test('gt', function() {
+			var gtCondition = BinaryCondition({ op: 'gt', value: 5 })
+			gtCondition(oneNodeChain).valueOf().should.eql({
+				string: 'id($main) > {minId}',
+				params: { minId: 5 }
 			})
 		})
-		test.skip('ne', function() {
-			$binary({ op: 'ne', value: 15 }).queryObject().valueOf().should.eql({
-				string: 'id($self) <> {wrongId}',
-				params: { wrongId: 15 }
+
+		test('ne', function() {
+			var neCondition = BinaryCondition({ op: 'ne', value: 1 })
+			neCondition(oneNodeChain).valueOf().should.eql({
+				string: 'id($main) <> {wrongId}',
+				params: { wrongId: 1 }
 			})
 		})
-		test.skip('in', function() {
-			$binary({ op: 'in', value: [15, 16] }).queryObject().valueOf().should.eql({
-				string: 'id($self) IN {ids}',
+
+		test('in', function() {
+			var inCondition = BinaryCondition({ op: 'in', value: [15, 16] })
+			inCondition(oneNodeChain).valueOf().should.eql({
+				string: 'id($main) IN {ids}',
 				params: { ids: [15, 16] }
 			})
 		})
+
 		test.skip('regex', function() {
 			$binary({ field: 'name', op: 'regex', value: ".*" }).queryObject().valueOf().should.eql({
-				string: '$self.`name` =~ {nameRegex}',
+				string: '$main.`name` =~ {nameRegex}',
 				params: { nameRegex: '(?i).*' }
 			})
 		})
