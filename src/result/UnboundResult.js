@@ -21,6 +21,10 @@ var UnboundResult = stampit()
 			return [this.key, this.value].join(': ')
 		},
 
+		toValueFollowedBy: function(suffix) {
+			return [this.value, suffix].join(' ')
+		},
+
 		bind: function() {
 			return BoundResult(_.pick(this, 'key'))
 		}
