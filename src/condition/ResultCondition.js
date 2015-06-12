@@ -5,10 +5,9 @@ var stampit = require('stampit')
 var ResultMaker  = require('../result/ResultMaker'),
     operators = require('./operators')
 
-var UnaryCondition = stampit()
+var ResultCondition = stampit()
 	.state({
-		field: 'id',
-		op: null
+		field: 'id'
 	})
 	.methods({
 		applyOn: function(chain) {
@@ -21,4 +20,4 @@ var UnaryCondition = stampit()
 		this.fieldResultMaker = ResultMaker({ select: this.field })
 	})
 
-module.exports = UnaryCondition
+module.exports = ResultCondition
