@@ -10,7 +10,6 @@ suite('stamps', function() {
 	suite('Forwarder', function() {
 		var Forwarder = stamps.Forwarder
 
-
 		test('one method', function() {
 			var oneMethodProxy = stampit()
 				.state({
@@ -54,6 +53,31 @@ suite('stamps', function() {
 				}))
 			nestedMethodsProxy().x().should.eql(1)
 			nestedMethodsProxy().xx().should.eql(2)
+		})
+	})
+
+	suite('Ensure', function() {
+		var Ensure             = stamps.Ensure,
+		    Point              = stampit().state({ x: 0, y: 0 }),
+		    PointWrapper       = Ensure({ point: Point }),
+		    PointsArrayWrapper = Ensure({ points: [Point] })
+
+		test('keeps the object if it is already an instance', function() {
+			var somePoint    = Point(),
+			    pointWrapper = PointWrapper({ point: somePoint })
+			pointWrapper.point.should.equal(somePoint)
+		})
+
+		test('makes a stamp if the object is not an instance', function() {
+			var pointWrapper = PointWrapper({ point: {} })
+			Point.fixed.methods.isPrototypeOf(pointWrapper.point).should.equal(true)
+		})
+
+		test('instantiate all objects if defined as array of Stamp', function() {
+			var pointsArrayWrapper = PointsArrayWrapper({ points: [{}, {}] })
+			_.all(pointsArrayWrapper.points, function(point) {
+				return Point.fixed.methods.isPrototypeOf(point)
+			}).should.equal(true)
 		})
 	})
 })

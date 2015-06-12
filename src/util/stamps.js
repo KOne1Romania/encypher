@@ -3,13 +3,30 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-exports.Ensure = function(typesMapping) {
+exports.Ensure = function(stampsMapping) {
 	return stampit().enclose(function() {
-		Object.keys(typesMapping).forEach(function(field) {
-			var typeFactory = typesMapping[field]
-			this[field] = typeFactory(this[field])
+		Object.keys(stampsMapping).forEach(function(field) {
+			var stamp = stampsMapping[field]
+			this[field] = ensure(this[field], stamp)
 		}, this)
 	})
+}
+
+function ensure(target, stamp) {
+	return _.isArray(target)
+		? target.map(function(target) { return ensureOne(target, stamp[0]) })
+		: ensureOne(target, stamp)
+}
+
+function ensureOne(target, stamp) {
+	return isStampInstance(target, stamp)
+		? target
+		: stamp(target)
+}
+
+function isStampInstance(target, stamp) {
+	var stampProto = _.get(stamp, 'fixed.methods')
+	return stampProto && stampProto.isPrototypeOf(target)
 }
 
 exports.Cloner = stampit()
