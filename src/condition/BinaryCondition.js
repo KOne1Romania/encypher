@@ -5,7 +5,8 @@ var _ = require('lodash')
 var ResultMaker        = require('../result/ResultMaker'),
     CypherObject       = require('../cypher/CypherObject'),
     getTextForOperator = require('./getTextForOperator'),
-    getFieldDecorator  = require('./getFieldDecorator')
+    getFieldDecorator  = require('./getFieldDecorator'),
+    getValueDecorator  = require('./getValueDecorator')
 
 function BinaryCondition(conditionOptions) {
 	conditionOptions = _.defaults({}, conditionOptions, {
@@ -15,14 +16,16 @@ function BinaryCondition(conditionOptions) {
 	})
 	var fieldResultMaker = ResultMaker({ select: conditionOptions.field }),
 	    textForOperator  = getTextForOperator(conditionOptions.op),
-	    fieldDecorator   = getFieldDecorator(conditionOptions.op)
+	    fieldDecorator   = getFieldDecorator(conditionOptions.op),
+	    valueDecorator   = getValueDecorator(conditionOptions.op),
+	    value            = valueDecorator(conditionOptions.value)
 
 	return function BinaryConditionMaker(chain) {
-		var result = fieldResultMaker(chain),
+		var result    = fieldResultMaker(chain),
 		    fieldName = fieldDecorator(result.key)
 		return CypherObject({
 			string: result.toValueFollowedBy(textForOperator, '{' + fieldName + '}'),
-			params: _.set({}, fieldName, conditionOptions.value)
+			params: _.set({}, fieldName, value)
 		})
 	}
 }

@@ -78,8 +78,9 @@ suite('condition', function() {
 			})
 		})
 
-		test.skip('regex', function() {
-			$binary({ field: 'name', op: 'regex', value: ".*" }).queryObject().valueOf().should.eql({
+		test('regex', function() {
+			var regexCondition = BinaryCondition({ field: 'name', op: 'regex', value: '.*' })
+			regexCondition(oneNodeChain).valueOf().should.eql({
 				string: '$main.`name` =~ {nameRegex}',
 				params: { nameRegex: '(?i).*' }
 			})
