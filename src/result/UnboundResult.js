@@ -21,9 +21,26 @@ var UnboundResult = stampit()
 			return [this.key, this.value].join(': ')
 		},
 
-		toValueFollowedBy: function() {
-			var args = [].slice.apply(arguments)
-			return [this.value].concat(args).join(' ')
+		toBinaryConditionString: function(operatorSymbol) {
+			var paramToken = surround(this.key, '{', '}'),
+			    symbolString = surround(operatorSymbol, ' ')
+			return [this.value, paramToken].join(symbolString)
+		},
+
+		toUnaryConditionString: function(operatorSymbol) {
+			return [this.value, operatorSymbol].join(' ')
+		},
+
+		customizeKey: function(keyCustomizer) {
+			keyCustomizer = keyCustomizer || _.identity
+			return UnboundResult({
+				key: keyCustomizer(this.key),
+				value: this.value
+			})
+		},
+
+		buildConditionParams: function(actualValue) {
+			return _.set({}, this.key, actualValue)
 		},
 
 		bind: function() {
@@ -31,5 +48,8 @@ var UnboundResult = stampit()
 		}
 	})
 
+function surround(string, leftWrapper, rightWrapper) {
+	return [leftWrapper, string, rightWrapper || leftWrapper].join('')
+}
 
 module.exports = UnboundResult

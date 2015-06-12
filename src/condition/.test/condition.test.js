@@ -2,9 +2,8 @@
 
 require('chai').should()
 
-var UnaryCondition  = require('../UnaryCondition'),
-    BinaryCondition = require('../BinaryCondition'),
-    emptyChain      = require('../../chain/Chain').EMPTY
+var condition  = require('../condition'),
+    emptyChain = require('../../chain/Chain').EMPTY
 
 suite('condition', function() {
 	var oneNodeChain  = emptyChain.addNode('User').bind(),
@@ -12,7 +11,7 @@ suite('condition', function() {
 
 	suite('unary', function() {
 		suite('isNull', function() {
-			var isNullCondition = UnaryCondition({ field: 'name', op: 'isNull' })
+			var isNullCondition = condition({ field: 'name', op: 'isNull' })
 			test('on one-node chain', function() {
 				isNullCondition(oneNodeChain).toString().should.equal('$main.`name` IS NULL')
 			})
@@ -23,14 +22,14 @@ suite('condition', function() {
 		})
 
 		test('isNotNull', function() {
-			var isNotNullCondition = UnaryCondition({ field: 'name', op: 'isNotNull' })
+			var isNotNullCondition = condition({ field: 'name', op: 'isNotNull' })
 			isNotNullCondition(oneNodeChain).toString().should.equal('$main.`name` IS NOT NULL')
 		})
 	})
 
 	suite('binary', function() {
 		suite('eq', function() {
-			var eqCondition = BinaryCondition({ op: 'eq', value: 12 })
+			var eqCondition = condition({ op: 'eq', value: 12 })
 			test('on one-node chain', function() {
 				eqCondition(oneNodeChain).valueOf().should.eql({
 					string: 'id($main) = {id}',
@@ -47,7 +46,7 @@ suite('condition', function() {
 		})
 
 		test('lt', function() {
-			var ltCondition = BinaryCondition({ field: 'age', op: 'lt', value: 100 })
+			var ltCondition = condition({ field: 'age', op: 'lt', value: 100 })
 			ltCondition(oneNodeChain).valueOf().should.eql({
 				string: '$main.`age` < {maxAge}',
 				params: { maxAge: 100 }
@@ -55,7 +54,7 @@ suite('condition', function() {
 		})
 
 		test('gt', function() {
-			var gtCondition = BinaryCondition({ op: 'gt', value: 5 })
+			var gtCondition = condition({ op: 'gt', value: 5 })
 			gtCondition(oneNodeChain).valueOf().should.eql({
 				string: 'id($main) > {minId}',
 				params: { minId: 5 }
@@ -63,7 +62,7 @@ suite('condition', function() {
 		})
 
 		test('ne', function() {
-			var neCondition = BinaryCondition({ op: 'ne', value: 1 })
+			var neCondition = condition({ op: 'ne', value: 1 })
 			neCondition(oneNodeChain).valueOf().should.eql({
 				string: 'id($main) <> {wrongId}',
 				params: { wrongId: 1 }
@@ -71,7 +70,7 @@ suite('condition', function() {
 		})
 
 		test('in', function() {
-			var inCondition = BinaryCondition({ op: 'in', value: [15, 16] })
+			var inCondition = condition({ op: 'in', value: [15, 16] })
 			inCondition(oneNodeChain).valueOf().should.eql({
 				string: 'id($main) IN {ids}',
 				params: { ids: [15, 16] }
@@ -79,7 +78,7 @@ suite('condition', function() {
 		})
 
 		test('regex', function() {
-			var regexCondition = BinaryCondition({ field: 'name', op: 'regex', value: '.*' })
+			var regexCondition = condition({ field: 'name', op: 'regex', value: '.*' })
 			regexCondition(oneNodeChain).valueOf().should.eql({
 				string: '$main.`name` =~ {nameRegex}',
 				params: { nameRegex: '(?i).*' }

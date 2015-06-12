@@ -1,23 +1,24 @@
 'use strict'
 
-var _ = require('lodash')
+var stampit = require('stampit')
 
-var ResultMaker        = require('../result/ResultMaker'),
-    CypherObject       = require('../cypher/CypherObject'),
-    getTextForOperator = require('./getTextForOperator')
+var ResultMaker  = require('../result/ResultMaker'),
+    operators = require('./operators')
 
-function UnaryCondition(conditionOptions) {
-	conditionOptions = _.defaults({}, conditionOptions, {
-		op: 'isNull',
-		field: ''
+var UnaryCondition = stampit()
+	.state({
+		field: 'id',
+		op: null
 	})
-	var fieldResultMaker = ResultMaker({ select: conditionOptions.field }),
-	    textForOperator  = getTextForOperator(conditionOptions.op)
-
-	return function UnaryConditionMaker(chain) {
-		var result = fieldResultMaker(chain)
-		return CypherObject.fromString(result.toValueFollowedBy(textForOperator))
-	}
-}
+	.methods({
+		applyOn: function(chain) {
+			var fieldResult = this.fieldResultMaker(chain)
+			return this.operator.applyOn(fieldResult, this.value)
+		}
+	})
+	.enclose(function() {
+		this.operator = operators(this.op)
+		this.fieldResultMaker = ResultMaker({ select: this.field })
+	})
 
 module.exports = UnaryCondition

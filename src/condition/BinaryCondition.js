@@ -1,33 +1,25 @@
 'use strict'
 
-var _ = require('lodash')
+var stampit = require('stampit')
 
-var ResultMaker        = require('../result/ResultMaker'),
-    CypherObject       = require('../cypher/CypherObject'),
-    getTextForOperator = require('./getTextForOperator'),
-    getFieldDecorator  = require('./getFieldDecorator'),
-    getValueDecorator  = require('./getValueDecorator')
+var ResultMaker  = require('../result/ResultMaker'),
+    operators = require('./operators')
 
-function BinaryCondition(conditionOptions) {
-	conditionOptions = _.defaults({}, conditionOptions, {
+var BinaryCondition = stampit()
+	.state({
 		field: 'id',
-		op: 'eq',
+		op: null,
 		value: null
 	})
-	var fieldResultMaker = ResultMaker({ select: conditionOptions.field }),
-	    textForOperator  = getTextForOperator(conditionOptions.op),
-	    fieldDecorator   = getFieldDecorator(conditionOptions.op),
-	    valueDecorator   = getValueDecorator(conditionOptions.op),
-	    value            = valueDecorator(conditionOptions.value)
-
-	return function BinaryConditionMaker(chain) {
-		var result    = fieldResultMaker(chain),
-		    fieldName = fieldDecorator(result.key)
-		return CypherObject({
-			string: result.toValueFollowedBy(textForOperator, '{' + fieldName + '}'),
-			params: _.set({}, fieldName, value)
-		})
-	}
-}
+	.methods({
+		applyOn: function(chain) {
+			var fieldResult = this.fieldResultMaker(chain)
+			return this.operator.applyOn(fieldResult, this.value)
+		}
+	})
+	.enclose(function() {
+		this.operator = operators(this.op)
+		this.fieldResultMaker = ResultMaker({ select: this.field })
+	})
 
 module.exports = BinaryCondition
