@@ -181,6 +181,17 @@ suite('builder', function() {
 					.return().toString().should.equal(expectedCypherString)
 			})
 		})
+
+		test('#optionalMatchRelation is similar to #matchRelation', function() {
+			var expectedCypherString = [
+				'MATCH ($main:User)',
+				'OPTIONAL MATCH $main<-[:WRITTEN_BY]-(post:Post)',
+				'RETURN $main'
+			].join(' ')
+			builder.match('User')
+				.optionalMatchRelation(WRITTEN_BY_RELATION_ARC, 'Post')
+				.return().toString().should.equal(expectedCypherString)
+		})
 	})
 
 	test('#compose', function() {

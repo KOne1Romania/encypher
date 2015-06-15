@@ -12,15 +12,11 @@ exports.Merge = makeInstantiateStep('merge')
 exports.CreateRelation = makeNewRelationStep('create')
 exports.MergeRelation = makeNewRelationStep('merge')
 
+exports.MatchRelation = makeInstantiateRelationStep('match')
+exports.OptionalMatchRelation = makeInstantiateRelationStep('optional match')
+
 exports.Where = function WhereStep(conditionOptions) {
 	return step.store('buildWhereCypher', conditionOptions)
-}
-
-exports.MatchRelation = function MatchRelationStep(relationArc, node) {
-	return step
-		.update('addNode', node)
-		.store('buildNewRelationCypher', 'match', relationArc)
-		.update('bind')
 }
 
 exports.Return = function ReturnStep(resultOptions) {
@@ -49,6 +45,15 @@ exports.Reset = function ResetStep() {
 function makeNewRelationStep(action) {
 	return function(relationArc) {
 		return step.store('buildNewRelationCypher', action, relationArc)
+	}
+}
+
+function makeInstantiateRelationStep(action) {
+	return function _InstantiateRelationStep(relationArc, node) {
+		return step
+			.update('addNode', node)
+			.store('buildNewRelationCypher', action, relationArc)
+			.update('bind')
 	}
 }
 
