@@ -12,6 +12,10 @@ exports.Merge = makeInstantiateStep('merge')
 exports.CreateRelation = makeNewRelationStep('create')
 exports.MergeRelation = makeNewRelationStep('merge')
 
+exports.Where = function WhereStep(conditionOptions) {
+	return step.store('buildWhereCypher', conditionOptions)
+}
+
 exports.MatchRelation = function MatchRelationStep(relationArc, node) {
 	return step
 		.update('addNode', node)

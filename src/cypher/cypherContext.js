@@ -7,6 +7,7 @@ var stamps           = require('../util/stamps'),
     Forwarder        = stamps.Forwarder,
     Cloner           = stamps.Cloner,
     CypherObject     = require('./CypherObject'),
+    makeCondition    = require('../condition'),
     EMPTY_CHAIN      = require('../chain/Chain').EMPTY,
     EMPTY_RESULT_SET = require('../result/resultSet')
 
@@ -51,6 +52,11 @@ var CypherContext = stampit()
 
 		buildWithCypher: function() {
 			return CypherObject.fromString(this).prepend('WITH')
+		},
+
+		buildWhereCypher: function(conditionOptions) {
+			var conditionCypher = makeCondition(conditionOptions)(this.chain)
+			return conditionCypher.prepend('WHERE')
 		},
 
 		buildExpandedReturnCypher: function(fields) {

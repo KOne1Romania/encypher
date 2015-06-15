@@ -188,7 +188,7 @@ suite('builder', function() {
 		    returnStep     = builder.return()
 		matchWhereStep.compose(returnStep).toString()
 			.should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
- 	})
+	})
 
 	suite('with accumulator', function() {
 		test('#returnExpanded', function() {
@@ -227,6 +227,15 @@ suite('builder', function() {
 				.returnExpanded().toString()
 				.should.equal(expectedCypherString)
 		})
+	})
+
+	test('#where', function() {
+		builder.match('User').where({ field: 'name', op: 'eq', value: 'John' }).toCypher()
+			.valueOf().should.eql({
+				string: 'MATCH ($main:User) WHERE $main.`name` = {name}',
+				params: { name: 'John' }
+			})
+
 	})
 })
 
