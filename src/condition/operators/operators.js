@@ -4,7 +4,8 @@ var _          = require('lodash'),
     inflection = require('inflection')
 
 var BinaryOperator = require('./BinaryOperator'),
-    UnaryOperator  = require('./UnaryOperator')
+    UnaryOperator  = require('./UnaryOperator'),
+    JoinOperator   = require('./JoinOperator')
 
 var prependCamelCase = _.partial(_.partial, joinStringsCamelCase),
     appendCamelCase  = _.partial(_.partialRight, joinStringsCamelCase),
@@ -52,6 +53,14 @@ var operators = {
 
 	isNotNull: UnaryOperator({
 		name: 'isNotNull'
+	}),
+
+	and: JoinOperator({
+		name: 'and'
+	}),
+
+	or: JoinOperator({
+		name: 'or'
 	})
 }
 

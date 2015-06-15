@@ -85,4 +85,57 @@ suite('condition', function() {
 			})
 		})
 	})
+
+	suite('nested', function() {
+		var idConditions = [
+			{ op: 'lt', value: 15 },
+			{ op: 'gt', value: 10 }
+		]
+		var nameConditions = [
+			{ field: 'name', op: 'eq', value: 'John' }
+		]
+
+		test('and', function() {
+			var andCondition = condition({
+				conditions: idConditions
+			})
+			andCondition(oneNodeChain).valueOf().should.eql({
+				string: '(id($main) < {maxId} AND id($main) > {minId})',
+				params: { maxId: 15, minId: 10 }
+			})
+		})
+
+		test('or', function() {
+			var orCondition = condition({
+				conditions: idConditions,
+				op: 'or'
+			})
+			orCondition(oneNodeChain).valueOf().should.eql({
+				string: '(id($main) < {maxId} OR id($main) > {minId})',
+				params: { maxId: 15, minId: 10 }
+			})
+		})
+
+		test('one condition array', function() {
+			var andForOneCondition = condition({ conditions: nameConditions })
+			andForOneCondition(oneNodeChain).valueOf().should.eql({
+				string: '($main.`name` = {name})',
+				params: { name: 'John' }
+			})
+		})
+
+		test('nested', function() {
+			var nestedCondition = condition({
+				op: 'or',
+				conditions: [
+					{ conditions: idConditions },
+					{ conditions: nameConditions }
+				]
+			})
+			nestedCondition(oneNodeChain).valueOf().should.eql({
+				string: '((id($main) < {maxId} AND id($main) > {minId}) OR ($main.`name` = {name}))',
+				params: { name: 'John', maxId: 15, minId: 10 }
+			})
+		})
+	})
 })
