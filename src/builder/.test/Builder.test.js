@@ -229,13 +229,36 @@ suite('builder', function() {
 		})
 	})
 
-	test('#where', function() {
-		builder.match('User').where({ field: 'name', op: 'eq', value: 'John' }).toCypher()
-			.valueOf().should.eql({
-				string: 'MATCH ($main:User) WHERE $main.`name` = {name}',
-				params: { name: 'John' }
-			})
+	suite('#where', function() {
+		test('on main node', function() {
+			builder.match('User').where({ field: 'name', op: 'eq', value: 'John' })
+				.toCypher().valueOf().should.eql({
+					string: 'MATCH ($main:User) WHERE $main.`name` = {name}',
+					params: { name: 'John' }
+				})
+		})
 
+		test('on other node', function() {
+			builder.match('User').match('Post').where({ field: 'title', op: 'eq', value: 'Test' })
+				.toCypher().valueOf().should.eql({
+					string: 'MATCH ($main:User) MATCH (post:Post) WHERE post.`title` = {postTitle}',
+					params: { postTitle: 'Test' }
+				})
+
+		})
+
+		test('on related node', function() {
+			builder.match('User').matchRelation('WROTE_POST', 'Post')
+				.where({ field: 'title', op: 'eq', value: 'Test' })
+				.toCypher().valueOf().should.eql({
+					string: [
+						'MATCH ($main:User) MATCH $main-[:WROTE_POST]->(post:Post)',
+						'WHERE post.`title` = {postTitle}'
+					].join(' '),
+					params: { postTitle: 'Test' }
+				})
+
+		})
 	})
 })
 
