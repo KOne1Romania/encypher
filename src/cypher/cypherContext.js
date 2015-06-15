@@ -8,6 +8,7 @@ var stamps           = require('../util/stamps'),
     Cloner           = stamps.Cloner,
     CypherObject     = require('./CypherObject'),
     subset           = require('../subset'),
+    order            = require('../order'),
     makeCondition    = require('../condition'),
     EMPTY_CHAIN      = require('../chain/Chain').EMPTY,
     EMPTY_RESULT_SET = require('../result/resultSet')
@@ -66,6 +67,10 @@ var CypherContext = stampit()
 
 		buildSubsetCypher: function(subsetOptions) {
 			return subset(subsetOptions).toCypher()
+		},
+
+		buildOrderCypher: function(orderParts) {
+			return order(orderParts)(this.chain).prepend('ORDER BY')
 		},
 
 		toString: function() {

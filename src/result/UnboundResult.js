@@ -31,6 +31,10 @@ var UnboundResult = stampit()
 			return [this.value, operatorSymbol].join(' ')
 		},
 
+		toOrderStatement: function(direction) {
+			return [this.value, direction.toUpperCase()].join(' ')
+		},
+
 		customizeKey: function(keyCustomizer) {
 			keyCustomizer = keyCustomizer || _.identity
 			return UnboundResult({

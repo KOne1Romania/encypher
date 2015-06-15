@@ -280,6 +280,12 @@ suite('builder', function() {
 				params: subsetParams
 			})
 	})
+
+	test('#order', function() {
+		var orderParts = ['name', { field: 'age', direction: 'desc' }]
+		builder.match('User').return().order(orderParts).toString()
+			.should.eql('MATCH ($main:User) RETURN $main ORDER BY $main.`name` ASC, $main.`age` DESC')
+	})
 })
 
 var WRITTEN_BY_RELATION_ARC = { type: 'WRITTEN_BY', arrow: 'left' }

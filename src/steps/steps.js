@@ -46,6 +46,10 @@ exports.Subset = function SubsetStep(subsetOptions) {
 	return step.store('buildSubsetCypher', subsetOptions)
 }
 
+exports.Order = function OrderStep(orderSteps) {
+	return step.store('buildOrderCypher', orderSteps)
+}
+
 function makeNewRelationStep(action) {
 	return function(relationArc) {
 		return step.store('buildNewRelationCypher', action, relationArc)
