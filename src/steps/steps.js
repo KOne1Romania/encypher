@@ -46,10 +46,6 @@ exports.Reset = function ResetStep() {
 		.update('reset')
 }
 
-exports.WhereId = function WhereIdStep(id) {
-	return step.store('buildWhereIdCypher', id)
-}
-
 function makeNewRelationStep(action) {
 	return function(relationArc) {
 		return step.store('buildNewRelationCypher', action, relationArc)

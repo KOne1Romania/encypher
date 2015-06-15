@@ -18,13 +18,6 @@ var BoundNode = stampit()
 			return CypherObject.fromString(this).prepend('WITH distinct')
 		},
 
-		buildWhereIdCypher: function(id) {
-			return CypherObject({
-				string: 'WHERE id(' + this.alias + ') = {id}',
-				params: { id: id }
-			})
-		},
-
 		bind: function() {
 			throw Error('Cannot bind node `' + this.alias +'` - already bound')
 		},

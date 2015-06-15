@@ -23,7 +23,6 @@ var CypherContext = stampit()
 		chain: [
 			'buildNewRelationCypher',
 			'buildMatchCypher',
-			'buildWhereIdCypher',
 			'buildInstantiateCypher',
 			'buildReturnCypher',
 			'buildResetCypher'
