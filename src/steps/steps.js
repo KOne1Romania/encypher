@@ -42,6 +42,10 @@ exports.Reset = function ResetStep() {
 		.update('reset')
 }
 
+exports.Subset = function SubsetStep(subsetOptions) {
+	return step.store('buildSubsetCypher', subsetOptions)
+}
+
 function makeNewRelationStep(action) {
 	return function(relationArc) {
 		return step.store('buildNewRelationCypher', action, relationArc)

@@ -63,6 +63,13 @@ var CypherContext = stampit()
 			return CypherObject.fromString(expandedResult).prepend('RETURN')
 		},
 
+		buildSubsetCypher: function(subsetOptions) {
+			return CypherObject({
+				string: 'SKIP {skip} LIMIT {limit}',
+				params: _.pick(subsetOptions, ['skip', 'limit'])
+			})
+		},
+
 		toString: function() {
 			return [this.chain, this.resultSet].join(', ').replace(/,\s$/, '')
 		},

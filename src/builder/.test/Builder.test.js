@@ -271,6 +271,15 @@ suite('builder', function() {
 
 		})
 	})
+
+	test('#subset', function() {
+		var subsetParams = { skip: 20, limit: 10 }
+		builder.match('User').return().subset(subsetParams)
+			.toCypher().valueOf().should.eql({
+				string: 'MATCH ($main:User) RETURN $main SKIP {skip} LIMIT {limit}',
+				params: subsetParams
+			})
+	})
 })
 
 var WRITTEN_BY_RELATION_ARC = { type: 'WRITTEN_BY', arrow: 'left' }

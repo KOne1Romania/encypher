@@ -38,7 +38,8 @@ var Builder = stampit()
 	})
 	.compose(Stepper([
 		'return', 'reset', 'create', 'merge', 'createRelation', 'mergeRelation',
-		'matchRelation', 'optionalMatchRelation', 'returnExpanded', 'fetch', 'where'
+		'matchRelation', 'optionalMatchRelation', 'returnExpanded', 'fetch', 'where',
+		'subset'
 	]))
 	.enclose(function() {
 		this.step = this.step || steps.EMPTY
