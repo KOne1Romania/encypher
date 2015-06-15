@@ -7,6 +7,7 @@ var stamps           = require('../util/stamps'),
     Forwarder        = stamps.Forwarder,
     Cloner           = stamps.Cloner,
     CypherObject     = require('./CypherObject'),
+    subset           = require('../subset'),
     makeCondition    = require('../condition'),
     EMPTY_CHAIN      = require('../chain/Chain').EMPTY,
     EMPTY_RESULT_SET = require('../result/resultSet')
@@ -64,10 +65,7 @@ var CypherContext = stampit()
 		},
 
 		buildSubsetCypher: function(subsetOptions) {
-			return CypherObject({
-				string: 'SKIP {skip} LIMIT {limit}',
-				params: _.pick(subsetOptions, ['skip', 'limit'])
-			})
+			return subset(subsetOptions).toCypher()
 		},
 
 		toString: function() {
