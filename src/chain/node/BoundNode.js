@@ -18,6 +18,10 @@ var BoundNode = stampit()
 			return BoundNode({ alias: alias })
 		},
 
+		toStringWithData: function() {
+			throw Error('Cannot get string with data for bound node: ' + this.alias)
+		},
+
 		toString: function() {
 			return this.alias
 		}

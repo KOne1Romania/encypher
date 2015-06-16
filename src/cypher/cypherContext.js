@@ -24,7 +24,6 @@ var CypherContext = stampit()
 	}))
 	.compose(Forwarder({
 		chain: [
-			'buildInstantiateCypher',
 			'buildResetCypher'
 		]
 	}))
@@ -47,6 +46,10 @@ var CypherContext = stampit()
 			return this.extend({
 				resultSet: this.resultSet.resolve()
 			})
+		},
+
+		buildInstantiateCypher: function(action, data) {
+			return this.chain.getDataCypher(data).prepend(action.toUpperCase())
 		},
 
 		buildNewRelationCypher: function(action, relationArc) {

@@ -11,16 +11,8 @@ var UnboundNode = stampit()
 		label: ''
 	})
 	.methods({
-		buildInstantiateCypher: function(action, data) {
-			return this._buildDataCypher(data).prepend(action.toUpperCase())
-		},
-
-		_buildDataCypher: function(data) {
-			var dataString = data != null ? ' {data}' : ''
-			return CypherObject({
-				string: '(' + this.alias + ':' + this.label + dataString + ')',
-				params: { data: data }
-			})
+		toStringWithData: function(dataFieldName) {
+			return '(' + this.alias + ':' + this.label + ' ' + dataFieldName + ')'
 		},
 
 		toString: function() {
