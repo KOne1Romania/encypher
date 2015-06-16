@@ -3,7 +3,6 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-
 var CypherObject = require('../cypher/CypherObject')
 
 var _RelationArc = stampit()

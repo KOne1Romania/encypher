@@ -28,8 +28,8 @@ var MainChain = stampit()
 			return CypherObject.EMPTY
 		},
 
-		buildNewRelationCypher: function() {
-			throw Error('Cannot create relation with only one node')
+		getRelationCypher: function() {
+			throw Error('Cannot get relation with only one node')
 		},
 
 		toStringWithSuffix: function(suffix) {

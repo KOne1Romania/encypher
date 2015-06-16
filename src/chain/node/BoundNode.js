@@ -10,14 +10,6 @@ var BoundNode = stampit()
 		alias: ''
 	})
 	.methods({
-		buildReturnCypher: function() {
-			return CypherObject.fromString(this).prepend('RETURN')
-		},
-
-		buildWithCypher: function() {
-			return CypherObject.fromString(this).prepend('WITH distinct')
-		},
-
 		bind: function() {
 			throw Error('Cannot bind node `' + this.alias +'` - already bound')
 		},

@@ -36,8 +36,5 @@ suite('Node', function() {
 		test('#toString uses only alias', function() {
 			boundNode.toString().should.eql('post')
 		})
-		test('#buildReturnCypher', function() {
-			boundNode.buildReturnCypher().toString().should.eql('RETURN post')
-		})
 	})
 })

@@ -7,6 +7,7 @@ var stamps           = require('../util/stamps'),
     Forwarder        = stamps.Forwarder,
     Cloner           = stamps.Cloner,
     CypherObject     = require('./CypherObject'),
+    ResultMaker      = require('../result/ResultMaker'),
     subset           = require('../subset'),
     order            = require('../order'),
     makeCondition    = require('../condition'),
@@ -23,10 +24,7 @@ var CypherContext = stampit()
 	}))
 	.compose(Forwarder({
 		chain: [
-			'buildNewRelationCypher',
-			'buildMatchCypher',
 			'buildInstantiateCypher',
-			'buildReturnCypher',
 			'buildResetCypher'
 		]
 	}))
@@ -51,6 +49,10 @@ var CypherContext = stampit()
 			})
 		},
 
+		buildNewRelationCypher: function(action, relationArc) {
+			return this.chain.getRelationCypher(relationArc).prepend(action.toUpperCase())
+		},
+
 		buildWithCypher: function() {
 			return CypherObject.fromString(this).prepend('WITH')
 		},
@@ -71,6 +73,11 @@ var CypherContext = stampit()
 
 		buildOrderCypher: function(orderParts) {
 			return order(orderParts)(this.chain).prepend('ORDER BY')
+		},
+
+		buildReturnCypher: function(resultOptions) {
+			var result = ResultMaker(resultOptions)(this.chain)
+			return CypherObject.fromString(result).prepend('RETURN')
 		},
 
 		toString: function() {

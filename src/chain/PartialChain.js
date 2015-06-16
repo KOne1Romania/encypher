@@ -3,10 +3,11 @@
 var stampit = require('stampit'),
     _       = require('lodash')
 
-var Node        = require('./node/Node'),
-    ChainCommon = require('./ChainCommon'),
-    RelationArc = require('./RelationArc'),
-    Ensure      = require('../util/stamps').Ensure
+var Node         = require('./node/Node'),
+    ChainCommon  = require('./ChainCommon'),
+    RelationArc  = require('./RelationArc'),
+    CypherObject = require('../cypher/CypherObject'),
+    Ensure       = require('../util/stamps').Ensure
 
 var PartialChain = stampit()
 	.state({
@@ -28,14 +29,10 @@ var PartialChain = stampit()
 		},
 
 		buildResetCypher: function() {
-			return this.main.node.buildWithCypher()
+			return CypherObject.fromString(this.main).prepend('WITH distinct')
 		},
 
-		buildNewRelationCypher: function(action, relationArc) {
-			return this._buildRelationCypher(relationArc).prepend(action.toUpperCase())
-		},
-
-		_buildRelationCypher: function(relationArc) {
+		getRelationCypher: function(relationArc) {
 			return RelationArc(relationArc).toCypher(this.previous, this.node)
 		},
 

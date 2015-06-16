@@ -16,18 +16,12 @@ var ChainCommon = stampit()
 
 		backToMain: function() {
 			return this.main
-		},
-
-		buildReturnCypher: function(resultOptions) {
-			var result = ResultMaker(resultOptions)(this)
-			return CypherObject.fromString(result).prepend('RETURN')
 		}
 	})
 	.compose(Cloner)
 	.compose(Forwarder({
 		node: [
 			'toString',
-			'buildMatchCypher',
 			'buildInstantiateCypher'
 		]
 	}))

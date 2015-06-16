@@ -15,14 +15,6 @@ var UnboundNode = stampit()
 			return this._buildDataCypher(data).prepend(action.toUpperCase())
 		},
 
-		buildReturnCypher: function() {
-			throw Error('Cannot build Return cypher - node `' + this + '` is not bound')
-		},
-
-		buildWithCypher: function() {
-			throw Error('Cannot build With cypher - node `' + this + '` is not bound')
-		},
-
 		_buildDataCypher: function(data) {
 			var dataString = data != null ? ' {data}' : ''
 			return CypherObject({
