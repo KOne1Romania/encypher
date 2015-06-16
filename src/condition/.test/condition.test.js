@@ -138,4 +138,14 @@ suite('condition', function() {
 			})
 		})
 	})
+
+	test('negated', function() {
+		var negatedCondition = condition({
+			not: { op: 'eq', value: 1 }
+		})
+		negatedCondition(oneNodeChain).valueOf().should.eql({
+			string: 'NOT id($main) = {id}',
+			params: { id: 1 }
+		})
+	})
 })
