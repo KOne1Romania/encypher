@@ -87,6 +87,10 @@ var CypherContext = stampit()
 			return this.chain.getNodeAttributionCypher(data).prepend('SET')
 		},
 
+		buildLabelRelatedCypher: function(action, label) {
+			return this.chain.getLabelRelatedCypher(label).prepend(action.toUpperCase())
+		},
+
 		toString: function() {
 			return [this.chain, this.resultSet].join(', ').replace(/,\s$/, '')
 		},

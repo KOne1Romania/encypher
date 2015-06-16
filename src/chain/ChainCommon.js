@@ -25,6 +25,10 @@ var ChainCommon = stampit()
 
 		getNodeAttributionCypher: function(data) {
 			return DataContainer({ data: data, chain: this}).toAttributionCypher()
+		},
+
+		getLabelRelatedCypher: function(label) {
+			return CypherObject.fromString([this.node, label].join(':'))
 		}
 	})
 	.compose(Cloner)

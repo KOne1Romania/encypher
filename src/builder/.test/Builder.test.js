@@ -315,6 +315,14 @@ suite('builder', function() {
 					})
 			})
 		})
+
+		test('#setLabel', function() {
+			builder.match('User').setLabel('SuperUser')
+				.toCypher().valueOf().should.eql({
+					string: 'MATCH ($main:User) SET $main:SuperUser',
+					params: {}
+				})
+		})
 	})
 })
 

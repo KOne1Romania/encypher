@@ -23,6 +23,8 @@ exports.SetNode = function SetNodeStep(data) {
 	return step.store('buildSetNodeCypher', data)
 }
 
+exports.SetLabel = makeLabelRelatedStep('set')
+
 exports.Return = function ReturnStep(resultOptions) {
 	return step
 		.update('reset')
@@ -76,7 +78,12 @@ function makeInstantiateStep(action) {
 			.store('buildInstantiateCypher', action, data)
 			.update('bind')
 	}
+}
 
+function makeLabelRelatedStep(action) {
+	return function _LabelRelatedStep(label) {
+		return step.store('buildLabelRelatedCypher', action, label)
+	}
 }
 
 exports.EMPTY = step
