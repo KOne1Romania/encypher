@@ -14,21 +14,20 @@ var NormalDataContainer = stampit()
 	.methods({
 		toCypher: function() {
 			return CypherObject({
-				string: this._getCypherString(),
+				string: this.chain.toStringWithData(this._getParamString()),
 				params: this._getCypherParams()
 			})
 		},
 
 		toAttributionCypher: function() {
 			return CypherObject({
-				string: [this.chain, '{data}'].join(' = '),
+				string: [this.chain, this._getParamString()].join(' = '),
 				params: this._getCypherParams()
 			})
 		},
 
-		_getCypherString: function() {
-			var dataParamString = '{' + this.dataFieldName + '}'
-			return this.chain.toStringWithData(dataParamString)
+		_getParamString: function() {
+			return '{' + this.dataFieldName + '}'
 		},
 
 		_getCypherParams: function() {

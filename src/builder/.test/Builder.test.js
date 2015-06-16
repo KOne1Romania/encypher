@@ -296,13 +296,24 @@ suite('builder', function() {
 	})
 
 	suite('set', function() {
-		test('#setNode', function() {
-			var nodeData = { name: 'John' }
-			builder.match('User').setNode(nodeData)
-				.toCypher().valueOf().should.eql({
-					string: 'MATCH ($main:User) SET $main = {data}',
-					params: { data: nodeData }
-				})
+		suite('#setNode', function() {
+			test('on main node', function() {
+				var nodeData = { name: 'John' }
+				builder.match('User').setNode(nodeData)
+					.toCypher().valueOf().should.eql({
+						string: 'MATCH ($main:User) SET $main = {data}',
+						params: { data: nodeData }
+					})
+			})
+
+			test('on other node', function() {
+				var nodeData = { title: 'Test' }
+				builder.match('User').match('Post').setNode(nodeData)
+					.toCypher().valueOf().should.eql({
+						string: 'MATCH ($main:User) MATCH (post:Post) SET post = {postData}',
+						params: { postData: nodeData }
+					})
+			})
 		})
 	})
 })
