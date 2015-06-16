@@ -32,7 +32,7 @@ var MainChain = stampit()
 			throw Error('Cannot get relation with only one node')
 		},
 
-		toStringWithSuffix: function(suffix) {
+		putStringInContext: function(suffix) {
 			return suffix
 		}
 	})

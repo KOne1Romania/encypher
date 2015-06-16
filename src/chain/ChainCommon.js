@@ -19,8 +19,12 @@ var ChainCommon = stampit()
 			return this.main
 		},
 
-		getDataCypher: function(data) {
+		getInstantiateNodeCypher: function(data) {
 			return DataContainer({ data: data, chain: this }).toCypher()
+		},
+
+		getNodeAttributionCypher: function(data) {
+			return DataContainer({ data: data, chain: this}).toAttributionCypher()
 		}
 	})
 	.compose(Cloner)

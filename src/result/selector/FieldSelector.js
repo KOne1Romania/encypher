@@ -6,7 +6,7 @@ var Result = require('../Result'),
 function FieldSelector(fieldName) {
 	return function SpecificFieldSelector(chain) {
 		return Result({
-			key: chain.toStringWithSuffix(fieldName),
+			key: chain.putStringInContext(fieldName),
 			value: [chain.toString(), encode.field(fieldName)].join('.')
 		})
 	}

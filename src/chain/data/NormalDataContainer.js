@@ -19,6 +19,13 @@ var NormalDataContainer = stampit()
 			})
 		},
 
+		toAttributionCypher: function() {
+			return CypherObject({
+				string: [this.chain, '{data}'].join(' = '),
+				params: this._getCypherParams()
+			})
+		},
+
 		_getCypherString: function() {
 			var dataParamString = '{' + this.dataFieldName + '}'
 			return this.chain.toStringWithData(dataParamString)
@@ -30,7 +37,7 @@ var NormalDataContainer = stampit()
 	})
 	.enclose(function() {
 		this.chain = this.chain || EMPTY_CHAIN
-		this.dataFieldName = this.chain.bind().toStringWithSuffix('data')
+		this.dataFieldName = this.chain.putStringInContext('data')
 	})
 
 module.exports = NormalDataContainer

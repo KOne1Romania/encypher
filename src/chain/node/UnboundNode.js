@@ -30,6 +30,10 @@ var UnboundNode = stampit()
 			})
 		},
 
+		putStringInContext: function(string) {
+			return this.alias + _.capitalize(string)
+		},
+
 		bind: function() {
 			return BoundNode(_.pick(this, 'alias'))
 		}

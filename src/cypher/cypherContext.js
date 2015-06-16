@@ -49,7 +49,7 @@ var CypherContext = stampit()
 		},
 
 		buildInstantiateCypher: function(action, data) {
-			return this.chain.getDataCypher(data).prepend(action.toUpperCase())
+			return this.chain.getInstantiateNodeCypher(data).prepend(action.toUpperCase())
 		},
 
 		buildNewRelationCypher: function(action, relationArc) {
@@ -81,6 +81,10 @@ var CypherContext = stampit()
 		buildReturnCypher: function(resultOptions) {
 			var result = ResultMaker(resultOptions)(this.chain)
 			return CypherObject.fromString(result).prepend('RETURN')
+		},
+
+		buildSetNodeCypher: function(data) {
+			return this.chain.getNodeAttributionCypher(data).prepend('SET')
 		},
 
 		toString: function() {

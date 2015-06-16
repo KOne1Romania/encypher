@@ -57,26 +57,36 @@ suite('Chain', function() {
 		})
 	})
 
-	suite('#getDataChyper', function() {
+	suite('#getInstantiateNodeCypher', function() {
 		var data = {}
 		test('on main chain', function() {
-			oneNodeChain.getDataCypher(data).valueOf().should.eql({
+			oneNodeChain.getInstantiateNodeCypher(data).valueOf().should.eql({
 				string: '($main:User {data})',
 				params: { data: data }
 			})
 		})
 
 		test('on two nodes chain', function() {
-			twoNodesChain.getDataCypher(data).valueOf().should.eql({
+			twoNodesChain.getInstantiateNodeCypher(data).valueOf().should.eql({
 				string: '(post:Post {postData})',
 				params: { postData: data }
 			})
 		})
 
 		test('when data is null', function() {
-			oneNodeChain.getDataCypher().valueOf().should.eql({
+			oneNodeChain.getInstantiateNodeCypher().valueOf().should.eql({
 				string: '($main:User)',
 				params: {}
+			})
+		})
+	})
+
+	suite('#getNodeAttributionCypher', function() {
+		var data = {}
+		test('on main chain', function() {
+			oneNodeChain.bind().getNodeAttributionCypher(data).valueOf().should.eql({
+				string: '$main = {data}',
+				params: { data: data }
 			})
 		})
 	})

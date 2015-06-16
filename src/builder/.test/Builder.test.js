@@ -294,6 +294,17 @@ suite('builder', function() {
 		builder.match('User').return().order(orderParts).toString()
 			.should.eql('MATCH ($main:User) RETURN $main ORDER BY $main.`name` ASC, $main.`age` DESC')
 	})
+
+	suite('set', function() {
+		test('#setNode', function() {
+			var nodeData = { name: 'John' }
+			builder.match('User').setNode(nodeData)
+				.toCypher().valueOf().should.eql({
+					string: 'MATCH ($main:User) SET $main = {data}',
+					params: { data: nodeData }
+				})
+		})
+	})
 })
 
 var WRITTEN_BY_RELATION_ARC = { type: 'WRITTEN_BY', arrow: 'left' }

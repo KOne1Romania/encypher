@@ -19,6 +19,10 @@ exports.Where = function WhereStep(conditionOptions) {
 	return step.store('buildWhereCypher', conditionOptions)
 }
 
+exports.SetNode = function SetNodeStep(data) {
+	return step.store('buildSetNodeCypher', data)
+}
+
 exports.Return = function ReturnStep(resultOptions) {
 	return step
 		.update('reset')

@@ -7,7 +7,9 @@ var Node         = require('./node/Node'),
     ChainCommon  = require('./ChainCommon'),
     RelationArc  = require('./RelationArc'),
     CypherObject = require('../cypher/CypherObject'),
-    Ensure       = require('../util/stamps').Ensure
+    stamps       = require('../util/stamps'),
+    Ensure       = stamps.Ensure,
+    Forwarder    = stamps.Forwarder
 
 var PartialChain = stampit()
 	.state({
@@ -34,12 +36,11 @@ var PartialChain = stampit()
 
 		getRelationCypher: function(relationArc) {
 			return RelationArc(relationArc).toCypher(this.previous, this.node)
-		},
-
-		toStringWithSuffix: function(suffix) {
-			return this.toString() + _.capitalize(suffix)
 		}
 	})
+	.compose(Forwarder({
+		node: ['putStringInContext']
+	}))
 	.compose(ChainCommon)
 	.compose(Ensure({
 		node: Node

@@ -12,6 +12,10 @@ var EmptyDataContainer = stampit()
 	.methods({
 		toCypher: function() {
 			return CypherObject.fromString(this.chain)
+		},
+
+		toAttributionCypher: function() {
+			throw Error('Cannot attribute empty object to node: ' + this.chain)
 		}
 	})
 	.enclose(function() {

@@ -11,7 +11,7 @@ var BoundNode = stampit()
 	})
 	.methods({
 		bind: function() {
-			throw Error('Cannot bind node `' + this.alias +'` - already bound')
+			throw Error('Cannot bind node `' + this.alias + '` - already bound')
 		},
 
 		withAlias: function(alias) {
@@ -24,6 +24,10 @@ var BoundNode = stampit()
 
 		toString: function() {
 			return this.alias
+		},
+
+		putStringInContext: function(string) {
+			return this.alias + _.capitalize(string)
 		}
 	})
 
