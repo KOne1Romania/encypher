@@ -323,6 +323,14 @@ suite('builder', function() {
 					params: {}
 				})
 		})
+
+		test('#removeLabel', function() {
+			builder.match('User').removeLabel('SuperUser')
+				.toCypher().valueOf().should.eql({
+					string: 'MATCH ($main:User) REMOVE $main:SuperUser',
+					params: {}
+				})
+		})
 	})
 })
 

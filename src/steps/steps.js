@@ -24,6 +24,7 @@ exports.SetNode = function SetNodeStep(data) {
 }
 
 exports.SetLabel = makeLabelRelatedStep('set')
+exports.RemoveLabel = makeLabelRelatedStep('remove')
 
 exports.Return = function ReturnStep(resultOptions) {
 	return step
