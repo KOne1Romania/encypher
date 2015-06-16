@@ -63,11 +63,6 @@ suite('builder', function() {
 	})
 
 	suite('basic', function() {
-		test('#whereId', function() {
-			builder.match('User').whereId(10).return()
-				.toString().should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
-		})
-
 		test('#create', function() {
 			var data = { name: 'John' }
 			builder.create('User', data).return().toCypher().valueOf().should.eql({
@@ -270,6 +265,19 @@ suite('builder', function() {
 				})
 
 		})
+
+		suite('aliases', function() {
+			test('#whereId', function() {
+				builder.match('User').whereId(10).return()
+					.toString().should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
+			})
+
+			test('#whereIdIn', function() {
+				builder.match('User').whereIdIn([10, 20]).return()
+					.toString().should.eql('MATCH ($main:User) WHERE id($main) IN [10, 20] RETURN $main')
+			})
+		})
+
 	})
 
 	test('#subset', function() {

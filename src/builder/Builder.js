@@ -20,6 +20,10 @@ var Builder = stampit()
 			return this.where({ op: 'eq', value: id })
 		},
 
+		whereIdIn: function(ids) {
+			return this.where({ op: 'in', value: ids })
+		},
+
 		toString: function() {
 			return this.toCypher().toString()
 		},

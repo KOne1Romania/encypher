@@ -79,7 +79,7 @@ suite('encypher', function() {
 		encypher
 			.create('Post', postData)
 			.match('User').whereId(userId).mergeRelation('WRITTEN_BY')
-			.match('Tag').where({ field: 'id', op: 'in', value: tagIds}).mergeRelation('HAST_TAG')
+			.match('Tag').whereIdIn(tagIds).mergeRelation('HAST_TAG')
 			.return({ select: 'id' })
 			.toCypher().valueOf().should.eql(expectedCypher)
 	})
