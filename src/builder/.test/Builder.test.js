@@ -140,7 +140,7 @@ suite('builder', function() {
 					'RETURN $main'
 				].join(' ')
 				builder.match('User')
-					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left', alias: '_r'}, 'Post')
+					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left', alias: '_r' }, 'Post')
 					.return().toString().should.equal(expectedCypherString)
 			})
 
@@ -345,12 +345,16 @@ suite('builder', function() {
 	})
 
 	suite('delete', function() {
-		test('node', function() {
-			builder.match('User').delete()
-				.toCypher().valueOf().should.eql({
-					string: 'MATCH ($main:User) DELETE $main',
-					params: {}
-				})
+		suite('node', function() {
+			test('main', function() {
+				builder.match('User').delete().toString()
+					.should.eql('MATCH ($main:User) DELETE $main')
+			})
+
+			test('related', function() {
+				builder.match('User').match('Address').delete().return().toString()
+					.should.eql('MATCH ($main:User) MATCH (address:Address) DELETE address RETURN $main')
+			})
 		})
 	})
 })
