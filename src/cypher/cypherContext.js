@@ -17,7 +17,8 @@ var stamps           = require('../util/stamps'),
 var CypherContext = stampit()
 	.state({
 		chain: null,
-		resultSet: null
+		resultSet: null,
+		relation: null
 	})
 	.compose(Forwarder.extend({
 		chain: ['addNode', 'bind']
@@ -28,6 +29,12 @@ var CypherContext = stampit()
 		]
 	}))
 	.methods({
+		addRelation: function(relationArc) {
+			return this.extend({
+				relation: relationArc
+			})
+		},
+
 		reset: function() {
 			return this.extend({
 				chain: this.chain.backToMain(),
@@ -52,8 +59,8 @@ var CypherContext = stampit()
 			return this.chain.getInstantiateNodeCypher(data).prepend(action.toUpperCase())
 		},
 
-		buildNewRelationCypher: function(action, relationArc) {
-			return this.chain.getRelationCypher(relationArc).prepend(action.toUpperCase())
+		buildRelationCypher: function(action) {
+			return this.chain.getRelationCypher(this.relation).prepend(action.toUpperCase())
 		},
 
 		buildWithCypher: function() {

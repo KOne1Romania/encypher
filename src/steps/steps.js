@@ -59,7 +59,9 @@ exports.Order = function OrderStep(orderSteps) {
 
 function makeNewRelationStep(action) {
 	return function(relationArc) {
-		return step.store('buildNewRelationCypher', action, relationArc)
+		return step
+			.update('addRelation', relationArc)
+			.store('buildRelationCypher', action)
 	}
 }
 
@@ -67,7 +69,8 @@ function makeInstantiateRelationStep(action) {
 	return function _InstantiateRelationStep(relationArc, node) {
 		return step
 			.update('addNode', node)
-			.store('buildNewRelationCypher', action, relationArc)
+			.update('addRelation', relationArc)
+			.store('buildRelationCypher', action)
 			.update('bind')
 	}
 }
