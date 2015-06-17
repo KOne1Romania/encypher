@@ -8,7 +8,8 @@ var CypherObject = require('../cypher/CypherObject')
 var _RelationArc = stampit()
 	.state({
 		type: '',
-		arrow: 'right'
+		arrow: 'right',
+		alias: ''
 	})
 	.methods({
 		toCypher: function(leftNode, rightNode) {
@@ -19,7 +20,7 @@ var _RelationArc = stampit()
 
 		_makeArcArrowString: function() {
 			var arrowDecorators    = ARROWS[this.arrow],
-			    relationTypeString = '[:' + this.type + ']'
+			    relationTypeString = '[' + this.alias + ':' + this.type + ']'
 			return arrowDecorators.before + relationTypeString + arrowDecorators.after
 		}
 	})

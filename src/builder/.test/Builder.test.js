@@ -133,6 +133,17 @@ suite('builder', function() {
 					.return().toString().should.equal(expectedCypherString)
 			})
 
+			test('with alias', function() {
+				var expectedCypherString = [
+					'MATCH ($main:User)',
+					'MATCH $main<-[_r:WRITTEN_BY]-(post:Post)',
+					'RETURN $main'
+				].join(' ')
+				builder.match('User')
+					.matchRelation({ type: 'WRITTEN_BY', arrow: 'left', alias: '_r'}, 'Post')
+					.return().toString().should.equal(expectedCypherString)
+			})
+
 			test('once with condition', function() {
 				var expectedCypherString = [
 					'MATCH ($main:User)',
