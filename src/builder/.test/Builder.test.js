@@ -87,6 +87,7 @@ suite('builder', function() {
 					'MATCH ($main:User)',
 					'MATCH (post:Post)',
 					'CREATE $main<-[:WRITTEN_BY]-post',
+					'WITH distinct $main',
 					'RETURN $main'
 				].join(' ')
 				builder.match('User').match('Post').createRelation(WRITTEN_BY_RELATION_ARC)
@@ -100,6 +101,7 @@ suite('builder', function() {
 					'WITH distinct $main',
 					'MATCH (post:Post)',
 					'CREATE $main<-[:WRITTEN_BY]-post',
+					'WITH distinct $main',
 					'RETURN $main'
 				].join(' ')
 				builder.match('User').match('Tag').match('Post')
@@ -114,6 +116,7 @@ suite('builder', function() {
 				'MATCH (post:Post)',
 				'WHERE id(post) = 12',
 				'MERGE $main<-[:WRITTEN_BY]-post',
+				'WITH distinct $main',
 				'RETURN $main'
 			].join(' ')
 			builder.match('User').match('Post').whereId(12)
@@ -353,7 +356,11 @@ suite('builder', function() {
 
 			test('related', function() {
 				builder.match('User').match('Address').delete().return().toString()
-					.should.equal('MATCH ($main:User) MATCH (address:Address) DELETE address RETURN $main')
+					.should.equal([
+						'MATCH ($main:User) MATCH (address:Address) DELETE address',
+						'WITH distinct $main',
+						'RETURN $main'
+					].join(' '))
 			})
 		})
 
@@ -363,7 +370,9 @@ suite('builder', function() {
 				.return().toString()
 				.should.equal([
 					'MATCH ($main:User) MATCH $main-[$r_has_address:HAS_ADDRESS]->(address:Address)',
-					'DELETE $r_has_address RETURN $main'
+					'DELETE $r_has_address',
+					'WITH distinct $main',
+					'RETURN $main'
 				].join(' '))
 		})
 	})

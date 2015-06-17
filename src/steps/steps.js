@@ -29,13 +29,13 @@ exports.RemoveLabel = makeLabelRelatedStep('remove')
 exports.Delete = function DeleteStep() {
 	return step
 		.store('buildDeleteNodeCypher')
-		.update('reset')
+		.compose(exports.Reset())
 }
 
 exports.DeleteRelation = function DeleteRelationStep() {
 	return step
 		.store('buildDeleteRelationCypher')
-		.update('reset')
+		.compose(exports.Reset())
 }
 
 exports.Return = function ReturnStep(resultOptions) {
@@ -74,6 +74,7 @@ function makeNewRelationStep(action) {
 		return step
 			.update('addRelation', relationArc)
 			.store('buildRelationCypher', action)
+			.compose(exports.Reset())
 	}
 }
 

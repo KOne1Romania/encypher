@@ -23,6 +23,7 @@ suite('encypher', function() {
 				"RETURN {",
 					"id: id($main),",
 					"name: $main.`name`,",
+					"timestamp: $main.`timestamp`,",
 					"competitorId: competitorId,",
 					"productIds: productIds",
 				"} as $main",
@@ -47,7 +48,7 @@ suite('encypher', function() {
 			.fetch({ select: 'id' })
 			.optionalMatchRelation('PROMOTES', { label: 'CompetitorProduct', alias: 'product' })
 			.fetch({ aggregate: 'collect', select: 'id' })
-			.returnExpanded(['id', 'name'])
+			.returnExpanded(['id', 'name', 'timestamp'])
 			.order(['name', { field: 'timestamp', direction: 'desc' }])
 			.toCypher().valueOf().should.eql(expectedCypher)
 	})
@@ -55,7 +56,7 @@ suite('encypher', function() {
 	test('create new node with relations', function() {
 		var postData = { title: 'test post', body: 'some text' },
 		    userId   = 15,
-		    tagIds  = [20, 21]
+		    tagIds   = [20, 21]
 		var expectedCypher = {
 			string: [
 // @formatter:off
@@ -67,6 +68,7 @@ suite('encypher', function() {
 				"MATCH (tag:Tag)",
 					"WHERE id(tag) IN {tagIds}",
 					"MERGE $main-[:HAST_TAG]->tag",
+				'WITH distinct $main',
 				"RETURN id($main) as id"
 // @formatter:on
 			].join(' '),
@@ -83,4 +85,82 @@ suite('encypher', function() {
 			.return({ select: 'id' })
 			.toCypher().valueOf().should.eql(expectedCypher)
 	})
+
+	test('soft delete node', function() {
+		var userId = 12
+		var expectedCypher = {
+			string: [
+// @formatter:off
+				"MATCH ($main:User)",
+					"WHERE id($main) = {id}",
+				"REMOVE $main:User",
+				"SET $main:_User"
+// @formatter:on
+			].join(' '),
+			params: {
+				id: userId
+			}
+		}
+		encypher
+			.match('User').whereId(userId)
+			.removeLabel('User')
+			.setLabel('_User')
+			.toCypher().valueOf().should.eql(expectedCypher)
+	})
+
+	test('update node with relations', function() {
+		var postData = { title: 'new title', body: 'updated text' },
+		    userId   = 15,
+		    postId   = 30,
+		    tagIds   = [20, 21]
+		var expectedCypher = {
+			string: [
+// @formatter:off
+				"MATCH ($main:Post)",
+					"WHERE id($main) = {id}",
+					"SET $main = {data}",
+				"OPTIONAL MATCH $main-[$r_written_by:WRITTEN_BY]->(user:User)",
+					"WHERE NOT id(user) = {userId}",
+					"DELETE $r_written_by",
+				"WITH distinct $main",
+				"MATCH (user:User)",
+					"WHERE id(user) = {userId}",
+					"MERGE $main-[:WRITTEN_BY]->user",
+				'WITH distinct $main',
+				"OPTIONAL MATCH $main-[$r_has_tag:HAS_TAG]->(tag:Tag)",
+					"WHERE NOT id(tag) IN {tagIds}",
+					"DELETE $r_has_tag",
+				"WITH distinct $main",
+				"MATCH (tag:Tag)",
+					"WHERE id(tag) IN {tagIds}",
+					"MERGE $main-[:HAS_TAG]->tag",
+				"WITH distinct $main",
+				"RETURN id($main) as id"
+// @formatter:on
+			].join(' '),
+			params: {
+				id: postId,
+				data: postData,
+				userId: userId,
+				tagIds: tagIds
+			}
+		}
+		encypher
+			.match('Post').whereId(postId)
+			.setNode(postData)
+			.optionalMatchRelation(aliasRelation('WRITTEN_BY'), 'User')
+			.where({ not: { field: 'id', op: 'eq', value: userId } })
+			.deleteRelation()
+			.match('User').whereId(userId).mergeRelation('WRITTEN_BY')
+			.optionalMatchRelation(aliasRelation('HAS_TAG'), 'Tag')
+			.where({ not: { field: 'id', op: 'in', value: tagIds } })
+			.deleteRelation()
+			.match('Tag').whereIdIn(tagIds).mergeRelation('HAS_TAG')
+			.return({ select: 'id' })
+			.toCypher().valueOf().should.eql(expectedCypher)
+	})
 })
+
+function aliasRelation(relationType) {
+	return { type: relationType, alias: '$default' }
+}
