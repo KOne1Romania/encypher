@@ -12,6 +12,13 @@ var _RelationArc = stampit()
 		alias: ''
 	})
 	.methods({
+		toAliasCypher: function() {
+			if (_.isEmpty(this.alias)) {
+				throw Error('Relation ' + this.type + ' must have alias')
+			}
+			return CypherObject.fromString(this.alias)
+		},
+
 		toCypher: function(leftNode, rightNode) {
 			var arcArrowString = this._makeArcArrowString(),
 			    cypherString   = leftNode + arcArrowString + rightNode
@@ -24,6 +31,15 @@ var _RelationArc = stampit()
 			return arrowDecorators.before + relationTypeString + arrowDecorators.after
 		}
 	})
+	.enclose(function() {
+		if (this.alias === '$default') {
+			this.alias = makeAliasFromType(this.type)
+		}
+	})
+
+function makeAliasFromType(type) {
+	return '$r_' + type.toLowerCase()
+}
 
 var ARROWS = {
 	right: { before: '-', after: '->' },

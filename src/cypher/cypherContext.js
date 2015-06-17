@@ -6,6 +6,8 @@ var stampit = require('stampit'),
 var stamps           = require('../util/stamps'),
     Forwarder        = stamps.Forwarder,
     Cloner           = stamps.Cloner,
+    Ensure           = stamps.Ensure,
+    RelationArc      = require('../chain/RelationArc'),
     CypherObject     = require('./CypherObject'),
     ResultMaker      = require('../result/ResultMaker'),
     subset           = require('../subset'),
@@ -27,6 +29,9 @@ var CypherContext = stampit()
 		chain: [
 			'buildResetCypher'
 		]
+	}))
+	.compose(Ensure({
+		relation: RelationArc
 	}))
 	.methods({
 		addRelation: function(relationArc) {
@@ -100,6 +105,10 @@ var CypherContext = stampit()
 
 		buildDeleteNodeCypher: function() {
 			return CypherObject.fromString(this).prepend('DELETE')
+		},
+
+		buildDeleteRelationCypher: function() {
+			return this.relation.toAliasCypher().prepend('DELETE')
 		},
 
 		toString: function() {

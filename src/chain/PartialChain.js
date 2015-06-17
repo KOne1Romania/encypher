@@ -5,7 +5,6 @@ var stampit = require('stampit'),
 
 var Node         = require('./node/Node'),
     ChainCommon  = require('./ChainCommon'),
-    RelationArc  = require('./RelationArc'),
     CypherObject = require('../cypher/CypherObject'),
     stamps       = require('../util/stamps'),
     Ensure       = stamps.Ensure,
@@ -35,7 +34,7 @@ var PartialChain = stampit()
 		},
 
 		getRelationCypher: function(relationArc) {
-			return RelationArc(relationArc).toCypher(this.previous, this.node)
+			return relationArc.toCypher(this.previous, this.node)
 		}
 	})
 	.compose(Forwarder({

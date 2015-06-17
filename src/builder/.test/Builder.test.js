@@ -348,13 +348,23 @@ suite('builder', function() {
 		suite('node', function() {
 			test('main', function() {
 				builder.match('User').delete().toString()
-					.should.eql('MATCH ($main:User) DELETE $main')
+					.should.equal('MATCH ($main:User) DELETE $main')
 			})
 
 			test('related', function() {
 				builder.match('User').match('Address').delete().return().toString()
-					.should.eql('MATCH ($main:User) MATCH (address:Address) DELETE address RETURN $main')
+					.should.equal('MATCH ($main:User) MATCH (address:Address) DELETE address RETURN $main')
 			})
+		})
+
+		test('relation', function() {
+			builder.match('User')
+				.matchRelation({ type: 'HAS_ADDRESS', alias: '$default' }, 'Address').deleteRelation()
+				.return().toString()
+				.should.equal([
+					'MATCH ($main:User) MATCH $main-[$r_has_address:HAS_ADDRESS]->(address:Address)',
+					'DELETE $r_has_address RETURN $main'
+				].join(' '))
 		})
 	})
 })

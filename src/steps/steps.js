@@ -32,6 +32,12 @@ exports.Delete = function DeleteStep() {
 		.update('reset')
 }
 
+exports.DeleteRelation = function DeleteRelationStep() {
+	return step
+		.store('buildDeleteRelationCypher')
+		.update('reset')
+}
+
 exports.Return = function ReturnStep(resultOptions) {
 	return step
 		.update('reset')
