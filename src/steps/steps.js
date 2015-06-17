@@ -26,6 +26,12 @@ exports.SetNode = function SetNodeStep(data) {
 exports.SetLabel = makeLabelRelatedStep('set')
 exports.RemoveLabel = makeLabelRelatedStep('remove')
 
+exports.Delete = function DeleteStep() {
+	return step
+		.store('buildDeleteNodeCypher')
+		.update('reset')
+}
+
 exports.Return = function ReturnStep(resultOptions) {
 	return step
 		.update('reset')

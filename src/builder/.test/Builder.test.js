@@ -306,7 +306,7 @@ suite('builder', function() {
 			.should.eql('MATCH ($main:User) RETURN $main ORDER BY $main.`name` ASC, $main.`age` DESC')
 	})
 
-	suite('set', function() {
+	suite('set/remove', function() {
 		suite('#setNode', function() {
 			test('on main node', function() {
 				var nodeData = { name: 'John' }
@@ -339,6 +339,16 @@ suite('builder', function() {
 			builder.match('User').removeLabel('SuperUser')
 				.toCypher().valueOf().should.eql({
 					string: 'MATCH ($main:User) REMOVE $main:SuperUser',
+					params: {}
+				})
+		})
+	})
+
+	suite('delete', function() {
+		test('node', function() {
+			builder.match('User').delete()
+				.toCypher().valueOf().should.eql({
+					string: 'MATCH ($main:User) DELETE $main',
 					params: {}
 				})
 		})

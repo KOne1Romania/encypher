@@ -98,6 +98,10 @@ var CypherContext = stampit()
 			return this.chain.getLabelRelatedCypher(label).prepend(action.toUpperCase())
 		},
 
+		buildDeleteNodeCypher: function() {
+			return CypherObject.fromString(this).prepend('DELETE')
+		},
+
 		toString: function() {
 			return [this.chain, this.resultSet].join(', ').replace(/,\s$/, '')
 		},

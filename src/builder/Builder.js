@@ -44,7 +44,8 @@ var Builder = stampit()
 		'return', 'reset', 'create', 'merge', 'createRelation', 'mergeRelation',
 		'matchRelation', 'optionalMatchRelation', 'returnExpanded', 'fetch', 'where',
 		'subset', 'order',
-		'setNode', 'setLabel', 'removeLabel'
+		'setNode', 'setLabel', 'removeLabel',
+		'delete'
 	]))
 	.enclose(function() {
 		this.step = this.step || steps.EMPTY
