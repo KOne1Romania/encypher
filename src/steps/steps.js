@@ -6,6 +6,7 @@ var CypherObject = require('../cypher/CypherObject'),
     step         = require('./step')
 
 exports.Match = makeInstantiateStep('match')
+exports.OptionalMatch = makeInstantiateStep('optional match')
 exports.Create = makeInstantiateStep('create')
 exports.Merge = makeInstantiateStep('merge')
 
@@ -90,10 +91,10 @@ function makeInstantiateRelationStep(action) {
 
 function makeInstantiateStep(action) {
 	return function _InstantiateStep(node, data) {
-		return step
+		return exports.Reset().compose(step
 			.update('addNode', node)
 			.store('buildInstantiateCypher', action, data)
-			.update('bind')
+			.update('bind'))
 	}
 }
 

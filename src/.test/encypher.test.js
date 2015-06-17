@@ -123,7 +123,7 @@ suite('encypher', function() {
 					"WHERE NOT id(user) = {userId}",
 					"DELETE $r_written_by",
 				"WITH distinct $main",
-				"MATCH (user:User)",
+				"OPTIONAL MATCH (user:User)",
 					"WHERE id(user) = {userId}",
 					"MERGE $main-[:WRITTEN_BY]->user",
 				'WITH distinct $main',
@@ -131,7 +131,7 @@ suite('encypher', function() {
 					"WHERE NOT id(tag) IN {tagIds}",
 					"DELETE $r_has_tag",
 				"WITH distinct $main",
-				"MATCH (tag:Tag)",
+				"OPTIONAL MATCH (tag:Tag)",
 					"WHERE id(tag) IN {tagIds}",
 					"MERGE $main-[:HAS_TAG]->tag",
 				"WITH distinct $main",
@@ -151,11 +151,11 @@ suite('encypher', function() {
 			.optionalMatchRelation(aliasRelation('WRITTEN_BY'), 'User')
 			.where({ not: { field: 'id', op: 'eq', value: userId } })
 			.deleteRelation()
-			.match('User').whereId(userId).mergeRelation('WRITTEN_BY')
+			.optionalMatch('User').whereId(userId).mergeRelation('WRITTEN_BY')
 			.optionalMatchRelation(aliasRelation('HAS_TAG'), 'Tag')
 			.where({ not: { field: 'id', op: 'in', value: tagIds } })
 			.deleteRelation()
-			.match('Tag').whereIdIn(tagIds).mergeRelation('HAS_TAG')
+			.optionalMatch('Tag').whereIdIn(tagIds).mergeRelation('HAS_TAG')
 			.return({ select: 'id' })
 			.toCypher().valueOf().should.eql(expectedCypher)
 	})

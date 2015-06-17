@@ -12,10 +12,6 @@ var Builder = stampit()
 		step: null
 	})
 	.methods({
-		match: function(label, data) {
-			return this.reset().addStep(steps.Match(label, data))
-		},
-
 		whereId: function(id) {
 			return this.where({ op: 'eq', value: id })
 		},
@@ -43,7 +39,7 @@ var Builder = stampit()
 	.compose(Stepper([
 		'return', 'reset', 'create', 'merge', 'createRelation', 'mergeRelation',
 		'matchRelation', 'optionalMatchRelation', 'returnExpanded', 'fetch', 'where',
-		'subset', 'order',
+		'subset', 'order', 'optionalMatch', 'match',
 		'setNode', 'setLabel', 'removeLabel',
 		'delete', 'deleteRelation'
 	]))
