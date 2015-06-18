@@ -24,6 +24,18 @@ suite('builder', function() {
 				.should.eql('MATCH ($main:User) MATCH (post:Post) WHERE id(post) = 15 RETURN $main')
 		})
 
+		suite('custom alias', function() {
+			test('does nothing on $main chain', function() {
+				builder.match({ alias: 'author', label: 'User' }).toString()
+					.should.eql('MATCH ($main:User)')
+			})
+
+			test('overrides default on two nodes chain', function() {
+				builder.match('User').match({ alias: 'indexPost', label: 'Post' }).toString()
+					.should.eql('MATCH ($main:User) MATCH (indexPost:Post)')
+			})
+		})
+
 		test('only advances one level even when matching third node', function() {
 			var expectedCypherString = [
 				'MATCH ($main:User)',
