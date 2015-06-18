@@ -37,9 +37,12 @@ var Builder = stampit()
 		}
 	})
 	.compose(Stepper([
-		'return', 'reset', 'create', 'merge', 'createRelation', 'mergeRelation',
-		'matchRelation', 'optionalMatchRelation', 'returnExpanded', 'fetch', 'where',
-		'subset', 'order', 'optionalMatch', 'match',
+		'match', 'optionalMatch', 'create', 'merge',
+		'matchRelation', 'optionalMatchRelation',
+		'where',
+		'createRelation', 'mergeRelation',
+		'return', 'returnExpanded', 'fetch', 'reset',
+		'subset', 'order',
 		'setNode', 'setLabel', 'removeLabel',
 		'delete', 'deleteRelation'
 	]))
