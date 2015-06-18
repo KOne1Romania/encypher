@@ -49,4 +49,13 @@ var Builder = stampit()
 
 Builder.base = Builder()
 
+Builder.compose = function composeBuilders() {
+	var builders = _.toArray(arguments)
+	return builders.reduce(_composeTwo)
+}
+
+function _composeTwo(firstBuilder, secondBuilder) {
+	return firstBuilder.addStep(secondBuilder.step)
+}
+
 module.exports = Builder

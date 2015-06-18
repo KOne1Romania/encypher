@@ -2,7 +2,8 @@
 
 require('chai').should()
 
-var builder = require('../Builder').base
+var Builder = require('../Builder'),
+    builder = Builder.base
 
 suite('builder', function() {
 	suite('#match', function() {
@@ -203,11 +204,18 @@ suite('builder', function() {
 		})
 	})
 
-	test('#compose', function() {
+	suite('compose', function() {
 		var matchWhereStep = builder.match('User').whereId(10),
-		    returnStep     = builder.return()
-		matchWhereStep.compose(returnStep).toString()
-			.should.eql('MATCH ($main:User) WHERE id($main) = 10 RETURN $main')
+		    returnStep     = builder.return(),
+		    expectedString = 'MATCH ($main:User) WHERE id($main) = 10 RETURN $main'
+
+		test('as instance method', function() {
+			matchWhereStep.compose(returnStep).toString().should.eql(expectedString)
+		})
+
+		test('as static method', function() {
+			Builder.compose(matchWhereStep, returnStep).toString().should.eql(expectedString)
+		})
 	})
 
 	suite('with accumulator', function() {
