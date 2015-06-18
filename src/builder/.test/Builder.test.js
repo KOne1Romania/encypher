@@ -213,8 +213,12 @@ suite('builder', function() {
 			matchWhereStep.compose(returnStep).toString().should.eql(expectedString)
 		})
 
-		test('as static method', function() {
+		test('as static method on multiple args', function() {
 			Builder.compose(matchWhereStep, returnStep).toString().should.eql(expectedString)
+		})
+
+		test('as static method on array', function() {
+			Builder.compose([matchWhereStep, returnStep]).toString().should.eql(expectedString)
 		})
 	})
 

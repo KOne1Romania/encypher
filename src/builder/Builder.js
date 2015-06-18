@@ -50,7 +50,7 @@ var Builder = stampit()
 Builder.base = Builder()
 
 Builder.compose = function composeBuilders() {
-	var builders = _.toArray(arguments)
+	var builders = _.flatten(_.toArray(arguments))
 	return builders.reduce(_composeTwo)
 }
 
