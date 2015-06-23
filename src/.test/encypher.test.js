@@ -2,7 +2,7 @@
 
 require('chai').should()
 
-var encypher = require('../encypher')
+var encypher = require('../Encypher').base
 
 suite('encypher', function() {
 	test('find all complex query', function() {
