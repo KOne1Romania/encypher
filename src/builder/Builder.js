@@ -24,6 +24,10 @@ var Builder = stampit()
 			return this.toCypher().toString()
 		},
 
+		valueOf: function() {
+			return this.toCypher().valueOf()
+		},
+
 		toCypher: function() {
 			return this.step.run()
 		},

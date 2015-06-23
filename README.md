@@ -14,7 +14,7 @@ var Encypher = require('encypher'),
 var cypherBuilder = encypher.match('User').whereId(1).return()
 
 assert.equal(cypherBuilder.toString(), 'MATCH ($main:User) WHERE id($main) = 1 return $main')
-assert.equal(cypherBuilder.toCypher(), {
+assert.deepEqual(cypherBuilder.valueOf(), {
   string: 'MATCH ($main:User) WHERE id($main) = {id} return $main',
   params: { id : 1 }
 })

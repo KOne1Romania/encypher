@@ -50,7 +50,7 @@ suite('encypher', function() {
 			.fetch({ aggregate: 'collect', select: 'id' })
 			.returnExpanded(['id', 'name', 'timestamp'])
 			.order(['name', { field: 'timestamp', direction: 'desc' }])
-			.toCypher().valueOf().should.eql(expectedCypher)
+			.valueOf().should.eql(expectedCypher)
 	})
 
 	test('create new node with relations', function() {
@@ -83,7 +83,7 @@ suite('encypher', function() {
 			.match('User').whereId(userId).mergeRelation('WRITTEN_BY')
 			.match('Tag').whereIdIn(tagIds).mergeRelation('HAST_TAG')
 			.return({ select: 'id' })
-			.toCypher().valueOf().should.eql(expectedCypher)
+			.valueOf().should.eql(expectedCypher)
 	})
 
 	test('soft delete node', function() {
@@ -105,7 +105,7 @@ suite('encypher', function() {
 			.match('User').whereId(userId)
 			.removeLabel('User')
 			.setLabel('_User')
-			.toCypher().valueOf().should.eql(expectedCypher)
+			.valueOf().should.eql(expectedCypher)
 	})
 
 	test('update node with relations', function() {
@@ -157,7 +157,7 @@ suite('encypher', function() {
 			.deleteRelation()
 			.optionalMatch('Tag').whereIdIn(tagIds).mergeRelation('HAS_TAG')
 			.return({ select: 'id' })
-			.toCypher().valueOf().should.eql(expectedCypher)
+			.valueOf().should.eql(expectedCypher)
 	})
 })
 

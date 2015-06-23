@@ -13,7 +13,7 @@ suite('builder', function() {
 
 		test('by example', function() {
 			var example = { name: 'John' }
-			builder.match('User', example).toCypher().valueOf().should.eql({
+			builder.match('User', example).valueOf().should.eql({
 				string: 'MATCH ($main:User {data})',
 				params: { data: example }
 			})
@@ -78,7 +78,7 @@ suite('builder', function() {
 	suite('basic', function() {
 		test('#create', function() {
 			var data = { name: 'John' }
-			builder.create('User', data).return().toCypher().valueOf().should.eql({
+			builder.create('User', data).return().valueOf().should.eql({
 				string: 'CREATE ($main:User {data}) RETURN $main',
 				params: { data: data }
 			})
@@ -86,7 +86,7 @@ suite('builder', function() {
 
 		test('#merge', function() {
 			var data = { name: 'John' }
-			builder.merge('User', data).return().toCypher().valueOf().should.eql({
+			builder.merge('User', data).return().valueOf().should.eql({
 				string: 'MERGE ($main:User {data}) RETURN $main',
 				params: { data: data }
 			})
@@ -276,7 +276,7 @@ suite('builder', function() {
 	suite('#where', function() {
 		test('on main node', function() {
 			builder.match('User').where({ field: 'name', op: 'eq', value: 'John' })
-				.toCypher().valueOf().should.eql({
+				.valueOf().should.eql({
 					string: 'MATCH ($main:User) WHERE $main.`name` = {name}',
 					params: { name: 'John' }
 				})
@@ -284,7 +284,7 @@ suite('builder', function() {
 
 		test('on other node', function() {
 			builder.match('User').match('Post').where({ field: 'title', op: 'eq', value: 'Test' })
-				.toCypher().valueOf().should.eql({
+				.valueOf().should.eql({
 					string: 'MATCH ($main:User) MATCH (post:Post) WHERE post.`title` = {postTitle}',
 					params: { postTitle: 'Test' }
 				})
@@ -294,7 +294,7 @@ suite('builder', function() {
 		test('on related node', function() {
 			builder.match('User').matchRelation('WROTE_POST', 'Post')
 				.where({ field: 'title', op: 'eq', value: 'Test' })
-				.toCypher().valueOf().should.eql({
+				.valueOf().should.eql({
 					string: [
 						'MATCH ($main:User) MATCH $main-[:WROTE_POST]->(post:Post)',
 						'WHERE post.`title` = {postTitle}'
@@ -321,7 +321,7 @@ suite('builder', function() {
 	test('#subset', function() {
 		var subsetParams = { skip: 20, limit: 10 }
 		builder.match('User').return().subset(subsetParams)
-			.toCypher().valueOf().should.eql({
+			.valueOf().should.eql({
 				string: 'MATCH ($main:User) RETURN $main SKIP {skip} LIMIT {limit}',
 				params: subsetParams
 			})
@@ -338,7 +338,7 @@ suite('builder', function() {
 			test('on main node', function() {
 				var nodeData = { name: 'John' }
 				builder.match('User').setNode(nodeData)
-					.toCypher().valueOf().should.eql({
+					.valueOf().should.eql({
 						string: 'MATCH ($main:User) SET $main = {data}',
 						params: { data: nodeData }
 					})
@@ -347,7 +347,7 @@ suite('builder', function() {
 			test('on other node', function() {
 				var nodeData = { title: 'Test' }
 				builder.match('User').match('Post').setNode(nodeData)
-					.toCypher().valueOf().should.eql({
+					.valueOf().should.eql({
 						string: 'MATCH ($main:User) MATCH (post:Post) SET post = {postData}',
 						params: { postData: nodeData }
 					})
@@ -356,7 +356,7 @@ suite('builder', function() {
 
 		test('#setLabel', function() {
 			builder.match('User').setLabel('SuperUser')
-				.toCypher().valueOf().should.eql({
+				.valueOf().should.eql({
 					string: 'MATCH ($main:User) SET $main:SuperUser',
 					params: {}
 				})
@@ -364,7 +364,7 @@ suite('builder', function() {
 
 		test('#removeLabel', function() {
 			builder.match('User').removeLabel('SuperUser')
-				.toCypher().valueOf().should.eql({
+				.valueOf().should.eql({
 					string: 'MATCH ($main:User) REMOVE $main:SuperUser',
 					params: {}
 				})
