@@ -7,6 +7,7 @@
 $ npm install --save git@github.com:Kalon/encypher.git
 ```
 
+####Build
 ```js
 var Encypher = require('encypher'),
     encypher = Encypher.base
@@ -19,6 +20,36 @@ assert.deepEqual(cypherBuilder.valueOf(), {
   params: { id : 1 }
 })
 ```
+
+####Run
+The built cypher can then be run using **`Encypher.Runner`**, which requires a `cypherClient` which must implement the following API. The resulting `runner` exposes the same interface as the `cypherClient`, only that it takes an `encypher` as an argument.
+```js
+var Encypher = require('encypher'),
+    encypher = Encypher.base
+    EncypherRunner = Encypher.Runner
+
+var cypherClient = {
+  queryMany: function(string, params) {
+    // returns a Promise for the query results
+  },
+
+  queryManyNodes: function(string, params) {},
+
+  // optional, it defaults to this.queryMany(...).get(0)
+  queryOne: function(string, params) {},
+
+  // optional, it defaults to this.queryManyNodes(...).get(0)
+  queryOneNode: function(string, params) {}
+}
+// Even one of `queryMany` or `queryManyNodes` can be omitted, by default returning `Promise.resolve([])`
+
+var runner = EncypherRunner(cypherClient)
+
+var returnAllUsersQuery = encypher.match('User').return()
+runner.queryMany(returnAllUsersQuery).then(console.log)
+
+```
+
 
 ###Model
 **Encypher** centers its query model around stacks of nodes, with the bottom one being called `$main`. With each subsequent `match` another node is added to the stack, and at any point, the stack can be reset to `$main`. Most actions that are done (conditions, setting node data, deleting, etc.) are done on the top of the stack. Some actions, such as creating a new relation, also use the previous node on the stack, creating the relation between it and the top node. And there are also few that don't use the stack at all (e.g. `subset`).
