@@ -38,6 +38,10 @@ var Builder = stampit()
 
 		compose: function(otherBuilder) {
 			return this.addStep(otherBuilder.step)
+		},
+
+		run: function(queryFunction) {
+			return this.toCypher().queryUsing(queryFunction)
 		}
 	})
 	.compose(Stepper([

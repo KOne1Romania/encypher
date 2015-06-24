@@ -60,8 +60,8 @@ var CypherObject = stampit()
 			return CypherObject.merge([this, otherCypherObject])
 		},
 
-		queryUsing: function(queryMethod) {
-			return queryMethod(this.string, this.params)
+		queryUsing: function(queryFunction) {
+			return queryFunction(this.string, this.params)
 		}
 	})
 
