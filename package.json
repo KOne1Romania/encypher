@@ -1,5 +1,5 @@
 {
-  "name": "encypher",
+  "name": "@kalon/encypher",
   "version": "1.0.0",
   "description": "Neo4j Cypher queries builder",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:kalon/encypher.git"
+    "url": "git@github.com:Kalon/encypher.git"
   },
   "keywords": [
     "neo4j",

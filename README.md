@@ -4,7 +4,7 @@
 
 ###Usage
 ```sh
-$ npm install --save git@github.com:Kalon/encypher.git
+$ npm install --save @kalon/encypher
 ```
 
 ####Build
