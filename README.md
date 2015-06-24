@@ -74,16 +74,6 @@ returnFirstTenUsers = Encypher.compose(matchUsers, returnTenResults)
 ```
 
 ###Data types
-####CypherObject
-`{ string:String, [params:Object = {}] }`
-
-```js
-CypherObject({
-  string: 'MATCH ($main:User) RETURN $main LIMIT {limit}',
-  params: { limit: 10 }
-})
-```
-
 ####Node
 `{ label:String, [alias:String = lowercase(label)] }`
 
