@@ -92,12 +92,19 @@ RelationArc({ type: 'HAS_POST', alias: '$default' }) // -[$r_has_post:HAS_POST]-
 
 ####Condition
 - unary: `isNull`, `isNotNull`
+
     > ``{ field: 'name', op: 'isNull' }`` ``"$main.`name` IS NULL"``
-- binary: `eq`, `ne`, `in`, `lt`, `gt`, `regex`
+
+- binary: `eq`, `ne`, `in`, `lt`, `gt`, `regex`, `includes`
+
     > ``{ field: 'name', op: 'eq', value: 'John' }`` ``"$main.`name` = {name}" :: { name: 'John' }``
+
 - nested: `and`, `or`
+
     > `{ and: [c1, c2, c3 ]}` `(c1 AND c2 AND c3)`
+
 - negated: `not`
+
     > `{ not: condition }` `NOT condition`
 
 ####ResultOptions

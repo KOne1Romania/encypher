@@ -21,9 +21,12 @@ var UnboundResult = stampit()
 			return [this.key, this.value].join(': ')
 		},
 
-		toBinaryConditionString: function(operatorSymbol) {
+		toBinaryConditionString: function(operatorSymbol, reverse) {
 			var paramToken = surround(this.key, '{', '}'),
 			    symbolString = surround(operatorSymbol, ' ')
+			if(reverse){
+				return [paramToken, this.value].join(symbolString)
+			}
 			return [this.value, paramToken].join(symbolString)
 		},
 
