@@ -77,6 +77,14 @@ suite('condition', function() {
 			})
 		})
 
+		test('includes', function() {
+			var inCondition = condition({ op: 'includes', value: 15, field: 'tags' })
+			inCondition(oneNodeChain).valueOf().should.eql({
+				string: '{tag} IN $main.`tags`',
+				params: { tag: 15 }
+			})
+		})
+
 		test('regex', function() {
 			var regexCondition = condition({ field: 'name', op: 'regex', value: '.*' })
 			regexCondition(oneNodeChain).valueOf().should.eql({

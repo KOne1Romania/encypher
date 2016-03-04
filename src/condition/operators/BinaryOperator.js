@@ -11,6 +11,7 @@ var BinaryOperator = stampit()
 	.state({
 		name: 'eq',
 		symbol: '',
+		reverse: false,
 		fieldCustomizer: _.identity,
 		valueCustomizer: _.identity
 	})
@@ -19,7 +20,7 @@ var BinaryOperator = stampit()
 			var customResult = result.customizeKey(this.fieldCustomizer),
 			    customizedValue = this.valueCustomizer(value)
 			return CypherObject({
-				string: customResult.toBinaryConditionString(this.symbol),
+				string: customResult.toBinaryConditionString(this.symbol, this.reverse),
 				params: customResult.buildConditionParams(customizedValue)
 			})
 		}

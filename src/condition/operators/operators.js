@@ -47,6 +47,12 @@ var operators = {
 		fieldCustomizer: inflection.pluralize
 	}),
 
+	includes: BinaryOperator({
+		name: 'in',
+		reverse: true,
+		fieldCustomizer: inflection.singularize
+	}),
+
 	isNull: UnaryOperator({
 		name: 'isNull'
 	}),
