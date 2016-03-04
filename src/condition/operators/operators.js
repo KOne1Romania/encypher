@@ -50,7 +50,7 @@ var operators = {
 	includes: BinaryOperator({
 		name: 'in',
 		reverse: true,
-        fieldCustomizer: inflection.singularize
+		fieldCustomizer: inflection.singularize
 	}),
 
 	isNull: UnaryOperator({

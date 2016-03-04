@@ -24,7 +24,7 @@ var UnboundResult = stampit()
 		toBinaryConditionString: function(operatorSymbol, reverse) {
 			var paramToken = surround(this.key, '{', '}'),
 			    symbolString = surround(operatorSymbol, ' ')
-			if(reverse){
+			if (reverse) {
 				return [paramToken, this.value].join(symbolString)
 			}
 			return [this.value, paramToken].join(symbolString)
